@@ -17,7 +17,7 @@ export const BooksPage: React.FC = () => {
           <div className="flex items-start gap-6">
             <div className="w-32 h-48 rounded-lg overflow-hidden">
               <img 
-                src="/inevitableCover.png" 
+                src="/INEVITABLEcover.png" 
                 alt="Inevitable: Distributed Cognition and the Network of Superintelligence book cover"
                 className="w-full h-full object-cover"
               />
