@@ -1,5 +1,5 @@
 import React from 'react';
-import { Code } from 'lucide-react';
+import { Code, ExternalLink } from 'lucide-react';
 import { GitHubRepos } from './GitHubRepos';
 
 export const SoftwareSection: React.FC = () => {
@@ -17,6 +17,15 @@ export const SoftwareSection: React.FC = () => {
               Content curation and collective memory platform with decentralized storage, Farcaster integration, and custom SDK architecture
             </p>
           </div>
+          <a 
+            href="https://github.com/ipfsnut/evermark-beta"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex items-center gap-2 text-green-400 hover:text-green-300 transition-colors"
+          >
+            <ExternalLink className="w-5 h-5" />
+            <span>View on GitHub</span>
+          </a>
         </div>
         <div className="flex flex-wrap gap-2 mb-4">
           <span className="px-3 py-1 bg-purple-500/30 text-purple-200 rounded-full text-sm">React 19</span>

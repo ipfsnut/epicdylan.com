@@ -3,7 +3,7 @@ import { AppProvider } from './context/AppContext';
 import { Navigation } from './components/Navigation';
 import { HomePage } from './pages/HomePage';
 import { BooksPage } from './pages/BooksPage';
-import { TheoryPage } from './pages/TheoryPage';
+import { ConsciousnessPage } from './pages/ConsciousnessPage';
 import { PageType } from './types';
 
 const App: React.FC = () => {
@@ -16,8 +16,8 @@ const App: React.FC = () => {
         return <HomePage setCurrentPage={setCurrentPage} />;
       case 'books':
         return <BooksPage />;
-      case 'theory':
-        return <TheoryPage />;
+      case 'consciousness':
+        return <ConsciousnessPage setCurrentPage={setCurrentPage} />;
       default:
         return <HomePage setCurrentPage={setCurrentPage} />;
     }

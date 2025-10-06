@@ -19,12 +19,12 @@ export const QuickLinks: React.FC<QuickLinksProps> = ({ setCurrentPage }) => {
       </button>
       
       <button
-        onClick={() => setCurrentPage('theory')}
+        onClick={() => setCurrentPage('consciousness')}
         className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20 hover:border-indigo-400 transition-all text-left"
       >
         <Brain className="w-8 h-8 text-indigo-400 mb-3" />
-        <h3 className="text-xl font-semibold text-white mb-2">Theory Blog</h3>
-        <p className="text-gray-400">Read my latest thoughts on consciousness research</p>
+        <h3 className="text-xl font-semibold text-white mb-2">Consciousness Research</h3>
+        <p className="text-gray-400">Explore detailed research on consciousness and cognition</p>
       </button>
 
       <a

@@ -1,5 +1,5 @@
-import React from 'react';
-import { Menu, X } from 'lucide-react';
+import React, { useState } from 'react';
+import { Menu, X, Mail } from 'lucide-react';
 import { PageType } from '../types';
 
 interface NavigationProps {
@@ -15,10 +15,11 @@ export const Navigation: React.FC<NavigationProps> = ({
   mobileMenuOpen,
   setMobileMenuOpen
 }) => {
+  const [isContactModalOpen, setIsContactModalOpen] = useState(false);
   const navItems: { id: PageType; label: string }[] = [
     { id: 'home', label: 'Home' },
     { id: 'books', label: 'Books' },
-    { id: 'theory', label: 'Theory' }
+    { id: 'consciousness', label: 'Research' }
   ];
 
   return (
@@ -27,9 +28,13 @@ export const Navigation: React.FC<NavigationProps> = ({
         <div className="flex items-center justify-between">
           <button 
             onClick={() => setCurrentPage('home')}
-            className="text-2xl font-bold text-white hover:text-purple-400 transition-colors"
+            className="hover:opacity-80 transition-opacity"
           >
-            Dylan
+            <img 
+              src="/StowDylanAvatar.jpg" 
+              alt="Dylan"
+              className="w-10 h-10 rounded-full border-2 border-purple-400"
+            />
           </button>
           
           {/* Desktop Navigation */}
@@ -47,6 +52,13 @@ export const Navigation: React.FC<NavigationProps> = ({
                 {item.label}
               </button>
             ))}
+            <button
+              onClick={() => setIsContactModalOpen(true)}
+              className="flex items-center gap-2 px-4 py-2 rounded-lg bg-green-600 hover:bg-green-700 text-white transition-colors"
+            >
+              <Mail className="w-4 h-4" />
+              Contact
+            </button>
           </div>
 
           {/* Mobile Menu Button */}
@@ -77,9 +89,53 @@ export const Navigation: React.FC<NavigationProps> = ({
                 {item.label}
               </button>
             ))}
+            <button
+              onClick={() => { 
+                setIsContactModalOpen(true); 
+                setMobileMenuOpen(false); 
+              }}
+              className="flex items-center gap-2 w-full px-4 py-2 rounded-lg bg-green-600 text-white"
+            >
+              <Mail className="w-4 h-4" />
+              Contact
+            </button>
           </div>
         )}
       </div>
+
+      {/* Contact Modal */}
+      {isContactModalOpen && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
+          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-8 max-w-md w-full border border-white/20">
+            <div className="flex justify-between items-start mb-6">
+              <h2 className="text-2xl font-bold text-white">Contact</h2>
+              <button
+                onClick={() => setIsContactModalOpen(false)}
+                className="text-gray-400 hover:text-white transition-colors"
+              >
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            
+            <div className="space-y-4">
+              <div className="bg-black/30 rounded-lg p-4">
+                <h3 className="text-green-300 font-semibold mb-2">Name</h3>
+                <p className="text-gray-300">T. Dylan Daniel</p>
+              </div>
+              
+              <div className="bg-black/30 rounded-lg p-4">
+                <h3 className="text-green-300 font-semibold mb-2">Email</h3>
+                <a 
+                  href="mailto:thomas.d.daniel@ttu.edu"
+                  className="text-green-400 hover:text-green-300 transition-colors"
+                >
+                  thomas.d.daniel@ttu.edu
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
     </nav>
   );
 };
