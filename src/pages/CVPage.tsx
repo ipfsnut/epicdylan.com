@@ -192,7 +192,7 @@ export const CVPage: React.FC = () => {
                       </a>
                     </div>
                     <div>
-                      • Article on Camus during COVID-19 pandemic • 
+                      • "The Plague and the Plague" • 
                       <a 
                         href="https://philosophynow.org/issues/138/The_Plague_and_The_Plague" 
                         target="_blank" 
