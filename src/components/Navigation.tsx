@@ -10,7 +10,8 @@ export const Navigation: React.FC = () => {
   const navItems = [
     { path: '/', label: 'Home' },
     { path: '/books', label: 'Books' },
-    { path: '/research', label: 'Research' }
+    { path: '/research', label: 'Research' },
+    { path: '/cv', label: 'CV' }
   ];
 
   const isActive = (path: string) => {
