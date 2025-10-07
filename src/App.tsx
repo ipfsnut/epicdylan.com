@@ -4,6 +4,7 @@ import { Navigation } from './components/Navigation';
 import { HomePage } from './pages/HomePage';
 import { BooksPage } from './pages/BooksPage';
 import { ConsciousnessPage } from './pages/ConsciousnessPage';
+import { CognitiveEffortPage } from './experiment-pages/CognitiveEffortPage';
 import { PageType } from './types';
 
 const App: React.FC = () => {
@@ -18,6 +19,8 @@ const App: React.FC = () => {
         return <BooksPage />;
       case 'consciousness':
         return <ConsciousnessPage setCurrentPage={setCurrentPage} />;
+      case 'cognitive-effort':
+        return <CognitiveEffortPage setCurrentPage={setCurrentPage} />;
       default:
         return <HomePage setCurrentPage={setCurrentPage} />;
     }

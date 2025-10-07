@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { Brain, ArrowLeft, BookOpen, Microscope, Network, Target, X, ExternalLink } from 'lucide-react';
+import React from 'react';
+import { Brain, ArrowLeft, BookOpen, Microscope, Network, Target } from 'lucide-react';
 import { PageType } from '../types';
 
 interface ConsciousnessPageProps {
@@ -7,7 +7,6 @@ interface ConsciousnessPageProps {
 }
 
 export const ConsciousnessPage: React.FC<ConsciousnessPageProps> = ({ setCurrentPage }) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-16">
@@ -25,8 +24,7 @@ export const ConsciousnessPage: React.FC<ConsciousnessPageProps> = ({ setCurrent
           Consciousness Research
         </h1>
         <p className="text-xl text-gray-300 leading-relaxed">
-          Investigating the mathematical foundations of consciousness through nested Markov blankets, 
-          free energy principles, and autopoietic systems. Integrating theoretical neuroscience with empirical research.
+          Investigating the mathematical foundations of consciousness through nested Markov blankets and autopoietic systems. Integrating theoretical neuroscience with empirical research.
         </p>
       </div>
 
@@ -114,7 +112,7 @@ export const ConsciousnessPage: React.FC<ConsciousnessPageProps> = ({ setCurrent
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div 
             className="bg-black/20 rounded-lg p-6 cursor-pointer hover:bg-black/30 transition-colors"
-            onClick={() => setIsModalOpen(true)}
+            onClick={() => setCurrentPage('cognitive-effort')}
           >
             <h3 className="text-cyan-300 font-semibold mb-3">Cognitive Effort</h3>
             <p className="text-gray-300 text-sm mb-4">
@@ -128,52 +126,6 @@ export const ConsciousnessPage: React.FC<ConsciousnessPageProps> = ({ setCurrent
           </div>
         </div>
       </div>
-
-      {/* Modal */}
-      {isModalOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
-          <div className="bg-gradient-to-br from-gray-900 to-gray-800 rounded-xl p-8 max-w-2xl w-full max-h-[80vh] overflow-y-auto border border-white/20">
-            <div className="flex justify-between items-start mb-6">
-              <h2 className="text-2xl font-bold text-white">Cognitive Effort Study</h2>
-              <button
-                onClick={() => setIsModalOpen(false)}
-                className="text-gray-400 hover:text-white transition-colors"
-              >
-                <X className="w-6 h-6" />
-              </button>
-            </div>
-            
-            <div className="space-y-4 text-gray-300">
-              <div className="bg-black/30 rounded-lg p-4">
-                <h3 className="text-cyan-300 font-semibold mb-2">Study Overview</h3>
-                <p className="text-sm">
-                  A comparison of facial emotion in physical and cognitive effort
-                </p>
-              </div>
-              
-              <div className="bg-black/30 rounded-lg p-4">
-                <h3 className="text-cyan-300 font-semibold mb-2">Current Status</h3>
-                <p className="text-sm">
-                  Data Collection - Currently recruiting participants and collecting behavioral data.
-                </p>
-              </div>
-              
-              <div className="bg-black/30 rounded-lg p-4">
-                <h3 className="text-cyan-300 font-semibold mb-2">Repository</h3>
-                <a 
-                  href="https://github.com/ipfsnut/NST-vanilla"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 text-cyan-400 hover:text-cyan-300 transition-colors"
-                >
-                  <ExternalLink className="w-4 h-4" />
-                  <span className="text-sm">View on GitHub</span>
-                </a>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 };

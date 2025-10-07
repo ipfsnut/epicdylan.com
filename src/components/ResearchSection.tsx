@@ -23,7 +23,7 @@ export const ResearchSection: React.FC<ResearchSectionProps> = ({ setCurrentPage
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-black/30 rounded-lg p-4">
-            <h3 className="text-purple-300 font-semibold mb-2">Key Frameworks</h3>
+            <h3 className="text-purple-300 font-semibold mb-2">Key Ideas</h3>
             <ul className="text-gray-300 space-y-1 text-sm">
               <li>• Free Energy Principle (Friston)</li>
               <li>• Autopoiesis (Varela & Maturana)</li>
@@ -36,8 +36,7 @@ export const ResearchSection: React.FC<ResearchSectionProps> = ({ setCurrentPage
             <ul className="text-gray-300 space-y-1 text-sm">
               <li>• Nested self-organizing systems</li>
               <li>• Metabolic constraints on cognition</li>
-              <li>• PFC-amygdala dynamics</li>
-              <li>• Vigilance & emotion recognition</li>
+              <li>• Cognitive effort & emotion recognition</li>
             </ul>
           </div>
         </div>

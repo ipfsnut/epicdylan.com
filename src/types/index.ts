@@ -50,4 +50,4 @@ export interface AppState {
   errors: ApiError;
 }
 
-export type PageType = 'home' | 'books' | 'consciousness';
+export type PageType = 'home' | 'books' | 'consciousness' | 'cognitive-effort';
