@@ -1,22 +1,19 @@
 import React from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import { Brain, ArrowLeft, BookOpen, Microscope, Network, Target } from 'lucide-react';
-import { PageType } from '../types';
 
-interface ConsciousnessPageProps {
-  setCurrentPage: (page: PageType) => void;
-}
-
-export const ConsciousnessPage: React.FC<ConsciousnessPageProps> = ({ setCurrentPage }) => {
+export const ConsciousnessPage: React.FC = () => {
+  const navigate = useNavigate();
 
   return (
     <div className="max-w-6xl mx-auto px-6 py-16">
-      <button
-        onClick={() => setCurrentPage('home')}
+      <Link
+        to="/"
         className="flex items-center gap-2 text-purple-400 hover:text-purple-300 mb-8 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to Home
-      </button>
+      </Link>
 
       <div className="mb-12">
         <h1 className="text-4xl font-bold text-white mb-6 flex items-center gap-3">
@@ -112,7 +109,7 @@ export const ConsciousnessPage: React.FC<ConsciousnessPageProps> = ({ setCurrent
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div 
             className="bg-black/20 rounded-lg p-6 cursor-pointer hover:bg-black/30 transition-colors"
-            onClick={() => setCurrentPage('cognitive-effort')}
+            onClick={() => navigate('/experiments/cognitive-effort')}
           >
             <h3 className="text-cyan-300 font-semibold mb-3">Cognitive Effort</h3>
             <p className="text-gray-300 text-sm mb-4">

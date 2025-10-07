@@ -1,21 +1,17 @@
 import React from 'react';
+import { Link } from 'react-router-dom';
 import { ArrowLeft, ExternalLink, Target, Brain } from 'lucide-react';
-import { PageType } from '../types';
 
-interface CognitiveEffortPageProps {
-  setCurrentPage: (page: PageType) => void;
-}
-
-export const CognitiveEffortPage: React.FC<CognitiveEffortPageProps> = ({ setCurrentPage }) => {
+export const CognitiveEffortPage: React.FC = () => {
   return (
     <div className="max-w-4xl mx-auto px-6 py-16">
-      <button
-        onClick={() => setCurrentPage('consciousness')}
+      <Link
+        to="/research"
         className="flex items-center gap-2 text-purple-400 hover:text-purple-300 mb-8 transition-colors"
       >
         <ArrowLeft className="w-4 h-4" />
         Back to Research
-      </button>
+      </Link>
 
       <div className="mb-12">
         <h1 className="text-4xl font-bold text-white mb-6 flex items-center gap-3">
