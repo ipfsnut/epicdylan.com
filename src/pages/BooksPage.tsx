@@ -14,8 +14,8 @@ export const BooksPage: React.FC = () => {
 
       <div className="space-y-8">
         <div className="bg-gradient-to-r from-purple-600/20 to-indigo-600/20 backdrop-blur-lg rounded-xl p-8 border border-white/20">
-          <div className="flex items-start gap-6">
-            <div className="w-32 h-48 rounded-lg overflow-hidden">
+          <div className="flex flex-col sm:flex-row items-start gap-6">
+            <div className="w-24 sm:w-32 flex-shrink-0 rounded-lg overflow-hidden aspect-[2/3]">
               <img 
                 src="/INEVITABLEcover.png" 
                 alt="Inevitable: Distributed Cognition and the Network of Superintelligence book cover"
@@ -52,8 +52,8 @@ export const BooksPage: React.FC = () => {
         </div>
 
         <div className="bg-gradient-to-r from-indigo-600/20 to-cyan-600/20 backdrop-blur-lg rounded-xl p-8 border border-white/20">
-          <div className="flex items-start gap-6">
-            <div className="w-32 h-48 rounded-lg overflow-hidden">
+          <div className="flex flex-col sm:flex-row items-start gap-6">
+            <div className="w-24 sm:w-32 flex-shrink-0 rounded-lg overflow-hidden aspect-[2/3]">
               <img 
                 src="/formalDialectics.jpg" 
                 alt="Formal Dialectics book cover"
