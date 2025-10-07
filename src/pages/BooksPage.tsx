@@ -18,12 +18,12 @@ export const BooksPage: React.FC = () => {
             <div className="w-24 sm:w-32 flex-shrink-0 rounded-lg overflow-hidden aspect-[2/3]">
               <img 
                 src="/INEVITABLEcover.png" 
-                alt="Inevitable: Distributed Cognition and Network Superintelligence book cover"
+                alt="INEVITABLE: Distributed Cognition & Network Superintelligence book cover"
                 className="w-full h-full object-cover"
               />
             </div>
             <div className="flex-1">
-              <h2 className="text-2xl font-bold text-white mb-2">Inevitable: Distributed Cognition and the Network of Superintelligence</h2>
+              <h2 className="text-2xl font-bold text-white mb-2">INEVITABLE: Distributed Cognition & Network Superintelligence</h2>
               <p className="text-gray-300 mb-4">
                 Modern science has done an extremely good job of getting to the bottom of a number of tough problems in information theory and the study of cognition. It is therefore surprising to see that the concept of artificial intelligence has derailed into speculation about intelligent machines. This book presents a contrasting vision of the future of intelligence. Instead of assuming that artificial general intelligence is on the way, the time has come to reconsider the way we think about AI in light of the facts that emerge from a careful study of the intelligence found in living minds.
               </p>
