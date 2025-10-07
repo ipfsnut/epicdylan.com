@@ -1,5 +1,5 @@
 import React from 'react';
-import { Code, ExternalLink } from 'lucide-react';
+import { Code } from 'lucide-react';
 import { GitHubRepos } from './GitHubRepos';
 
 export const SoftwareSection: React.FC = () => {

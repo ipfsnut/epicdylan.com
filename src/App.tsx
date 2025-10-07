@@ -23,7 +23,7 @@ const App: React.FC = () => {
           </Routes>
           
           <div className="max-w-6xl mx-auto px-6 py-8 text-center text-gray-400 border-t border-white/10">
-            <p>Built with React • Real data from GitHub & Farcaster APIs</p>
+            <p>Built with React • Real data from GitHub API</p>
           </div>
         </div>
       </Router>
