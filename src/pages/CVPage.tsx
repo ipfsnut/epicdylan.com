@@ -32,7 +32,7 @@ export const CVPage: React.FC = () => {
           </h2>
           <div className="space-y-6">
             <div className="bg-black/30 rounded-lg p-6">
-              <h3 className="text-purple-300 font-semibold text-lg mb-2">Ph.D. in Cognition & Cognitive Neuroscience</h3>
+              <h3 className="text-purple-300 font-semibold text-lg mb-2">Ph.D. Student in Cognition & Cognitive Neuroscience</h3>
               <p className="text-gray-300 mb-2">Texas Tech University • Current</p>
               <p className="text-gray-400 text-sm">
                 Dr. Marshall's Integrated Cognitive Studies (ICS) Lab
@@ -66,6 +66,17 @@ export const CVPage: React.FC = () => {
                 <li>Investigating cognitive effort allocation and facial emotion recognition</li>
                 <li>Developing experimental paradigms for consciousness research</li>
                 <li>Applying computational models to cognitive phenomena</li>
+              </ul>
+            </div>
+            
+            <div className="bg-black/30 rounded-lg p-6">
+              <h3 className="text-cyan-300 font-semibold text-lg mb-2">Director of R&D</h3>
+              <p className="text-gray-300 mb-2">Zeta Biolongevity</p>
+              <p className="text-gray-400 text-sm mb-3">2018-2019</p>
+              <ul className="text-gray-300 space-y-1 text-sm list-disc list-inside">
+                <li>Developed bioelectric field theory of chronic disease</li>
+                <li>Led R&D initiatives for biotech applications of bioelectric fields</li>
+                <li>Conducted research on bioelectric field applications in healthcare</li>
               </ul>
             </div>
           </div>
