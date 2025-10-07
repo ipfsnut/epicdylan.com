@@ -80,18 +80,49 @@ export const CVPage: React.FC = () => {
           <div className="space-y-4">
             <div className="bg-black/30 rounded-lg p-6">
               <h3 className="text-green-300 font-semibold text-lg mb-2">Books</h3>
-              <div className="space-y-3">
+              <div className="space-y-4">
                 <div>
                   <p className="text-gray-300 font-medium">
                     INEVITABLE: Distributed Cognition & Network Superintelligence
                   </p>
-                  <p className="text-gray-400 text-sm">2024 • Available on Amazon and Alexandria Books</p>
+                  <p className="text-gray-400 text-sm mb-2">
+                    Whitney Morgan Media • 2024 • ISBN: 9781962668088 (Alexandria), 1962668096 (Amazon)
+                  </p>
+                  <div className="flex gap-2">
+                    <a 
+                      href="https://www.alexandriabooks.com/collection/inevitable" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-green-400 hover:text-green-300 text-sm transition-colors"
+                    >
+                      Alexandria Books
+                    </a>
+                    <span className="text-gray-500">•</span>
+                    <a 
+                      href="https://www.amazon.com/Inevitable-Distributed-Cognition-Network-Superintelligence/dp/1962668096" 
+                      target="_blank" 
+                      rel="noopener noreferrer"
+                      className="text-green-400 hover:text-green-300 text-sm transition-colors"
+                    >
+                      Amazon
+                    </a>
+                  </div>
                 </div>
                 <div>
                   <p className="text-gray-300 font-medium">
                     Formal Dialectics
                   </p>
-                  <p className="text-gray-400 text-sm">Available on Amazon</p>
+                  <p className="text-gray-400 text-sm mb-2">
+                    Cambridge Scholars Publishing • 2018 • ISBN: 1527515753 • 212 pages
+                  </p>
+                  <a 
+                    href="https://www.amazon.com/Formal-Dialectics-Thomas-Dylan-Daniel/dp/1527515753/ref=sr_1_2?crid=8THHQYI2YNUF&dib=eyJ2IjoiMSJ9.aCiKogAMu-hkLwkNf4UiCampCekdmk7sTd6Qa645HDcGfQ-Ed5swOPU4l8htJ0LvxTU4eXau47kE6m4gHmO7xpijbwYBMJiKtSHcQedJAjw1N0YLeApcJk7Vr7T3-x9tf43SRBvb663hj98Yu80RDhLnfyxdJa-w9QkH1W6YrjWIafs9ATk8jNP7uOo7QCsxuXOF3Ut8nMFExmhbI9kM85Rd-YyWu3zNGlu36srPWKs.6HZ5vW5YZeZDduUYCebijnCJ8MiV1dTBRihvcw8l4ew&dib_tag=se&keywords=formal+dialectics&qid=1759793018&sprefix=formal+dialectics%2Caps%2C127&sr=8-2" 
+                    target="_blank" 
+                    rel="noopener noreferrer"
+                    className="text-green-400 hover:text-green-300 text-sm transition-colors"
+                  >
+                    Amazon
+                  </a>
                 </div>
               </div>
             </div>
