@@ -1,5 +1,6 @@
 import React from 'react';
-import { ExternalLink, PenTool } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { ArrowRight, PenTool } from 'lucide-react';
 
 export const BlogSection: React.FC = () => {
   return (
@@ -23,15 +24,13 @@ export const BlogSection: React.FC = () => {
           </div>
         </div>
         
-        <a
-          href="https://paragraph.com/@epicdylan.eth"
-          target="_blank"
-          rel="noopener noreferrer"
+        <Link
+          to="/blog"
           className="inline-flex items-center gap-2 bg-cyan-500/20 hover:bg-cyan-500/30 text-cyan-300 hover:text-cyan-200 px-4 py-2 rounded-lg transition-all duration-300 border border-cyan-500/30 hover:border-cyan-500/50"
         >
           Read Blog Posts
-          <ExternalLink className="w-4 h-4" />
-        </a>
+          <ArrowRight className="w-4 h-4" />
+        </Link>
       </div>
     </div>
   );

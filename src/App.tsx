@@ -4,6 +4,7 @@ import { AppProvider } from './context/AppContext';
 import { Navigation } from './components/Navigation';
 import { HomePage } from './pages/HomePage';
 import { BooksPage } from './pages/BooksPage';
+import { BlogPage } from './pages/BlogPage';
 import { ConsciousnessPage } from './pages/ConsciousnessPage';
 import { Web3Page } from './pages/Web3Page';
 import { CVPage } from './pages/CVPage';
@@ -19,6 +20,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/books" element={<BooksPage />} />
+            <Route path="/blog" element={<BlogPage />} />
             <Route path="/research" element={<ConsciousnessPage />} />
             <Route path="/web3" element={<Web3Page />} />
             <Route path="/cv" element={<CVPage />} />
