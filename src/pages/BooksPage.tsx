@@ -18,7 +18,7 @@ export const BooksPage: React.FC = () => {
             <div className="w-24 sm:w-32 flex-shrink-0 rounded-lg overflow-hidden aspect-[2/3]">
               <img 
                 src="/INEVITABLEcover.png" 
-                alt="Inevitable: Distributed Cognition and the Network of Superintelligence book cover"
+                alt="Inevitable: Distributed Cognition and Network Superintelligence book cover"
                 className="w-full h-full object-cover"
               />
             </div>
