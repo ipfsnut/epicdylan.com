@@ -37,7 +37,7 @@ export const CognitiveEffortPage: React.FC<CognitiveEffortPageProps> = ({ setCur
           </p>
           <p className="text-gray-300">
             The study aims to identify distinct patterns in emotional expression that differentiate between physical 
-            exertion and mental strain, providing insights into how consciousness mediates our experience of effort.
+            exertion and mental strain.
           </p>
         </div>
 
@@ -50,15 +50,15 @@ export const CognitiveEffortPage: React.FC<CognitiveEffortPageProps> = ({ setCur
           <p className="text-gray-300">
             Currently recruiting participants and collecting behavioral data. We're using advanced facial recognition 
             technology to capture micro-expressions during both physical tasks (exercise) and cognitive tasks 
-            (problem-solving) to build a comprehensive dataset.
+            (problem-solving) to understand effort.
           </p>
         </div>
 
         <div className="bg-gradient-to-r from-indigo-600/20 to-pink-600/20 backdrop-blur-lg rounded-xl p-8 border border-white/20">
           <h2 className="text-2xl font-bold text-white mb-4">Methodology</h2>
           <ul className="text-gray-300 space-y-3 list-disc list-inside">
-            <li>Participants complete standardized physical effort tasks (grip strength, cycling)</li>
-            <li>Participants complete cognitive effort tasks (working memory, mental arithmetic)</li>
+            <li>Participants complete standardized physical effort tasks (hand-grip dynamometer)</li>
+            <li>Participants complete cognitive effort tasks (Number Switching Task)</li>
             <li>High-resolution facial expression data captured throughout both conditions</li>
             <li>Self-reported effort ratings collected after each task</li>
             <li>Analysis using machine learning to identify expression patterns unique to each effort type</li>
@@ -83,17 +83,7 @@ export const CognitiveEffortPage: React.FC<CognitiveEffortPageProps> = ({ setCur
           </div>
         </div>
 
-        <div className="bg-gradient-to-r from-orange-600/20 to-red-600/20 backdrop-blur-lg rounded-xl p-8 border border-white/20">
-          <h2 className="text-2xl font-bold text-white mb-4">Get Involved</h2>
-          <p className="text-gray-300 mb-4">
-            We're currently recruiting participants for this study. If you're interested in contributing to our 
-            understanding of cognitive effort and consciousness, please reach out.
-          </p>
-          <p className="text-gray-300">
-            Participation involves approximately 2 hours of tasks and provides valuable data for advancing our 
-            understanding of how the brain processes different types of effort.
-          </p>
-        </div>
+        
       </div>
     </div>
   );
