@@ -5,6 +5,7 @@ import { Navigation } from './components/Navigation';
 import { HomePage } from './pages/HomePage';
 import { BooksPage } from './pages/BooksPage';
 import { ConsciousnessPage } from './pages/ConsciousnessPage';
+import { Web3Page } from './pages/Web3Page';
 import { CVPage } from './pages/CVPage';
 import { CognitiveEffortPage } from './experiment-pages/CognitiveEffortPage';
 
@@ -19,6 +20,7 @@ const App: React.FC = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/books" element={<BooksPage />} />
             <Route path="/research" element={<ConsciousnessPage />} />
+            <Route path="/web3" element={<Web3Page />} />
             <Route path="/cv" element={<CVPage />} />
             <Route path="/experiments/cognitive-effort" element={<CognitiveEffortPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
