@@ -137,11 +137,41 @@ export const CVPage: React.FC = () => {
                   <p className="text-gray-300 font-medium">
                     Philosophy Now Magazine Contributions
                   </p>
-                  <ul className="text-gray-400 text-sm mt-2 space-y-1">
-                    <li>• Biography of Pierre Hadot</li>
-                    <li>• Biography of Hermann von Helmholtz</li>
-                    <li>• Article on Camus during COVID-19 pandemic</li>
-                  </ul>
+                  <div className="text-gray-400 text-sm mt-2 space-y-2">
+                    <div>
+                      • Biography of Pierre Hadot • 
+                      <a 
+                        href="https://philosophynow.org/issues/113/Pierre_Hadot_1922-2010" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-green-400 hover:text-green-300 ml-1 transition-colors"
+                      >
+                        View Article
+                      </a>
+                    </div>
+                    <div>
+                      • Biography of Hermann von Helmholtz • 
+                      <a 
+                        href="https://philosophynow.org/issues/129/Hermann_von_Helmholtz_1821-1894" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-green-400 hover:text-green-300 ml-1 transition-colors"
+                      >
+                        View Article
+                      </a>
+                    </div>
+                    <div>
+                      • Article on Camus during COVID-19 pandemic • 
+                      <a 
+                        href="https://philosophynow.org/issues/138/The_Plague_and_The_Plague" 
+                        target="_blank" 
+                        rel="noopener noreferrer"
+                        className="text-green-400 hover:text-green-300 ml-1 transition-colors"
+                      >
+                        View Article
+                      </a>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
