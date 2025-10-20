@@ -79,6 +79,40 @@ export const Web3Page: React.FC = () => {
           </h2>
           <div className="space-y-6">
             <div className="bg-black/30 rounded-lg p-6">
+              <h3 className="text-cyan-300 font-semibold text-lg mb-2">ABC DAO</h3>
+              <p className="text-gray-300 mb-4">
+                Always Be Coding • Revolutionary developer incentive platform where every commit earns cryptocurrency
+              </p>
+              <div className="flex gap-3 flex-wrap">
+                <Link 
+                  to="/web3/abc-dao"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-green-600 hover:bg-green-700 text-white rounded-lg transition-colors"
+                >
+                  View Project Details
+                  <ExternalLink className="w-4 h-4" />
+                </Link>
+                <a 
+                  href="https://abc.epicdylan.com" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-lg transition-colors"
+                >
+                  Launch App
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+                <a 
+                  href="https://farcaster.xyz/miniapps/S1edg9PycxZP/abcdao" 
+                  target="_blank" 
+                  rel="noopener noreferrer"
+                  className="inline-flex items-center gap-2 px-4 py-2 bg-purple-600 hover:bg-purple-700 text-white rounded-lg transition-colors"
+                >
+                  Farcaster Mini-App
+                  <ExternalLink className="w-4 h-4" />
+                </a>
+              </div>
+            </div>
+            
+            <div className="bg-black/30 rounded-lg p-6">
               <h3 className="text-cyan-300 font-semibold text-lg mb-2">Readme Books</h3>
               <p className="text-gray-300 mb-4">
                 NFT book collection and marketplace platform • In continuous service since December 25, 2021
