@@ -258,7 +258,7 @@ git push origin main
             </li>
             <li className="flex items-start gap-2">
               <Shield className="w-5 h-5 text-green-400 mt-0.5 flex-shrink-0" />
-              <span><strong>Secure & Audited:</strong> Smart contracts built with security best practices</span>
+              <span><strong>Security First:</strong> Smart contracts built with security best practices</span>
             </li>
           </ul>
         </section>
