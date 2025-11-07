@@ -12,6 +12,7 @@ export const Navigation: React.FC = () => {
     { path: '/books', label: 'Books' },
     { path: '/blog', label: 'Blog' },
     { path: '/research', label: 'Research' },
+    { path: '/fitness', label: 'Fitness' },
     { path: '/web3', label: 'Web3' },
     { path: '/cv', label: 'CV' }
   ];

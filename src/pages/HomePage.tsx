@@ -3,6 +3,7 @@ import { Hero } from '../components/Hero';
 import { ResearchSection } from '../components/ResearchSection';
 import { BlogSection } from '../components/BlogSection';
 import { SoftwareSection } from '../components/SoftwareSection';
+import { HealthResearchSection } from '../components/HealthResearchSection';
 import { QuickLinks } from '../components/QuickLinks';
 
 export const HomePage: React.FC = () => {
@@ -12,6 +13,7 @@ export const HomePage: React.FC = () => {
       <ResearchSection />
       <BlogSection />
       <SoftwareSection />
+      <HealthResearchSection />
       <QuickLinks />
     </div>
   );
