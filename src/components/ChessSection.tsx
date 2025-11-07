@@ -257,8 +257,8 @@ export const ChessSection: React.FC<ChessSectionProps> = ({
 
         {showViewMoreButton && (
           <div className="mt-6 text-center">
-            <div className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors">
-              <span className="text-sm font-medium">View my chess philosophy & more stats</span>
+            <div className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors cursor-pointer">
+              <span className="text-sm font-medium">Click anywhere to view my chess philosophy & more stats</span>
               <ArrowRight className="w-4 h-4" />
             </div>
           </div>
