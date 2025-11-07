@@ -1,9 +1,17 @@
 import React, { useState, useEffect } from 'react';
-import { Trophy, Target, Zap, Users, ExternalLink, Swords } from 'lucide-react';
+import { Trophy, Target, Zap, Users, ExternalLink, Swords, ArrowRight } from 'lucide-react';
 import { ApiService } from '../services/api';
 import { ChessPlayerStats } from '../types';
 
-export const ChessSection: React.FC = () => {
+interface ChessSectionProps {
+  onClick?: () => void;
+  showViewMoreButton?: boolean;
+}
+
+export const ChessSection: React.FC<ChessSectionProps> = ({ 
+  onClick, 
+  showViewMoreButton = false 
+}) => {
   const [chessStats, setChessStats] = useState<ChessPlayerStats | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
@@ -64,7 +72,12 @@ export const ChessSection: React.FC = () => {
 
   return (
     <div className="mb-16">
-      <div className="bg-gradient-to-br from-amber-900/20 to-yellow-900/20 rounded-xl p-8 border border-amber-500/20">
+      <div 
+        className={`bg-gradient-to-br from-amber-900/20 to-yellow-900/20 rounded-xl p-8 border border-amber-500/20 ${
+          onClick ? 'cursor-pointer hover:from-amber-900/30 hover:to-yellow-900/30 hover:border-amber-500/30 transition-all duration-300' : ''
+        }`}
+        onClick={onClick}
+      >
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-3">
             <Trophy className="w-8 h-8 text-amber-400" />
@@ -241,6 +254,15 @@ export const ChessSection: React.FC = () => {
         <div className="mt-4 text-center text-gray-400 text-sm">
           Stats update daily via Chess.com API • Challenge me for a game!
         </div>
+
+        {showViewMoreButton && (
+          <div className="mt-6 text-center">
+            <div className="inline-flex items-center gap-2 text-amber-400 hover:text-amber-300 transition-colors">
+              <span className="text-sm font-medium">View my chess philosophy & more stats</span>
+              <ArrowRight className="w-4 h-4" />
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
