@@ -54,7 +54,12 @@ export const BlogPage: React.FC = () => {
             link: item.querySelector('link')?.textContent || '',
             description: item.querySelector('description')?.textContent || '',
             pubDate: item.querySelector('pubDate')?.textContent || '',
-            author: item.querySelector('author')?.textContent || 'epicdylan.eth'
+            author: (() => {
+            const authorText = item.querySelector('author')?.textContent || 'epicdylan';
+            // Extract just the name in parentheses if it exists
+            const match = authorText.match(/\(([^)]+)\)/);
+            return match ? match[1] : 'epicdylan';
+          })()
           }));
           
           setPosts(parsedPosts);
