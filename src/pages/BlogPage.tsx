@@ -17,32 +17,57 @@ export const BlogPage: React.FC = () => {
 
   useEffect(() => {
     const fetchRSSFeed = async () => {
-      try {
-        // Using a CORS proxy to fetch the RSS feed
-        const proxyUrl = 'https://api.allorigins.win/get?url=';
-        const rssUrl = 'https://api.paragraph.com/blogs/rss/%40epicdylan.eth';
-        
-        const response = await fetch(proxyUrl + encodeURIComponent(rssUrl));
-        const data = await response.json();
-        
-        // Parse the RSS XML
-        const parser = new DOMParser();
-        const xmlDoc = parser.parseFromString(data.contents, 'text/xml');
-        
-        const items = xmlDoc.querySelectorAll('item');
-        const parsedPosts: BlogPost[] = Array.from(items).map(item => ({
-          title: item.querySelector('title')?.textContent || '',
-          link: item.querySelector('link')?.textContent || '',
-          description: item.querySelector('description')?.textContent || '',
-          pubDate: item.querySelector('pubDate')?.textContent || '',
-          author: item.querySelector('author')?.textContent || 'epicdylan.eth'
-        }));
-        
-        setPosts(parsedPosts);
-        setLoading(false);
-      } catch (err) {
-        setError('Failed to load blog posts');
-        setLoading(false);
+      const rssUrl = 'https://api.paragraph.com/blogs/rss/%40epicdylan.eth';
+      
+      // Try multiple CORS proxy services
+      const proxies = [
+        'https://api.allorigins.win/get?url=',
+        'https://cors-anywhere.herokuapp.com/',
+        'https://thingproxy.freeboard.io/fetch/'
+      ];
+      
+      for (let i = 0; i < proxies.length; i++) {
+        try {
+          let response;
+          let data;
+          
+          if (proxies[i].includes('allorigins')) {
+            response = await fetch(proxies[i] + encodeURIComponent(rssUrl));
+            const jsonData = await response.json();
+            data = jsonData.contents;
+          } else {
+            response = await fetch(proxies[i] + rssUrl);
+            data = await response.text();
+          }
+          
+          // Parse the RSS XML
+          const parser = new DOMParser();
+          const xmlDoc = parser.parseFromString(data, 'text/xml');
+          
+          const items = xmlDoc.querySelectorAll('item');
+          if (items.length === 0) {
+            throw new Error('No items found in RSS feed');
+          }
+          
+          const parsedPosts: BlogPost[] = Array.from(items).map(item => ({
+            title: item.querySelector('title')?.textContent || '',
+            link: item.querySelector('link')?.textContent || '',
+            description: item.querySelector('description')?.textContent || '',
+            pubDate: item.querySelector('pubDate')?.textContent || '',
+            author: item.querySelector('author')?.textContent || 'epicdylan.eth'
+          }));
+          
+          setPosts(parsedPosts);
+          setLoading(false);
+          return; // Success, exit the loop
+        } catch (err) {
+          console.log(`Proxy ${i + 1} failed:`, err);
+          if (i === proxies.length - 1) {
+            // All proxies failed
+            setError('Failed to load blog posts. Please visit the blog directly on Paragraph.');
+            setLoading(false);
+          }
+        }
       }
     };
 
