@@ -10,6 +10,7 @@ import { Web3Page } from './pages/Web3Page';
 import { ABCDAOPage } from './pages/ABCDAOPage';
 import { CVPage } from './pages/CVPage';
 import { FitnessPage } from './pages/FitnessPage';
+import { ChessPage } from './pages/ChessPage';
 import { CognitiveEffortPage } from './experiment-pages/CognitiveEffortPage';
 
 const App: React.FC = () => {
@@ -28,6 +29,7 @@ const App: React.FC = () => {
             <Route path="/web3/abc-dao" element={<ABCDAOPage />} />
             <Route path="/cv" element={<CVPage />} />
             <Route path="/fitness" element={<FitnessPage />} />
+            <Route path="/chess" element={<ChessPage />} />
             <Route path="/experiments/cognitive-effort" element={<CognitiveEffortPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>

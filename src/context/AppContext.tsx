@@ -23,6 +23,7 @@ const initialState: AppState = {
   githubData: null,
   repos: [],
   farcasterData: null,
+  chessData: null,
   loading: true,
   errors: {}
 };

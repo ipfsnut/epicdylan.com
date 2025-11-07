@@ -37,15 +37,49 @@ export interface FarcasterUser {
   following_count: number;
 }
 
+export interface ChessStats {
+  last: {
+    rating: number;
+    date: number;
+  };
+  best: {
+    rating: number;
+    date: number;
+  };
+  record: {
+    win: number;
+    loss: number;
+    draw: number;
+  };
+}
+
+export interface ChessPlayerStats {
+  chess_rapid?: ChessStats;
+  chess_bullet?: ChessStats;
+  chess_blitz?: ChessStats;
+  tactics?: {
+    highest: {
+      rating: number;
+      date: number;
+    };
+    lowest: {
+      rating: number;
+      date: number;
+    };
+  };
+}
+
 export interface ApiError {
   github?: string;
   farcaster?: string;
+  chess?: string;
 }
 
 export interface AppState {
   githubData: GitHubUser | null;
   repos: GitHubRepo[];
   farcasterData: FarcasterUser | null;
+  chessData: ChessPlayerStats | null;
   loading: boolean;
   errors: ApiError;
 }

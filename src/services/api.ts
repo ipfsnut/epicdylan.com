@@ -1,7 +1,8 @@
-import { GitHubUser, GitHubRepo, FarcasterUser } from '../types';
+import { GitHubUser, GitHubRepo, FarcasterUser, ChessPlayerStats } from '../types';
 
 const GITHUB_USERNAME = 'ipfsnut';
 const FARCASTER_USERNAME = 'epicdylan';
+const CHESS_USERNAME = 'ipfsnut';
 
 export class ApiService {
   static async fetchGitHubUser(): Promise<GitHubUser> {
@@ -37,5 +38,13 @@ export class ApiService {
     }
     const data = await response.json();
     return data.user;
+  }
+
+  static async fetchChessStats(): Promise<ChessPlayerStats> {
+    const response = await fetch(`https://api.chess.com/pub/player/${CHESS_USERNAME}/stats`);
+    if (!response.ok) {
+      throw new Error('Failed to fetch Chess.com stats');
+    }
+    return response.json();
   }
 }
