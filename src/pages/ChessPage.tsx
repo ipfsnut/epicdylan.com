@@ -101,10 +101,8 @@ export const ChessPage: React.FC = () => {
         <div className="bg-gradient-to-br from-slate-800/20 to-gray-900/20 rounded-xl p-8 border border-gray-500/20">
           <div className="prose prose-invert max-w-none">
             <p className="text-gray-300 leading-relaxed mb-6">
-              I approach chess with the same systematic mindset I bring to research. I'm constantly 
-              experimenting with different openings, studying tactical patterns, and analyzing my games 
-              to identify improvement areas. The parallels between chess improvement and scientific 
-              methodology are striking—hypothesis formation, controlled experimentation, and iterative refinement.
+              I approach chess with the same systematic mindset I bring to research. The parallels between chess improvement and scientific 
+              methodology are striking—hypothesis formation, controlled experimentation, and iterative refinement. My favorite thing to do is play a bunch of Bullet games.
             </p>
             
             <p className="text-gray-300 leading-relaxed mb-6">
@@ -116,7 +114,7 @@ export const ChessPage: React.FC = () => {
 
             <p className="text-gray-300 leading-relaxed">
               Chess also serves as an excellent break from academic work. When I'm debugging code 
-              or wrestling with complex theoretical problems, a few games of blitz provide the perfect 
+              or wrestling with complex theoretical problems, a few games of bullet provide the perfect 
               mental reset. It's focused enough to be engaging but different enough to give other 
               cognitive systems a rest.
             </p>
