@@ -1,10 +1,19 @@
 import React from 'react';
-import { Heart, Brain, Target, Users, Zap, Crown, Swords, ExternalLink } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Heart, Brain, Target, Users, Zap, Crown, Swords, ExternalLink, ArrowLeft } from 'lucide-react';
 import { ChessSection } from '../components/ChessSection';
 
 export const ChessPage: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto px-6 py-16">
+      <Link
+        to="/"
+        className="flex items-center gap-2 text-purple-400 hover:text-purple-300 mb-8 transition-colors"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Back to Home
+      </Link>
+
       <div className="mb-16">
         <div className="flex items-center gap-4 mb-6">
           <Crown className="w-12 h-12 text-amber-400" />

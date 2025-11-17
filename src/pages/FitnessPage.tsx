@@ -1,9 +1,18 @@
 import React from 'react';
-import { Dumbbell, Calendar, Target, Activity, Zap, Heart, AlertTriangle, CheckCircle } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Dumbbell, Calendar, Target, Activity, Zap, Heart, AlertTriangle, CheckCircle, ArrowLeft } from 'lucide-react';
 
 export const FitnessPage: React.FC = () => {
   return (
     <div className="max-w-6xl mx-auto px-6 py-16">
+      <Link
+        to="/"
+        className="flex items-center gap-2 text-purple-400 hover:text-purple-300 mb-8 transition-colors"
+      >
+        <ArrowLeft className="w-4 h-4" />
+        Back to Home
+      </Link>
+
       <div className="mb-16">
         <div className="flex items-center gap-4 mb-6">
           <Dumbbell className="w-12 h-12 text-cyan-400" />
