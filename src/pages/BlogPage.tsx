@@ -19,30 +19,75 @@ export const BlogPage: React.FC = () => {
     const fetchRSSFeed = async () => {
       const rssUrl = 'https://api.paragraph.com/blogs/rss/%40epicdylan.eth';
       
-      // Try multiple CORS proxy services
+      // Try multiple working CORS proxy services
       const proxies = [
-        'https://api.allorigins.win/get?url=',
-        'https://cors-anywhere.herokuapp.com/',
-        'https://thingproxy.freeboard.io/fetch/'
+        {
+          url: 'https://api.allorigins.win/get?url=',
+          name: 'AllOrigins',
+          format: 'json'
+        },
+        {
+          url: 'https://corsproxy.io/?',
+          name: 'CorsProxy.io',
+          format: 'text'
+        },
+        {
+          url: 'https://api.codetabs.com/v1/proxy?quest=',
+          name: 'CodeTabs',
+          format: 'text'
+        }
       ];
       
       for (let i = 0; i < proxies.length; i++) {
+        const proxy = proxies[i];
         try {
+          console.log(`Trying ${proxy.name}...`);
+          
           let response;
           let data;
           
-          if (proxies[i].includes('allorigins')) {
-            response = await fetch(proxies[i] + encodeURIComponent(rssUrl));
+          if (proxy.format === 'json') {
+            response = await fetch(proxy.url + encodeURIComponent(rssUrl), {
+              method: 'GET',
+              headers: {
+                'Accept': 'application/json',
+              }
+            });
+            
+            if (!response.ok) {
+              throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
             const jsonData = await response.json();
             data = jsonData.contents;
+            
+            if (!data) {
+              throw new Error('No contents in response');
+            }
           } else {
-            response = await fetch(proxies[i] + rssUrl);
+            response = await fetch(proxy.url + encodeURIComponent(rssUrl), {
+              method: 'GET',
+              headers: {
+                'Accept': 'text/plain',
+              }
+            });
+            
+            if (!response.ok) {
+              throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+            }
+            
             data = await response.text();
           }
           
           // Parse the RSS XML
           const parser = new DOMParser();
           const xmlDoc = parser.parseFromString(data, 'text/xml');
+          
+          // Check for XML parsing errors
+          const parserError = xmlDoc.querySelector('parsererror');
+          if (parserError) {
+            throw new Error('Invalid XML format received');
+          }
           
           const items = xmlDoc.querySelectorAll('item');
           if (items.length === 0) {
@@ -62,14 +107,17 @@ export const BlogPage: React.FC = () => {
           })()
           }));
           
+          console.log(`Successfully loaded ${parsedPosts.length} posts via ${proxy.name}`);
           setPosts(parsedPosts);
           setLoading(false);
           return; // Success, exit the loop
         } catch (err) {
-          console.log(`Proxy ${i + 1} failed:`, err);
+          const errorMessage = err instanceof Error ? err.message : 'Unknown error';
+          console.error(`${proxy.name} failed:`, errorMessage);
+          
           if (i === proxies.length - 1) {
             // All proxies failed
-            setError('Failed to load blog posts. Please visit the blog directly on Paragraph.');
+            setError('Failed to load blog posts from RSS feed. Please visit the blog directly on Paragraph.');
             setLoading(false);
           }
         }
