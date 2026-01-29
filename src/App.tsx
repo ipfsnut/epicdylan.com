@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useCallback } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import { Navigation } from './components/Navigation';
 import { ParticleField } from './components/ParticleField';
@@ -14,6 +14,7 @@ import { CVPage } from './pages/CVPage';
 import { FitnessPage } from './pages/FitnessPage';
 import { ChessPage } from './pages/ChessPage';
 import { CognitiveEffortPage } from './experiment-pages/CognitiveEffortPage';
+import { BuiltWithPage } from './pages/BuiltWithPage';
 import { useKonamiCode } from './hooks/useKonamiCode';
 
 const CursorGlow: React.FC = () => {
@@ -87,12 +88,18 @@ const App: React.FC = () => {
             <Route path="/fitness" element={<FitnessPage />} />
             <Route path="/chess" element={<ChessPage />} />
             <Route path="/experiments/cognitive-effort" element={<CognitiveEffortPage />} />
+            <Route path="/built-with" element={<BuiltWithPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
           
           <footer className="max-w-6xl mx-auto px-6 py-8 border-t border-white/10">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <p className="text-gray-400 text-sm">Built with React • Real data from GitHub API</p>
+              <Link
+                to="/built-with"
+                className="text-gray-400 hover:text-purple-400 text-sm underline underline-offset-2 transition-colors"
+              >
+                built with ❤
+              </Link>
               <a
                 href="https://basescan.org/token/0x31711525456d3fdf8eccd99fefb02b65d7575cde"
                 target="_blank"
