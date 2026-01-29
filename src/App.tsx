@@ -9,7 +9,6 @@ import { BooksPage } from './pages/BooksPage';
 import { BlogPage } from './pages/BlogPage';
 import { ConsciousnessPage } from './pages/ConsciousnessPage';
 import { Web3Page } from './pages/Web3Page';
-import { ABCDAOPage } from './pages/ABCDAOPage';
 import { CVPage } from './pages/CVPage';
 import { FitnessPage } from './pages/FitnessPage';
 import { ChessPage } from './pages/ChessPage';
@@ -80,10 +79,8 @@ const App: React.FC = () => {
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/research" element={<ConsciousnessPage />} />
             <Route path="/projects" element={<Web3Page />} />
-            <Route path="/projects/abc-dao" element={<ABCDAOPage />} />
             {/* Legacy redirects */}
             <Route path="/web3" element={<Web3Page />} />
-            <Route path="/web3/abc-dao" element={<ABCDAOPage />} />
             <Route path="/cv" element={<CVPage />} />
             <Route path="/fitness" element={<FitnessPage />} />
             <Route path="/chess" element={<ChessPage />} />

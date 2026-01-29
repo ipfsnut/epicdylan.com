@@ -117,23 +117,16 @@ export const Web3Page: React.FC = () => {
                 <span className="text-cyan-300 font-medium">Founder</span> • Green Hat Free Open Source Software Collective
               </p>
               <p className="text-gray-300 mb-3">
-                Always Be Coding - A developer incentive platform where every commit earns cryptocurrency. Stake $ABC, link your GitHub, and get rewarded for building in public.
+                Always Be Coding - A free open source software collective building tools and supporting developers in the Farcaster ecosystem.
               </p>
               <div className="flex gap-3 flex-wrap">
-                <Link
-                  to="/projects/abc-dao"
-                  className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
-                >
-                  View Details
-                  <ExternalLink className="w-4 h-4" />
-                </Link>
                 <a
                   href="https://abc.epicdylan.com"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="inline-flex items-center gap-2 text-purple-400 hover:text-purple-300 transition-colors"
                 >
-                  Launch App
+                  Visit ABC DAO
                   <ExternalLink className="w-4 h-4" />
                 </a>
                 <a

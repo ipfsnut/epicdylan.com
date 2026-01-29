@@ -60,7 +60,7 @@ export const LabsSection: React.FC = () => {
         <ProjectCard
           title="ABC DAO"
           tagline="Always. Be. Coding."
-          description="Green Hat Free Open Source Software Collective. Stake $ABC, link your GitHub, and earn crypto for every commit."
+          description="Green Hat Free Open Source Software Collective. Building open source tools and supporting developers in the Farcaster ecosystem."
           url="https://abc.epicdylan.com"
           icon={<FarcasterAvatar username="abc-dao-dev" size="sm" showLink={false} />}
           gradient="from-green-900/40 to-emerald-900/40"
