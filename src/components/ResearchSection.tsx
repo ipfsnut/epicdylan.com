@@ -6,10 +6,13 @@ export const ResearchSection: React.FC = () => {
   const navigate = useNavigate();
   return (
     <div className="mb-16">
-      <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
-        <Brain className="w-8 h-8 text-purple-400" />
-        Consciousness Research
-      </h2>
+      <div className="flex items-center gap-4 mb-6">
+        <span className="section-number">01 //</span>
+        <h2 className="text-3xl font-bold text-white flex items-center gap-3 glitch-hover" data-text="Consciousness Research">
+          <Brain className="w-8 h-8 text-purple-400" />
+          Consciousness Research
+        </h2>
+      </div>
       <div 
         className="bg-gradient-to-r from-purple-600/20 to-indigo-600/20 backdrop-blur-lg rounded-xl p-8 border border-white/20 mb-6 cursor-pointer hover:from-purple-600/30 hover:to-indigo-600/30 transition-all duration-300 hover:border-white/30"
         onClick={() => navigate('/research')}

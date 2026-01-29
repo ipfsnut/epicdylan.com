@@ -5,9 +5,12 @@ export const HealthResearchSection: React.FC = () => {
   return (
     <div className="mb-16">
       <div className="bg-gradient-to-br from-red-900/20 via-pink-900/20 to-purple-900/20 rounded-xl p-8 border border-red-500/20">
-        <div className="flex items-center gap-3 mb-6">
-          <Heart className="w-8 h-8 text-red-400" />
-          <h2 className="text-3xl font-bold text-white">Health & Performance Research</h2>
+        <div className="flex items-center gap-4 mb-6">
+          <span className="section-number">05 //</span>
+          <h2 className="text-3xl font-bold text-white flex items-center gap-3 glitch-hover" data-text="Health & Performance Research">
+            <Heart className="w-8 h-8 text-red-400" />
+            Health & Performance Research
+          </h2>
         </div>
         
         <p className="text-gray-300 text-lg mb-6 leading-relaxed">

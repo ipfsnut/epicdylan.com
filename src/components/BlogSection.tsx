@@ -5,10 +5,13 @@ import { ArrowRight, PenTool } from 'lucide-react';
 export const BlogSection: React.FC = () => {
   return (
     <div className="mb-16">
-      <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
-        <PenTool className="w-8 h-8 text-cyan-400" />
-        Blog & Writing
-      </h2>
+      <div className="flex items-center gap-4 mb-6">
+        <span className="section-number">02 //</span>
+        <h2 className="text-3xl font-bold text-white flex items-center gap-3 glitch-hover" data-text="Blog & Writing">
+          <PenTool className="w-8 h-8 text-cyan-400" />
+          Blog & Writing
+        </h2>
+      </div>
       <div className="bg-gradient-to-r from-cyan-600/20 to-blue-600/20 backdrop-blur-lg rounded-xl p-8 border border-white/20">
         <div className="flex items-center justify-between mb-4">
           <div>

@@ -5,10 +5,13 @@ import { GitHubRepos } from './GitHubRepos';
 export const SoftwareSection: React.FC = () => {
   return (
     <div className="mb-16">
-      <h2 className="text-3xl font-bold text-white mb-6 flex items-center gap-3">
-        <Code className="w-8 h-8 text-green-400" />
-        Software Development
-      </h2>
+      <div className="flex items-center gap-4 mb-6">
+        <span className="section-number">03 //</span>
+        <h2 className="text-3xl font-bold text-white flex items-center gap-3 glitch-hover" data-text="Software Development">
+          <Code className="w-8 h-8 text-green-400" />
+          Software Development
+        </h2>
+      </div>
       <a 
         href="https://github.com/ipfsnut/evermark-beta"
         target="_blank"

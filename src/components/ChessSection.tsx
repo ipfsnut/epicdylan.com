@@ -79,9 +79,12 @@ export const ChessSection: React.FC<ChessSectionProps> = ({
         onClick={onClick}
       >
         <div className="flex items-center justify-between mb-6">
-          <div className="flex items-center gap-3">
-            <Trophy className="w-8 h-8 text-amber-400" />
-            <h2 className="text-3xl font-bold text-white">Chess Is Hard</h2>
+          <div className="flex items-center gap-4">
+            <span className="section-number">06 //</span>
+            <h2 className="text-3xl font-bold text-white flex items-center gap-3 glitch-hover" data-text="Chess Is Hard">
+              <Trophy className="w-8 h-8 text-amber-400" />
+              Chess Is Hard
+            </h2>
           </div>
           <div className="flex gap-3">
             <a

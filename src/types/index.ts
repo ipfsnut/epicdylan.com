@@ -27,12 +27,12 @@ export interface FarcasterUser {
   fid: number;
   username: string;
   display_name: string;
-  bio: {
-    text: string;
+  profile?: {
+    bio?: {
+      text: string;
+    };
   };
-  pfp: {
-    url: string;
-  };
+  pfp_url: string;
   follower_count: number;
   following_count: number;
 }

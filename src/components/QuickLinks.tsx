@@ -4,7 +4,14 @@ import { BookOpen, Brain, Code, FileText } from 'lucide-react';
 
 export const QuickLinks: React.FC = () => {
   return (
-    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div className="mb-16">
+      <div className="flex items-center gap-4 mb-6">
+        <span className="section-number">07 //</span>
+        <h2 className="text-3xl font-bold text-white glitch-hover" data-text="Quick Links">
+          Quick Links
+        </h2>
+      </div>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
       <Link
         to="/books"
         className="bg-white/10 backdrop-blur-lg rounded-xl p-6 border border-white/20 hover:border-purple-400 transition-all block"
@@ -42,6 +49,7 @@ export const QuickLinks: React.FC = () => {
         <h3 className="text-xl font-semibold text-white mb-2">Open Source</h3>
         <p className="text-gray-400">Check out my code and contributions</p>
       </a>
+      </div>
     </div>
   );
 };

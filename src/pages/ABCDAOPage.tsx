@@ -75,11 +75,11 @@ export const ABCDAOPage: React.FC = () => {
       {/* Back Button */}
       <div className="absolute top-6 left-6 z-10">
         <Link
-          to="/web3"
+          to="/projects"
           className="flex items-center gap-2 text-green-400 hover:text-green-300 transition-colors"
         >
           <ArrowLeft className="w-4 h-4" />
-          Back to Web3 Projects
+          Back to Projects
         </Link>
       </div>
 
