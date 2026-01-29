@@ -7,6 +7,14 @@ interface FarcasterAvatarProps {
   showLink?: boolean;
 }
 
+// Fallback logos for known projects (in case API fails or rate limits)
+const FALLBACK_LOGOS: Record<string, string> = {
+  'abc-dao-dev': 'https://abc.epicdylan.com/ABC_DAO_LOGO.png',
+  'arbme': 'https://arbme.epicdylan.com/arbie.png',
+  'pagedao': 'https://pagedao.org/logo.svg',
+  'pizzadao': 'https://cdn.prod.website-files.com/60651d01d383e4f482012c1d/6178ba2a48550201fd48936d_pizzadao-logo.svg',
+};
+
 export const FarcasterAvatar: React.FC<FarcasterAvatarProps> = ({
   username,
   size = 'md',
@@ -15,6 +23,7 @@ export const FarcasterAvatar: React.FC<FarcasterAvatarProps> = ({
 }) => {
   const [avatarUrl, setAvatarUrl] = useState<string | null>(null);
   const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(false);
 
   const sizeClasses = {
     sm: 'w-6 h-6',
@@ -36,10 +45,14 @@ export const FarcasterAvatar: React.FC<FarcasterAvatarProps> = ({
         );
         if (response.ok) {
           const data = await response.json();
-          setAvatarUrl(data.user?.pfp_url || null);
+          setAvatarUrl(data.user?.pfp_url || FALLBACK_LOGOS[username] || null);
+        } else {
+          // API failed, use fallback
+          setAvatarUrl(FALLBACK_LOGOS[username] || null);
         }
-      } catch (error) {
-        console.error(`Failed to fetch Farcaster avatar for @${username}:`, error);
+      } catch (err) {
+        console.error(`Failed to fetch Farcaster avatar for @${username}:`, err);
+        setAvatarUrl(FALLBACK_LOGOS[username] || null);
       } finally {
         setLoading(false);
       }
@@ -47,6 +60,15 @@ export const FarcasterAvatar: React.FC<FarcasterAvatarProps> = ({
 
     fetchAvatar();
   }, [username]);
+
+  // Handle image load errors
+  const handleImageError = () => {
+    if (FALLBACK_LOGOS[username] && avatarUrl !== FALLBACK_LOGOS[username]) {
+      setAvatarUrl(FALLBACK_LOGOS[username]);
+    } else {
+      setError(true);
+    }
+  };
 
   const warpcastUrl = `https://warpcast.com/${username}`;
 
@@ -56,11 +78,12 @@ export const FarcasterAvatar: React.FC<FarcasterAvatarProps> = ({
     );
   }
 
-  const image = avatarUrl ? (
+  const image = (avatarUrl && !error) ? (
     <img
       src={avatarUrl}
       alt={`@${username}`}
       className={`${sizeClasses[size]} rounded-full object-cover ${className}`}
+      onError={handleImageError}
     />
   ) : (
     <div className={`${sizeClasses[size]} rounded-full bg-purple-600 flex items-center justify-center text-white text-xs font-bold ${className}`}>
