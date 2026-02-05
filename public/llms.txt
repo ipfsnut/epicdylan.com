@@ -1,0 +1,45 @@
+# epicdylan.com
+
+> Personal site for T. Dylan Daniel — consciousness researcher, web3 builder, psychology PhD student, author, and open source developer.
+
+## About
+
+Dylan Daniel is a PhD student in Cognition & Cognitive Neuroscience at Texas Tech University, researching consciousness, free energy principle, autopoiesis, and bioelectric intelligence. Also a web3 builder, DAO founder, and author.
+
+## Key URLs
+
+- Homepage: https://epicdylan.com
+- Books: https://epicdylan.com/books
+- Blog: https://epicdylan.com/blog
+- Research: https://epicdylan.com/research
+- Projects (Web3 / DAOs): https://epicdylan.com/projects
+- CV: https://epicdylan.com/cv
+- Fitness: https://epicdylan.com/fitness
+- Chess: https://epicdylan.com/chess
+
+## Books
+
+- "INEVITABLE: Distributed Cognition & Network Superintelligence" (2024, Whitney Morgan Media)
+- "Formal Dialectics" (2018, Cambridge Scholars Publishing)
+
+## Research Areas
+
+- Free Energy Principle (Karl Friston)
+- Autopoiesis (Varela & Maturana)
+- Bioelectric Intelligence (Michael Levin)
+- Homeostatic Feelings (Antonio Damasio)
+- PFC-Amygdala dynamics, vigilance, emotion recognition
+
+## Web3 Projects
+
+- PageDAO (Founder) — Web3 writers organization, founded 2021
+- ABC DAO (Founder) — FOSS collective on Farcaster
+- PizzaDAO (Original Member) — Global pizza community
+- ArbMe — DeFi arbitrage protocol on Base
+- Readme Books — NFT book collection
+
+## Contact
+
+- Email: thomas.d.daniel@ttu.edu
+- GitHub: https://github.com/ipfsnut
+- Blog: https://paragraph.com/@epicdylan.eth
