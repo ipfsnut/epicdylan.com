@@ -18,18 +18,18 @@ export const ParticleField: React.FC = () => {
     resizeCanvas();
     window.addEventListener('resize', resizeCanvas);
 
-    // Particle system
+    // Particle system — warm teal accent
     const particles: { x: number; y: number; vx: number; vy: number; size: number; alpha: number }[] = [];
-    const particleCount = 50;
+    const particleCount = 30;
 
     for (let i = 0; i < particleCount; i++) {
       particles.push({
         x: Math.random() * canvas.width,
         y: Math.random() * canvas.height,
-        vx: (Math.random() - 0.5) * 0.3,
-        vy: (Math.random() - 0.5) * 0.3,
+        vx: (Math.random() - 0.5) * 0.2,
+        vy: (Math.random() - 0.5) * 0.2,
         size: Math.random() * 2 + 0.5,
-        alpha: Math.random() * 0.5 + 0.1
+        alpha: Math.random() * 0.3 + 0.05
       });
     }
 
@@ -48,7 +48,7 @@ export const ParticleField: React.FC = () => {
 
         ctx.beginPath();
         ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(168, 85, 247, ${p.alpha})`;
+        ctx.fillStyle = `rgba(14, 107, 94, ${p.alpha})`;
         ctx.fill();
       });
 

@@ -74,7 +74,7 @@ export const FarcasterAvatar: React.FC<FarcasterAvatarProps> = ({
 
   if (loading) {
     return (
-      <div className={`${sizeClasses[size]} rounded-full bg-purple-900/50 animate-pulse ${className}`} />
+      <div className={`${sizeClasses[size]} rounded-full bg-warm-accent/20 animate-pulse ${className}`} />
     );
   }
 
@@ -86,7 +86,7 @@ export const FarcasterAvatar: React.FC<FarcasterAvatarProps> = ({
       onError={handleImageError}
     />
   ) : (
-    <div className={`${sizeClasses[size]} rounded-full bg-purple-600 flex items-center justify-center text-white text-xs font-bold ${className}`}>
+    <div className={`${sizeClasses[size]} rounded-full bg-warm-accent flex items-center justify-center text-white text-xs font-bold ${className}`}>
       {username.charAt(0).toUpperCase()}
     </div>
   );

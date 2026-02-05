@@ -1,8 +1,7 @@
-import React, { useEffect, useState, useCallback } from 'react';
+import React, { useState, useCallback } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
 import { AppProvider } from './context/AppContext';
 import { Navigation } from './components/Navigation';
-import { ParticleField } from './components/ParticleField';
 import { LiveClock } from './components/LiveClock';
 import { HomePage } from './pages/HomePage';
 import { BooksPage } from './pages/BooksPage';
@@ -16,45 +15,11 @@ import { CognitiveEffortPage } from './experiment-pages/CognitiveEffortPage';
 import { BuiltWithPage } from './pages/BuiltWithPage';
 import { useKonamiCode } from './hooks/useKonamiCode';
 
-const CursorGlow: React.FC = () => {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [visible, setVisible] = useState(false);
-
-  useEffect(() => {
-    const handleMouseMove = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
-      setVisible(true);
-    };
-
-    const handleMouseLeave = () => setVisible(false);
-
-    window.addEventListener('mousemove', handleMouseMove);
-    document.body.addEventListener('mouseleave', handleMouseLeave);
-
-    return () => {
-      window.removeEventListener('mousemove', handleMouseMove);
-      document.body.removeEventListener('mouseleave', handleMouseLeave);
-    };
-  }, []);
-
-  return (
-    <div
-      className="cursor-glow"
-      style={{
-        left: position.x,
-        top: position.y,
-        opacity: visible ? 1 : 0
-      }}
-    />
-  );
-};
-
 const App: React.FC = () => {
   const [easterEggActive, setEasterEggActive] = useState(false);
 
   const handleKonami = useCallback(() => {
     setEasterEggActive(true);
-    // Play a fun sound or show a message
     console.log('🎮 Konami Code Activated! You found the secret!');
     setTimeout(() => setEasterEggActive(false), 2000);
   }, []);
@@ -64,15 +29,9 @@ const App: React.FC = () => {
   return (
     <AppProvider>
       <Router>
-        <div className={`min-h-screen bg-gradient-to-br from-slate-900 via-purple-900 to-slate-900 relative ${easterEggActive ? 'easter-egg-active' : ''}`}>
-          {/* Cipherpunk overlays */}
-          <ParticleField />
-          <CursorGlow />
-          <div className="scanlines"></div>
-          <div className="noise-overlay"></div>
-
+        <div className={`min-h-screen bg-warm-bg relative ${easterEggActive ? 'easter-egg-active' : ''}`}>
           <Navigation />
-          
+
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/books" element={<BooksPage />} />
@@ -88,12 +47,12 @@ const App: React.FC = () => {
             <Route path="/built-with" element={<BuiltWithPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
-          
-          <footer className="max-w-6xl mx-auto px-6 py-8 border-t border-white/10">
+
+          <footer className="max-w-6xl mx-auto px-6 py-8 border-t border-warm-border">
             <div className="flex flex-col md:flex-row items-center justify-between gap-4">
               <Link
                 to="/built-with"
-                className="text-gray-400 hover:text-purple-400 text-sm underline underline-offset-2 transition-colors"
+                className="text-warm-text-secondary hover:text-warm-accent text-sm underline underline-offset-2 transition-colors"
               >
                 built with ❤
               </Link>
@@ -101,7 +60,7 @@ const App: React.FC = () => {
                 href="https://basescan.org/token/0x31711525456d3fdf8eccd99fefb02b65d7575cde"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-purple-500 hover:text-purple-400 font-mono text-xs tracking-wider transition-colors"
+                className="text-warm-accent hover:text-warm-accent-hover font-mono text-xs tracking-wider transition-colors"
                 title="$EPICDYLAN.COM on Base"
               >
                 $EPICDYLAN.COM • 0x3171...5cde
@@ -114,9 +73,9 @@ const App: React.FC = () => {
 
           {/* Easter egg notification */}
           {easterEggActive && (
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-black/90 border border-green-500 rounded-lg p-8 text-center">
-              <p className="text-green-400 font-mono text-2xl mb-2">🎮 KONAMI CODE!</p>
-              <p className="text-gray-400 font-mono text-sm">You found the secret!</p>
+            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white border border-warm-accent rounded-lg p-8 text-center shadow-lg">
+              <p className="text-warm-accent font-mono text-2xl mb-2">🎮 KONAMI CODE!</p>
+              <p className="text-warm-text-secondary font-mono text-sm">You found the secret!</p>
             </div>
           )}
         </div>

@@ -6,6 +6,17 @@ module.exports = {
   ],
   theme: {
     extend: {
+      colors: {
+        warm: {
+          bg: '#F8F6F1',
+          surface: '#FFFFFF',
+          text: '#1C1917',
+          'text-secondary': '#57534E',
+          accent: '#0E6B5E',
+          'accent-hover': '#0A5549',
+          border: '#D6D3CC',
+        }
+      },
       animation: {
         'gradient': 'gradient 6s ease infinite',
         'border-spin': 'border-spin 3s ease infinite',
@@ -22,19 +33,15 @@ module.exports = {
           }
         },
         'border-spin': {
-          '0%': {
-            'background-position': '0% 50%'
-          },
-          '50%': {
-            'background-position': '100% 50%'
-          },
-          '100%': {
-            'background-position': '0% 50%'
-          }
+          '0%': { 'background-position': '0% 50%' },
+          '50%': { 'background-position': '100% 50%' },
+          '100%': { 'background-position': '0% 50%' }
         }
       },
       fontFamily: {
-        'mono': ['source-code-pro', 'Menlo', 'Monaco', 'Consolas', 'Courier New', 'monospace'],
+        'display': ['Newsreader', 'Georgia', 'serif'],
+        'body': ['Outfit', 'system-ui', 'sans-serif'],
+        'mono': ['Fira Code', 'Consolas', 'monospace'],
       }
     },
   },

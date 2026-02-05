@@ -14,7 +14,7 @@ export const AsciiDivider: React.FC<AsciiDividerProps> = ({ variant = 'default' 
 
   return (
     <div className="my-12 text-center overflow-hidden">
-      <span className="text-gray-700 font-mono text-xs tracking-widest opacity-50">
+      <span className="text-warm-border font-mono text-xs tracking-widest opacity-50">
         {patterns[variant]}
       </span>
     </div>

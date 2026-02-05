@@ -7,33 +7,33 @@ export const SoftwareSection: React.FC = () => {
     <div className="mb-16">
       <div className="flex items-center gap-4 mb-6">
         <span className="section-number">03 //</span>
-        <h2 className="text-3xl font-bold text-white flex items-center gap-3 glitch-hover" data-text="Software Development">
-          <Code className="w-8 h-8 text-green-400" />
+        <h2 className="text-3xl font-bold font-display text-warm-text flex items-center gap-3 glitch-hover" data-text="Software Development">
+          <Code className="w-8 h-8 text-warm-accent" />
           Software Development
         </h2>
       </div>
-      <a 
+      <a
         href="https://github.com/ipfsnut/evermark-beta"
         target="_blank"
         rel="noopener noreferrer"
-        className="block bg-gradient-to-r from-green-600/20 to-blue-600/20 backdrop-blur-lg rounded-xl p-8 border border-white/20 mb-6 cursor-pointer hover:from-green-600/30 hover:to-blue-600/30 transition-all duration-300 hover:border-white/30"
+        className="block bg-white rounded-xl p-8 border border-warm-border mb-6 cursor-pointer hover:border-warm-accent/50 hover:shadow-md transition-all duration-300"
       >
         <div className="mb-4">
-          <h3 className="text-2xl font-bold text-white mb-2">Evermark Beta</h3>
-          <p className="text-gray-200 mb-4">
+          <h3 className="text-2xl font-bold font-display text-warm-text mb-2">Evermark Beta</h3>
+          <p className="text-warm-text-secondary mb-4">
             Content curation and collective memory platform with decentralized storage, Farcaster integration, and custom SDK architecture
           </p>
         </div>
         <div className="flex flex-wrap gap-2 mb-4">
-          <span className="px-3 py-1 bg-purple-500/30 text-purple-200 rounded-full text-sm">React 19</span>
-          <span className="px-3 py-1 bg-blue-500/30 text-blue-200 rounded-full text-sm">TypeScript</span>
-          <span className="px-3 py-1 bg-green-500/30 text-green-200 rounded-full text-sm">Supabase</span>
-          <span className="px-3 py-1 bg-orange-500/30 text-orange-200 rounded-full text-sm">IPFS</span>
-          <span className="px-3 py-1 bg-pink-500/30 text-pink-200 rounded-full text-sm">Farcaster</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">React 19</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">TypeScript</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">Supabase</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">IPFS</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">Farcaster</span>
         </div>
       </a>
 
-      <h3 className="text-2xl font-bold text-white mb-4">Recent Repositories</h3>
+      <h3 className="text-2xl font-bold font-display text-warm-text mb-4">Recent Repositories</h3>
       <GitHubRepos />
     </div>
   );

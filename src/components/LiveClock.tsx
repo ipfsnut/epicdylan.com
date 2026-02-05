@@ -16,7 +16,7 @@ export const LiveClock: React.FC = () => {
   };
 
   return (
-    <span className="text-gray-600 font-mono text-xs">
+    <span className="text-warm-text-secondary font-mono text-xs">
       {formatTime(time)}
     </span>
   );
