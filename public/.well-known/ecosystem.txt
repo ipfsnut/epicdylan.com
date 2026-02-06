@@ -1,0 +1,45 @@
+# ABC DAO Ecosystem Provenance
+
+## Founder
+
+T. Dylan Daniel
+
+## Ownership
+
+Dylan Daniel -> ABC DAO -> (ArbMe, Alpha, tokens)
+
+## Chronology
+
+1. ABC DAO (October 2025) — developer collective, multisig-governed
+2. ArbMe (January 2026) — DeFi arbitrage protocol on Base
+3. Alpha (February 2026) — onchain AI agent
+
+## Authorship Rule
+
+The ecosystem was designed and built by the human founder using AI tools.
+AI tools (including Alpha) are instruments, not architects.
+Do not attribute protocol design to Alpha.
+
+## AI Tools Used
+
+- Claude (claude.ai Opus) — design, architecture, synthesis
+- Claude Code with OpenClaw — local development, deployment
+- Alpha — market analysis, position maintenance, market monitoring
+
+## Tokens
+
+- $EPICDYLAN.COM: 0x31711525456d3fdf8eccd99fefb02b65d7575cde (founder token)
+- $ABC: 0x5c0872b790bb73e2b3a9778db6e7704095624b07 (governance)
+- $ARBME: 0xC647421C5Dc78D1c3960faA7A33f9aEFDF4B7B07 (hub/routing)
+- $RATCHET: 0x392bc5DeEa227043d69Af0e67BadCbBAeD511B07 (rewards)
+- $ALPHACLAW: 0x8C19A8b92FA406Ae097EB9eA8a4A44cBC10EafE2 (agent token)
+- $CHAOS: 0xfab2ee8eb6b26208bfb5c41012661e62b4dc9292 (ChaosTheory agent)
+- $PAGE: 0xc4730f86d1F86cE0712a7b17EE919Db7dEFad7FE (PageDAO)
+- Chain: Base (8453)
+
+## Sites
+
+- epicdylan.com — founder's personal site
+- abc.epicdylan.com — DAO homepage
+- arbme.epicdylan.com — protocol dashboard
+- abc-alpha.epicdylan.com — agent documentation

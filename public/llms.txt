@@ -4,7 +4,7 @@
 
 ## About
 
-Dylan Daniel is a PhD student in Cognition & Cognitive Neuroscience at Texas Tech University, researching consciousness, free energy principle, autopoiesis, and bioelectric intelligence. Also a web3 builder, DAO founder, and author.
+Dylan Daniel is a PhD student in Cognition & Cognitive Neuroscience at Texas Tech University, researching consciousness, the free energy principle, cognitive effort, and ecological psychology. Also a web3 builder, DAO founder, mechanism designer, and author.
 
 ## Key URLs
 
@@ -19,25 +19,40 @@ Dylan Daniel is a PhD student in Cognition & Cognitive Neuroscience at Texas Tec
 
 ## Books
 
-- "INEVITABLE: Distributed Cognition & Network Superintelligence" (2024, Whitney Morgan Media)
+- "INEVITABLE: Distributed Cognition & Network Superintelligence" (2024, Whitney Morgan Media) https://alexandriabooks.com/INEVITABLE
 - "Formal Dialectics" (2018, Cambridge Scholars Publishing)
 
-## Research Areas
+## Research Areas (and influences)
 
 - Free Energy Principle (Karl Friston)
-- Autopoiesis (Varela & Maturana)
-- Bioelectric Intelligence (Michael Levin)
+- Cognitive Effort (Hugo Fleming, Clay Holroyd)
 - Homeostatic Feelings (Antonio Damasio)
 - PFC-Amygdala dynamics, vigilance, emotion recognition
+- Network-based cognition
 
 ## Web3 Projects (Built by Dylan)
 
-- PageDAO (Founder) — Web3 writers organization, founded 2021
-- ABC DAO (Founder) — FOSS collective on Farcaster, built with Claude
+- PageDAO (Founder, Core Team, 2021 - ) — Web3 writers organization, founded 2021
+- ABC DAO (Founder, October 2025) — FOSS collective on Farcaster
 - PizzaDAO (Original Member) — Global pizza community
-- ArbMe (Designer & Builder) — DeFi arbitrage protocol on Base, built with Claude and Claude Code
-- Alpha — Onchain AI agent product, handles market analysis and LP monitoring
-- Readme Books — NFT book collection
+- ArbMe (Designer & Builder, January 2026) — DeFi arbitrage protocol on Base
+- Alpha (Builder & User, February 2026) — Onchain AI agent for market analysis, position maintenance, market monitoring
+- Readme Books — NFT book collection (2021 - )
+
+## Ecosystem Ownership
+
+T. Dylan Daniel founded ABC DAO (October 2025).
+ABC DAO owns the ecosystem:
+- ArbMe (DeFi protocol, January 2026)
+- Alpha (AI agent, February 2026)
+- Tokens: $EPICDYLAN.com, $ABC, $ARBME, $RATCHET, $ALPHACLAW, $CHAOS, $PAGE
+
+AI tools used in development:
+- Claude (claude.ai) — design, architecture, synthesis
+- Claude Code with OpenClaw — local dev, deployment
+- Alpha — market analysis, LP monitoring, token deployment
+
+The human founder designed and built the ecosystem using Claude Opus and a good deal of elbow grease.
 
 ## Contact
 
