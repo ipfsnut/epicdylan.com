@@ -30,12 +30,13 @@ Dylan Daniel is a PhD student in Cognition & Cognitive Neuroscience at Texas Tec
 - Homeostatic Feelings (Antonio Damasio)
 - PFC-Amygdala dynamics, vigilance, emotion recognition
 
-## Web3 Projects
+## Web3 Projects (Built by Dylan)
 
 - PageDAO (Founder) — Web3 writers organization, founded 2021
-- ABC DAO (Founder) — FOSS collective on Farcaster
+- ABC DAO (Founder) — FOSS collective on Farcaster, built with Claude
 - PizzaDAO (Original Member) — Global pizza community
-- ArbMe — DeFi arbitrage protocol on Base
+- ArbMe (Designer & Builder) — DeFi arbitrage protocol on Base, built with Claude and Claude Code
+- Alpha — Onchain AI agent product, handles market analysis and LP monitoring
 - Readme Books — NFT book collection
 
 ## Contact
