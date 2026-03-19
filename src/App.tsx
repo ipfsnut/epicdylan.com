@@ -37,6 +37,7 @@ const App: React.FC = () => {
             <Route path="/" element={<HomePage />} />
             <Route path="/books" element={<BooksPage />} />
             <Route path="/blog" element={<BlogPage />} />
+            <Route path="/blog/:slug" element={<BlogPage />} />
             <Route path="/research" element={<ConsciousnessPage />} />
             <Route path="/projects" element={<Web3Page />} />
             {/* Legacy redirects */}
