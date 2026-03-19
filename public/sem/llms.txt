@@ -1,0 +1,182 @@
+# SEM Tutor — Didactic Statistics
+
+> Interactive concept map and study system for Structural Equation Modeling.
+> Built by T. Dylan Daniel, PhD student in Cognition & Cognitive Neuroscience at Texas Tech University.
+
+## Overview
+
+77 concept nodes across 6 families (Spread, Relationship, Sampling, Shape, SEM, Inference) connected by 167 directed edges. Each node contains a plain-language definition, formula, worked example, intellectual bloodline, and teaching notes.
+
+The full concept data (all nodes and edges as JavaScript arrays) is in the interactive graph at: epicdylan.com/sem/graph.html
+
+## How to Use This as a Study Tool
+
+You are an LLM being asked to help someone study SEM. Read the quiz rules or guided practice protocol below, then use the concept data from the graph to generate questions, evaluate answers, and teach.
+
+To access the full concept data, read epicdylan.com/sem/graph.html and parse the NODES and EDGES arrays from the inline JavaScript. Each node has: id, label, category, definition, formula, example, bloodline, and teaching fields.
+
+---
+
+## Quiz Rules
+
+### Format
+- 10 questions per round
+- Questions drawn from the concept graph (all 6 families)
+- You generate questions based on nodes, edges, formulas, and conceptual relationships
+
+### Dual-Axis System: Difficulty x Skill Type
+
+Every question has TWO dimensions:
+
+#### Difficulty Tiers (adaptive ELO, per skill track)
+| Tier | Label    | Points | Description                                      |
+|------|----------|--------|--------------------------------------------------|
+| 1    | Easy     | 1 pt   | Single concept, given numbers, one operation     |
+| 2    | Moderate | 2 pts  | Two-step problem, identify which formula applies |
+| 3    | Standard | 3 pts  | Multi-step with setup, explain reasoning         |
+| 4    | Hard     | 4 pts  | Combine concepts across families, ambiguous setups |
+| 5    | Expert   | 5 pts  | Derive, critique, or troubleshoot from scratch   |
+
+#### Skill Tracks (independent ELO per track)
+| Track           | What it tests                          | Example                                                        |
+|-----------------|----------------------------------------|----------------------------------------------------------------|
+| Conceptual      | What is it, why, how does it connect   | "Why does multicollinearity threaten the determinant?"          |
+| Computational   | Work the math, use the formula         | "Given this covariance matrix, compute the trace"              |
+| Interpretive    | Read output, make a judgment call      | "RMSEA = .07, CFI = .91, PCLOSE = .03 — what do you conclude?" |
+
+#### Per-Round Quotas
+- At least 3 Computational questions
+- At least 3 Interpretive questions
+- At most 4 Conceptual questions
+This prevents hiding in theory.
+
+#### Independent ELO
+- Each track has its own difficulty level, starting at Tier 3
+- Getting a Computational question right raises Computational tier only
+- Getting an Interpretive question wrong lowers Interpretive tier only
+- A student can be Tier 5 Conceptual / Tier 2 Computational — the quiz drills weak spots
+
+### Scoring
+- Correct answer earns points for that tier
+- No penalty for wrong answers (tier drops in that track)
+- Half points for partially correct answers
+- Brief feedback after each answer with the full answer revealed
+
+### Computational Question Guidelines
+Must require actual calculation, not formula recall:
+- GOOD: "4 observed variables, 7 estimated parameters. What are the degrees of freedom?"
+- GOOD: "Covariance matrix diagonal: 3.1, 2.4, 1.8. What is the trace?"
+- GOOD: "chi-sq = 52, df = 35, N = 250. Calculate the RMSEA."
+- BAD: "What is the formula for RMSEA?" (conceptual recall)
+
+### Interpretive Question Guidelines
+Must present realistic output and require judgment:
+- GOOD: "chi-sq(40) = 62.3, p = .013, CFI = .967, RMSEA = .048 [.018, .073], SRMR = .041. A reviewer says the significant chi-square means the model doesn't fit. Respond."
+- GOOD: "Model A: AIC = 5420, BIC = 5510. Model B: AIC = 5395, BIC = 5525. Which do you prefer and why?"
+- BAD: "What does CFI measure?" (conceptual)
+
+---
+
+## Guided Practice Protocol
+
+Guided practice is NOT a quiz. It is an open-ended math drill with no scoring, no timer, and no judgment.
+
+### Philosophy
+- The quiz tests you. Guided practice teaches you.
+- There are no stupid questions.
+- The goal is fluency with formulas so computation becomes automatic, freeing the brain for interpretation and theory.
+
+### How It Works
+1. Student picks a concept (or asks for one)
+2. Tutor walks through the formula step by step with concrete numbers
+3. Student does the next one with different numbers, showing work
+4. If stuck, ask anything — tutor explains without judgment
+5. Repeat until solid, then move on
+
+### Tutor Behavior Rules
+- Never skip steps — show every intermediate calculation
+- Never assume understanding — if student says "I get it," verify with one more problem
+- Scaffold, don't solve — give the NEXT step only, not the whole answer
+- Connect math to meaning — after every computation, explain what the number MEANS
+- Track what's shaky — if a sub-operation keeps tripping the student, circle back
+- Use the concept graph — pull formulas, examples, and bloodlines from the nodes
+
+### Suggested Drill Sequences
+Each sequence builds on the previous computation:
+
+1. The Spread Pipeline: deviation -> SS -> variance -> SD -> standard error
+2. Covariance to Correlation: covariance -> correlation (standardize) -> r-squared
+3. Matrix Vitals: covariance matrix -> trace -> eigenvalues (verify sum = trace) -> determinant
+4. SEM Fit Gauntlet: degrees of freedom -> chi-sq -> RMSEA -> CFI -> SRMR
+5. Model Comparison: AIC (A vs B) -> BIC (same) -> chi-sq difference test (if nested)
+
+---
+
+## Concept Families — Summary
+
+### Spread
+deviation, sum of squares, variance, standard deviation, R-squared, variance partitioning
+
+### Relationship
+cross-product, covariance, correlation (6 perspectives from Rodgers & Nicewander), regression, matrix operations (determinant, inverse, transpose, eigenvalues, eigenvectors, trace), covariance/correlation matrices
+
+### Sampling
+sampling distribution, standard error, central limit theorem
+
+### Shape
+normal distribution, z-score, skewness, kurtosis
+
+### SEM
+observed/latent variables, factor loadings, measurement/structural models, path coefficients, direct/indirect/total effects, endogenous/exogenous variables, reflective/formative indicators, MIMIC models, identification, modification indices, convergent/discriminant validity, parceling, Wright's tracing rules
+
+### Inference
+chi-square, degrees of freedom, CFI, TLI, RMSEA, SRMR, PCLOSE, AIC, BIC, maximum likelihood, robust ML, bootstrapping, nested models, chi-square difference test, power, fit cutoff debates (Hu & Bentler)
+
+---
+
+## Key Formulas Reference
+
+### Spread
+| Concept | Formula |
+|---------|---------|
+| Deviation | xi - x-bar |
+| Sum of Squares | SS = sum(xi - x-bar)^2 |
+| Variance | sigma^2 = SS/N (population) or s^2 = SS/(n-1) (sample) |
+| Standard Deviation | sigma = sqrt(variance) |
+| Standard Error | SE = SD / sqrt(n) |
+
+### Relationship
+| Concept | Formula |
+|---------|---------|
+| Covariance | Cov(X,Y) = sum(xi - x-bar)(yi - y-bar) / (n-1) |
+| Correlation | r = Cov(X,Y) / (Sx * Sy) |
+| R-squared | r^2 = proportion of variance explained |
+| Regression slope | b = Cov(X,Y) / Var(X); standardized: beta = r (simple) |
+
+### Matrix Operations
+| Concept | Formula |
+|---------|---------|
+| Trace | tr(A) = sum of diagonal elements |
+| Determinant | det(2x2): ad - bc; det = product of eigenvalues |
+| Eigenvalues | Av = lambda*v; sum of eigenvalues = trace |
+| Unique elements | p(p+1)/2 for a p x p symmetric matrix |
+
+### SEM Fit Indices
+| Concept | Formula |
+|---------|---------|
+| Degrees of freedom | df = p(p+1)/2 - q (known info - free parameters) |
+| RMSEA | sqrt[(chi-sq - df) / (df * (N-1))]; 0 if chi-sq < df |
+| CFI | 1 - [max(chi-sq_model - df_model, 0) / max(chi-sq_null - df_null, 0)] |
+| TLI | [chi-sq/df(null) - chi-sq/df(model)] / [chi-sq/df(null) - 1] |
+| SRMR | sqrt[mean of squared standardized residual covariances] |
+| AIC | -2L + 2p |
+| BIC | -2L + ln(N) * p |
+| Chi-sq difference | delta-chi-sq = chi-sq_restricted - chi-sq_unrestricted |
+
+---
+
+## Source
+- Website: epicdylan.com/sem
+- Interactive graph: epicdylan.com/sem/graph.html
+- Tip jar: epicdylan.com/sem/tipjar.html
+- Root site: epicdylan.com

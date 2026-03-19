@@ -54,6 +54,10 @@ AI tools used in development:
 
 The human founder designed and built the ecosystem using Claude Opus and a good deal of elbow grease.
 
+## Interactive Tools
+
+- SEM Tutor (epicdylan.com/sem): Interactive concept map and study system for Structural Equation Modeling. 77 nodes, 167 edges, 6 concept families. Designed for LLM-powered quizzing and guided practice. See epicdylan.com/sem/llms.txt for full quiz rules, practice protocols, and concept data.
+
 ## Contact
 
 - Email: thomas.d.daniel@ttu.edu

@@ -1,0 +1,1513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SEM Tutor</title>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;0,9..144,600;0,9..144,800;1,9..144,300&family=IBM+Plex+Sans:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg: #08080c;
+  --surface: #101018;
+  --surface2: #181824;
+  --surface3: #20202e;
+  --border: #2a2a3c;
+  --text: #e4e4ec;
+  --text-mid: #a0a0b4;
+  --text-dim: #6a6a80;
+  --text-faint: #44445a;
+
+  --spread: #e8654a;
+  --spread-g: rgba(232,101,74,0.13);
+  --relation: #4a9ee8;
+  --relation-g: rgba(74,158,232,0.13);
+  --sampling: #45b88e;
+  --sampling-g: rgba(69,184,142,0.13);
+  --shape: #c9a84c;
+  --shape-g: rgba(201,168,76,0.13);
+  --sem: #b06ae0;
+  --sem-g: rgba(176,106,224,0.13);
+  --testing: #e0926a;
+  --testing-g: rgba(224,146,106,0.13);
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+body { background:var(--bg); color:var(--text); font-family:'IBM Plex Sans',sans-serif; overflow:hidden; height:100vh; }
+
+.layout { display:grid; grid-template-columns:1fr 400px; grid-template-rows:auto 1fr; height:100vh; }
+
+.top-bar {
+  grid-column: 1/-1;
+  padding: 1.2rem 2rem 0.8rem;
+  display: flex;
+  align-items: flex-end;
+  gap: 2rem;
+  flex-wrap: wrap;
+  border-bottom: 1px solid var(--border);
+  background: var(--surface);
+}
+.top-bar h1 {
+  font-family:'Fraunces',serif;
+  font-size:1.7rem;
+  font-weight:800;
+  letter-spacing:-0.03em;
+  white-space:nowrap;
+}
+.filters { display:flex; gap:0.35rem; flex-wrap:wrap; padding-bottom:0.15rem; }
+.fbtn {
+  padding:0.3rem 0.75rem;
+  border-radius:100px;
+  font-size:0.7rem;
+  font-weight:600;
+  letter-spacing:0.04em;
+  text-transform:uppercase;
+  cursor:pointer;
+  border:1.5px solid var(--border);
+  background:transparent;
+  color:var(--text-dim);
+  transition:all 0.2s;
+  font-family:inherit;
+}
+.fbtn:hover { color:var(--text); border-color:var(--text-dim); }
+.fbtn.on { color:#fff; }
+.fbtn[data-c="spread"].on { background:var(--spread); border-color:var(--spread); }
+.fbtn[data-c="relation"].on { background:var(--relation); border-color:var(--relation); }
+.fbtn[data-c="sampling"].on { background:var(--sampling); border-color:var(--sampling); }
+.fbtn[data-c="shape"].on { background:var(--shape); border-color:var(--shape); }
+.fbtn[data-c="sem"].on { background:var(--sem); border-color:var(--sem); }
+.fbtn[data-c="testing"].on { background:var(--testing); border-color:var(--testing); }
+
+.search-wrap { margin-left:auto; padding-bottom:0.15rem; }
+.search-wrap input {
+  background:var(--surface2);
+  border:1px solid var(--border);
+  color:var(--text);
+  padding:0.35rem 0.8rem;
+  border-radius:6px;
+  font-size:0.82rem;
+  font-family:inherit;
+  width:180px;
+  outline:none;
+}
+.search-wrap input::placeholder { color:var(--text-faint); }
+.search-wrap input:focus { border-color:var(--text-dim); }
+
+.graph-area { position:relative; overflow:hidden; }
+canvas { display:block; width:100%; height:100%; cursor:grab; }
+canvas:active { cursor:grabbing; }
+
+.zoom-ctrl {
+  position:absolute; bottom:1rem; left:1rem;
+  display:flex; flex-direction:column; gap:0.25rem; z-index:5;
+}
+.zbtn {
+  width:32px; height:32px; border-radius:6px;
+  background:var(--surface2); border:1px solid var(--border);
+  color:var(--text-dim); font-size:1rem;
+  cursor:pointer; display:flex; align-items:center; justify-content:center;
+  font-family:inherit; transition:all 0.15s;
+}
+.zbtn:hover { background:var(--surface3); color:var(--text); }
+
+.legend {
+  position:absolute; top:0.8rem; left:0.8rem;
+  background:var(--surface); border:1px solid var(--border);
+  border-radius:8px; padding:0.6rem 0.8rem;
+  font-size:0.68rem; color:var(--text-dim); z-index:5;
+}
+.legend-row { display:flex; align-items:center; gap:0.4rem; margin:0.2rem 0; }
+.legend-dot { width:8px; height:8px; border-radius:50%; }
+
+/* Detail panel */
+.detail {
+  background:var(--surface);
+  border-left:1px solid var(--border);
+  overflow-y:auto;
+  padding:1.8rem;
+  scrollbar-width:thin;
+  scrollbar-color:var(--border) transparent;
+}
+.detail-empty {
+  height:100%; display:flex; flex-direction:column;
+  align-items:center; justify-content:center; text-align:center;
+}
+.detail-empty .big { font-size:2.5rem; opacity:0.15; margin-bottom:0.8rem; }
+.detail-empty p { color:var(--text-dim); font-size:0.88rem; line-height:1.6; max-width:280px; }
+
+.dc { animation: fadeIn 0.3s ease; }
+@keyframes fadeIn { from{opacity:0;transform:translateY(8px)} to{opacity:1;transform:translateY(0)} }
+
+.dc-cat { font-size:0.65rem; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; margin-bottom:0.3rem; }
+.dc-title { font-family:'Fraunces',serif; font-size:1.8rem; font-weight:600; margin-bottom:0.5rem; line-height:1.15; }
+.dc-bloodline { font-size:0.78rem; color:var(--text-dim); margin-bottom:1rem; font-style:italic; }
+.dc-plain { color:var(--text-mid); font-size:0.92rem; line-height:1.7; margin-bottom:1rem; font-weight:300; }
+.dc-label { font-size:0.65rem; font-weight:600; text-transform:uppercase; letter-spacing:0.1em; color:var(--text-faint); margin:1.2rem 0 0.4rem; }
+.dc-formula {
+  background:var(--bg); border:1px solid var(--border); border-radius:8px;
+  padding:0.8rem 1rem; font-family:'JetBrains Mono',monospace;
+  font-size:0.8rem; color:var(--relation); line-height:1.7; white-space:pre-wrap;
+}
+.dc-example {
+  background:var(--bg); border:1px solid var(--border); border-radius:8px;
+  padding:0.8rem 1rem; font-size:0.85rem; color:var(--text-mid); line-height:1.6; font-weight:300;
+}
+.dc-parent {
+  margin-top:1rem; padding:0.8rem 1rem;
+  background:var(--surface2); border:1px solid var(--border); border-radius:8px;
+}
+.dc-parent-label { font-size:0.65rem; font-weight:600; text-transform:uppercase; letter-spacing:0.08em; color:var(--text-faint); margin-bottom:0.3rem; }
+.dc-parent-text { font-size:0.85rem; color:var(--text-mid); line-height:1.6; }
+.dc-parent-text em { color:var(--text); font-style:normal; font-weight:500; }
+
+.conn-list { display:flex; flex-wrap:wrap; gap:0.35rem; margin-top:0.35rem; }
+.conn-chip {
+  background:var(--surface2); border:1px solid var(--border);
+  color:var(--text-dim); padding:0.25rem 0.6rem; border-radius:100px;
+  font-size:0.72rem; cursor:pointer; transition:all 0.2s; font-weight:500;
+}
+.conn-chip:hover { background:var(--border); color:var(--text); }
+.focus-btn {
+  display:inline-flex; align-items:center; gap:0.4rem;
+  margin-top:0.8rem; padding:0.45rem 1rem;
+  background:var(--surface2); border:1px solid var(--border);
+  border-radius:6px; color:var(--text-dim); font-size:0.78rem;
+  font-family:inherit; cursor:pointer; transition:all 0.15s;
+}
+.focus-btn:hover { background:var(--surface3); color:var(--text); border-color:var(--text-dim); }
+
+.teach-box {
+  margin-top:1.2rem;
+  border:1px solid var(--sem);
+  border-radius:8px;
+  padding:0.9rem 1.1rem;
+  background:var(--sem-g);
+}
+.teach-box h4 { font-family:'Fraunces',serif; font-size:0.95rem; font-weight:400; color:var(--sem); margin-bottom:0.3rem; }
+.teach-box p { font-size:0.8rem; color:var(--text-mid); line-height:1.55; font-weight:300; }
+
+@media(max-width:900px){
+  .layout { grid-template-columns:1fr; grid-template-rows:auto 1fr 45vh; }
+  .detail { border-left:none; border-top:1px solid var(--border); }
+  .top-bar { padding:0.8rem 1rem 0.6rem; gap:0.8rem; }
+  .top-bar h1 { font-size:1.3rem; }
+  .search-wrap { margin-left:0; }
+}
+</style>
+</head>
+<body>
+<div class="layout">
+
+<div class="top-bar">
+  <h1>The Bloodlines of SEM</h1>
+  <div class="filters" id="filters"></div>
+  <div class="search-wrap"><input id="search" placeholder="Search concepts..." /></div>
+</div>
+
+<div class="graph-area">
+  <canvas id="c"></canvas>
+  <div class="legend" id="legend"></div>
+  <div class="zoom-ctrl">
+    <button class="zbtn" id="zi">+</button>
+    <button class="zbtn" id="zo">−</button>
+    <button class="zbtn" id="zf">◎</button>
+  </div>
+</div>
+
+<div class="detail" id="detail">
+  <div class="detail-empty">
+    <div class="big">◉</div>
+    <p>Click any concept to see what it means, where it came from, and how to explain it to someone else.</p>
+  </div>
+</div>
+
+</div>
+
+<script>
+// ================================================================
+//  DATA
+// ================================================================
+const CATS = {
+  spread:   { label:'The Spread Family',       color:'#e8654a', glow:'rgba(232,101,74,0.13)' },
+  relation: { label:'The Relationship Family',  color:'#4a9ee8', glow:'rgba(74,158,232,0.13)' },
+  sampling: { label:'The Sampling Family',      color:'#45b88e', glow:'rgba(69,184,142,0.13)' },
+  shape:    { label:'The Shape Family',         color:'#c9a84c', glow:'rgba(201,168,76,0.13)' },
+  sem:      { label:'SEM Concepts',             color:'#b06ae0', glow:'rgba(176,106,224,0.13)' },
+  testing:  { label:'The Inference Family',     color:'#e0926a', glow:'rgba(224,146,106,0.13)' },
+};
+
+const NODES = [
+  // ── SPREAD FAMILY ──
+  { id:'deviation', label:'Deviation', cat:'spread',
+    plain:'The distance from one data point to the mean. That\'s it. Take a score, subtract the mean. Positive means above average, negative means below. Every other "spread" concept is just a way of summarizing these distances.',
+    formula:'dᵢ = xᵢ − x̄',
+    example:'Class mean is 80. You got 73. Your deviation is −7. The kid who got 92 has a deviation of +12.',
+    bloodline:'This is where it all starts. Everything in the spread family grows from this one subtraction.',
+    teach:'Deviation is just the answer to "how far off am I?" Every student intuitively understands this the day after a test.' },
+
+  { id:'ss', label:'Sum of Squares (SS)', cat:'spread',
+    plain:'Take every deviation, square it (to kill the negatives and punish big deviations), then add them all up. It\'s a single number that captures total variability — but it gets bigger just by adding more data, which is a problem.',
+    formula:'SS = Σ(xᵢ − x̄)²',
+    example:'Deviations are −7, +2, +12, −3. Squares: 49, 4, 144, 9. SS = 206. That\'s the "total spread budget" of your data.',
+    bloodline:'Born from deviation. Parent of variance. You square to make everything positive, then sum to get a total.',
+    teach:'Why square instead of absolute value? Because squaring punishes outliers harder, and it connects to geometry (area of a square). But the real reason: it makes the calculus work later.' },
+
+  { id:'variance', label:'Variance', cat:'spread',
+    plain:'Sum of squares divided by how many things you have. It\'s the AVERAGE squared deviation — how spread out the data is on average. SS gets bigger with more data; variance corrects for that by averaging.',
+    formula:'σ² = SS/N  (population)\ns² = SS/(n−1)  (sample — Bessel\'s correction)',
+    example:'SS = 206, n = 4. Sample variance = 206/3 = 68.67. That\'s the average squared spread.',
+    bloodline:'Born from SS by dividing. Parent of standard deviation AND covariance (variance is the one-variable version of covariance). The n−1 thing exists because samples underestimate spread.',
+    teach:'Variance = "average squared distance from the mean." The problem: the units are squared (points², dollars²). That\'s meaningless. Which is why we need...' },
+
+  { id:'sd', label:'Standard Deviation', cat:'spread',
+    plain:'Square root of variance. Undoes the squaring so you\'re back in the original units. "On average, how far is each data point from the mean?" This is the answer in units you can actually interpret.',
+    formula:'σ = √(σ²)   or   s = √(s²)',
+    example:'Variance is 68.67 points². SD = √68.67 ≈ 8.3 points. So scores typically deviate about 8 points from the mean.',
+    bloodline:'Born from variance by square-rooting. Sibling of standard error (SD describes data spread; SE describes estimate spread). Feeds into z-scores.',
+    teach:'SD is "the typical distance from average." Small SD = everyone is similar. Large SD = lots of variety. That\'s it.' },
+
+  // ── RELATIONSHIP FAMILY ──
+  { id:'crossproduct', label:'Cross-Product', cat:'relation',
+    plain:'Take one person\'s deviation on X and multiply it by their deviation on Y. If both are above their means (or both below), the cross-product is positive. If one is above and the other below, it\'s negative. This captures whether X and Y move together FOR ONE PERSON.',
+    formula:'CPᵢ = (xᵢ − x̄)(yᵢ − ȳ)',
+    example:'Person scored +5 above mean on anxiety and +8 above mean on stress. Cross-product = 40. They\'re high on both — these variables move together for this person.',
+    bloodline:'This is deviation, but for TWO variables at once. It\'s to covariance what deviation is to variance. The entire relationship family starts here.',
+    teach:'Deviation says "how far from average on one thing." Cross-product says "how far from average on two things simultaneously." That\'s the only difference.' },
+
+  { id:'scp', label:'Sum of Cross-Products (SCP)', cat:'relation',
+    plain:'Add up all the individual cross-products. Same logic as Sum of Squares but for two variables. A big positive SCP means the two variables generally move together across people. A big negative means they move opposite.',
+    formula:'SCP = Σ(xᵢ − x̄)(yᵢ − ȳ)',
+    example:'Cross-products across 5 people: 40, 12, −3, 28, 15. SCP = 92. Overall these variables tend to move in the same direction.',
+    bloodline:'Born from cross-product the same way SS is born from deviation. Parent of covariance. SCP is to covariance what SS is to variance — see the pattern?',
+    teach:'SS = "total squared spread of ONE variable." SCP = "total shared movement of TWO variables." Same structure, one more variable.' },
+
+  { id:'covariance', label:'Covariance', cat:'relation',
+    plain:'SCP divided by n (or n−1). It\'s the AVERAGE cross-product — how much two variables move together, per observation. Positive = they rise and fall together. Negative = one goes up when the other goes down. Zero = no linear pattern.',
+    formula:'Cov(X,Y) = SCP/(n−1) = Σ(xᵢ−x̄)(yᵢ−ȳ)/(n−1)',
+    example:'SCP = 92, n = 5. Cov = 92/4 = 23. On average, X and Y move 23 units together per person.',
+    bloodline:'Born from SCP by averaging. LITERALLY the same operation as variance, but for two variables. Variance = Cov(X,X). That\'s not a metaphor — substitute Y with X in the formula and you get the variance formula. Parent of correlation.',
+    teach:'This is the big reveal: variance IS covariance of a variable with itself. Once you see that, the whole family makes sense. Cov averages shared movement. Var averages self-movement (which is just... spread).' },
+
+  { id:'correlation', label:'Correlation (r)', cat:'relation',
+    plain:'Covariance divided by both standard deviations. This rescales it to always be between −1 and +1. It\'s a unitless, standardized version of covariance — so you can compare relationships across different scales.',
+    formula:'r = Cov(X,Y) / (SDₓ × SDᵧ)',
+    example:'Cov = 23, SDₓ = 6, SDᵧ = 8. r = 23/(6×8) = 0.48. Moderate positive relationship.',
+    bloodline:'Born from covariance by standardizing. Covariance in "standard deviation units." Parent of regression weights and path coefficients in SEM.',
+    teach:'Covariance is great but has a units problem (what does "23 anxiety-stress units" mean?). Correlation solves that: 0.48 means "about halfway to a perfect positive relationship." Scale-free.' },
+
+  { id:'regression', label:'Regression Weight (b)', cat:'relation',
+    plain:'How much Y changes for a one-unit increase in X. It\'s covariance divided by the variance of X. If you know how X and Y co-move (covariance) and how much X varies (variance), you can predict Y from X.',
+    formula:'b = Cov(X,Y) / Var(X)',
+    example:'Cov(stress, anxiety) = 23, Var(stress) = 36. b = 23/36 = 0.64. Each additional stress unit predicts 0.64 more anxiety units.',
+    bloodline:'Born from covariance and variance. In SEM, these become PATH COEFFICIENTS. The unstandardized path coefficient IS a regression weight.',
+    teach:'Correlation tells you strength. Regression tells you the actual exchange rate: "one more unit of X buys you b units of Y."' },
+
+  { id:'beta', label:'Standardized Coefficient (β)', cat:'relation',
+    plain:'The regression weight when both variables have been converted to z-scores. Equivalent to the correlation in simple regression. In multiple regression and SEM, β lets you compare the relative importance of predictors even when they\'re on totally different scales.',
+    formula:'β = b × (SDₓ / SDᵧ)\nIn simple regression: β = r',
+    example:'Unstandardized b = 0.64, SDₓ = 6, SDᵧ = 8. β = 0.64 × (6/8) = 0.48 (which equals r here).',
+    bloodline:'Born from regression weight by standardizing. In SEM path diagrams, these are the standardized path coefficients you see on the arrows.',
+    teach:'b is in raw units ("each stress point = 0.64 anxiety points"). β is in SD units ("each SD of stress = 0.48 SD of anxiety"). β lets you compare apples to oranges.' },
+
+  // ── SAMPLING FAMILY ──
+  { id:'sampling-dist', label:'Sampling Distribution', cat:'sampling',
+    plain:'If you could take your study\'s sample a million times and compute the statistic each time, the distribution of those million statistics is the sampling distribution. It\'s theoretical — you never actually do this — but it\'s the backbone of all inference.',
+    formula:'Conceptual: repeat sampling → compute statistic → plot all results',
+    example:'Survey 100 people, get mean = 52. Do it again, get 48. Again, 51. Again, 49. After a million times, plot all those means. That histogram is the sampling distribution of the mean.',
+    bloodline:'Born from the idea that any statistic from a sample has randomness in it. Parent of standard error and confidence intervals.',
+    teach:'Every single statistic you compute could have been different if you\'d sampled different people. The sampling distribution is the "what-if" of all possible samples.' },
+
+  { id:'se', label:'Standard Error (SE)', cat:'sampling',
+    plain:'The standard deviation of the sampling distribution. "How much does my statistic bounce around from sample to sample?" Small SE = your estimate is precise. Large SE = it could have been quite different with a different sample.',
+    formula:'SE = SD / √n\nSE shrinks as sample size grows',
+    example:'SD = 10, n = 100. SE = 10/√100 = 1. Your sample mean is probably within ~1 unit of the truth. With n = 25: SE = 2. Less precise.',
+    bloodline:'Born from SD applied to sampling distributions instead of raw data. SD describes data spread. SE describes ESTIMATE spread. Sibling of SD — same concept, different target.',
+    teach:'SD says "how much do individual people vary?" SE says "how much would my answer vary if I re-did the study?" Bigger samples → smaller SE → more confidence in your answer.' },
+
+  { id:'clt', label:'Central Limit Theorem', cat:'sampling',
+    plain:'No matter how weird your data looks, if you take enough samples and compute the mean each time, those means will form a normal distribution. This is WHY we can use normal-based methods on almost anything.',
+    formula:'As n increases: distribution of x̄ → Normal(μ, σ/√n)',
+    example:'Roll a die — the distribution is flat (uniform). But roll 30 dice and average them, repeat 10,000 times — those averages form a perfect bell curve.',
+    bloodline:'Explains WHY sampling distributions tend to be normal. Justifies most of the inference machinery. Without this, confidence intervals and p-values wouldn\'t work.',
+    teach:'This is the "get out of jail free" card for statistics. Your data can be ugly. But averages of samples from ugly data are beautiful (normal). That\'s the whole trick.' },
+
+  // ── SHAPE FAMILY ──
+  { id:'normal', label:'Normal Distribution', cat:'shape',
+    plain:'The bell curve. Symmetric, most data near the center, tails trailing off equally. Defined entirely by mean (where the center is) and SD (how wide it is). The 68-95-99.7 rule: those percentages fall within 1, 2, 3 SDs.',
+    formula:'68% within ±1 SD\n95% within ±2 SD\n99.7% within ±3 SD',
+    example:'Heights: mean 67 inches, SD 3 inches. 68% of people are between 64-70 inches. 95% between 61-73.',
+    bloodline:'The foundational shape. Z-scores convert any normal to the STANDARD normal. CLT explains why sampling distributions are normal. SEM assumes multivariate normality.',
+    teach:'Draw a hill. Mark the middle. That\'s the mean. The steepness of the sides is controlled by SD. Narrow hill = small SD. Wide hill = big SD.' },
+
+  { id:'zscore', label:'z-score', cat:'shape',
+    plain:'How many standard deviations a value is from the mean. Converts any scale to a universal one where 0 = average and 1 = one SD above. This is how you compare scores across totally different tests or variables.',
+    formula:'z = (x − x̄) / SD',
+    example:'Your score: 85. Mean: 75. SD: 5. z = (85−75)/5 = 2.0. You\'re 2 SDs above average — that\'s the ~97.7th percentile.',
+    bloodline:'Born from deviation and SD. Deviation tells you the raw distance; z-score tells you distance in SD units. Foundation for standardized coefficients (β) in SEM.',
+    teach:'z-score answers "how weird is this?" z = 0 is perfectly normal. z = ±1 is slightly unusual. z = ±2 is notable. z = ±3 is rare.' },
+
+  { id:'skewness', label:'Skewness', cat:'shape',
+    plain:'Which direction the tail stretches. Right-skewed = long tail to the right (a few very high values). Left-skewed = long tail to the left. Matters for SEM because most estimation methods assume normality.',
+    formula:'Right-skewed: mean > median\nLeft-skewed: mean < median\nSymmetric: mean ≈ median',
+    example:'Income is right-skewed: most people earn moderate amounts, a few earn enormous amounts pulling the tail right.',
+    bloodline:'A property of distributions. In SEM, severe skewness violates the normality assumption and can mess up your chi-square test and standard errors.',
+    teach:'The mean gets dragged toward the tail because it\'s sensitive to extremes. The median doesn\'t care. The gap between them tells you the skew direction.' },
+
+  { id:'kurtosis', label:'Kurtosis', cat:'shape',
+    plain:'How heavy the tails are compared to a normal distribution. High kurtosis = more extreme values than expected (heavy tails). Low kurtosis = fewer extremes. In SEM, kurtosis violations are often MORE problematic than skewness.',
+    formula:'Normal kurtosis = 3 (or "excess kurtosis" = 0)\nLeptokurtic: kurtosis > 3 (heavy tails)\nPlatykurtic: kurtosis < 3 (light tails)',
+    example:'Stock returns have high kurtosis — crashes and booms happen way more often than a normal distribution predicts.',
+    bloodline:'Sibling of skewness. Both describe distribution shape. In SEM, you check BOTH before running your model because ML estimation assumes multivariate normality.',
+    teach:'Skewness = "is it lopsided?" Kurtosis = "are there more surprises (extreme values) than a bell curve would predict?"' },
+
+  // ── SEM CONCEPTS ──
+  { id:'observed', label:'Observed Variable', cat:'sem',
+    plain:'Something you actually measured. A survey item, a test score, a recorded behavior. In path diagrams these are rectangles. Everything starts with what you can observe.',
+    formula:'Drawn as rectangles/squares in path diagrams',
+    example:'Items on a depression questionnaire: "I felt sad," "I had trouble sleeping," etc. Each item is an observed variable.',
+    bloodline:'The raw material. Observed variables are used to INFER latent variables. Variance and covariance of observed variables are what SEM actually analyzes.',
+    teach:'If you can point to it in your dataset — a column in your spreadsheet — it\'s observed. If you can\'t, it\'s latent.' },
+
+  { id:'latent', label:'Latent Variable', cat:'sem',
+    plain:'Something you CAN\'T directly measure but believe exists because observed variables correlate in patterns that suggest a hidden common cause. Depression, intelligence, socioeconomic status — you measure indicators of them, not the thing itself.',
+    formula:'Drawn as circles/ovals in path diagrams\nη (eta) for endogenous, ξ (xi) for exogenous latent variables',
+    example:'You can\'t measure "depression" directly. But sadness, sleep problems, appetite changes, and hopelessness correlate because they\'re all caused by the underlying depression construct.',
+    bloodline:'Born from the pattern of correlations among observed variables. Factor analysis extracts latent variables. SEM lets you model relationships BETWEEN latent variables.',
+    teach:'A latent variable is an invisible puppeteer. You can\'t see it, but you can see the puppets (observed variables) moving together, and you infer the puppeteer exists.' },
+
+  { id:'loading', label:'Factor Loading (λ)', cat:'sem',
+    plain:'The strength of the connection between a latent variable and one of its observed indicators. Higher loading = that indicator is a better reflection of the construct. It\'s basically a regression weight from latent to observed.',
+    formula:'λ = regression coefficient from latent → observed\nOften standardized: ranges from 0 to ~1\nRule of thumb: λ > 0.4 is acceptable, > 0.7 is good',
+    example:'Depression → "I felt sad" loading = 0.85 (great indicator). Depression → "I had headaches" loading = 0.25 (weak indicator — headaches aren\'t mostly about depression).',
+    bloodline:'Born from regression logic applied to latent variables. The loading IS a regression weight where the predictor happens to be unmeasured. Loadings squared = variance explained.',
+    teach:'Loading answers: "How good is this question at measuring the hidden thing?" High loading = the question nails it. Low loading = the question is mostly measuring something else.' },
+
+  { id:'measurement', label:'Measurement Model', cat:'sem',
+    plain:'The part of your SEM that connects latent variables to their observed indicators. It answers: "Am I measuring what I think I\'m measuring?" This IS confirmatory factor analysis (CFA). You run it first before testing structural paths.',
+    formula:'CFA: test whether your indicators load on the factors you specified\nx = Λξ + δ  (observed = loadings × latent + error)',
+    example:'You theorize that 4 survey items measure "anxiety" and 4 others measure "depression." The measurement model tests whether the items actually group that way.',
+    bloodline:'Built from factor loadings. Must work before the structural model makes any sense. If your measurement is broken, your structural paths are meaningless.',
+    teach:'Before you can ask "does anxiety predict depression?" you first have to prove you\'re actually measuring anxiety and depression with your items. That\'s the measurement model.' },
+
+  { id:'structural', label:'Structural Model', cat:'sem',
+    plain:'The part of your SEM that specifies relationships BETWEEN latent variables (and/or observed variables). These are the paths you actually care about — your hypotheses about what predicts what.',
+    formula:'η = Bη + Γξ + ζ\n(endogenous = paths among endogenous + paths from exogenous + error)',
+    example:'Your theory: stress → anxiety → depression, with stress also directly affecting depression. The structural model specifies these three paths.',
+    bloodline:'Built on top of the measurement model. The path coefficients ARE regression weights (or standardized: β coefficients). Connects to direct, indirect, and total effects.',
+    teach:'Measurement model = "can I measure these things?" Structural model = "do these things affect each other the way I think?" Always measurement first, then structure.' },
+
+  { id:'path-coeff', label:'Path Coefficient', cat:'sem',
+    plain:'The number on an arrow in a path diagram. It\'s a regression weight connecting two variables in the structural model. Unstandardized = raw units. Standardized = in SD units, comparable across paths.',
+    formula:'Unstandardized: b (raw units)\nStandardized: β (SD units)\nSame as regression weights — just in the SEM context',
+    example:'Stress → Anxiety: β = 0.55 means each SD increase in stress predicts 0.55 SD increase in anxiety, controlling for other paths.',
+    bloodline:'Born directly from regression weights and standardized coefficients. In SEM they live on arrows. They ARE the regression slopes from the relationship family, now applied to latent variables.',
+    teach:'Path coefficient = regression weight on an arrow. Same math, different context. If you understand regression, you understand path coefficients.' },
+
+  { id:'direct', label:'Direct Effect', cat:'sem',
+    plain:'The effect of one variable on another that goes straight through, no middleman. It\'s just the path coefficient on the arrow connecting them directly.',
+    formula:'Direct effect = path coefficient from A → B',
+    example:'Stress → Depression: β = 0.30. That\'s the direct effect of stress on depression. Stress has this effect on depression WITHOUT going through anxiety.',
+    bloodline:'One path coefficient. Simple. But becomes important when contrasted with indirect effects to get total effects.',
+    teach:'Direct effect = one arrow, one number. It\'s the easy one.' },
+
+  { id:'indirect', label:'Indirect Effect', cat:'sem',
+    plain:'The effect of one variable on another that passes THROUGH a mediator. Computed by multiplying the path coefficients along the chain. This is mediation — one of the most powerful things SEM can do.',
+    formula:'Indirect effect of A on C through B = (path A→B) × (path B→C)',
+    example:'Stress → Anxiety (0.55) → Depression (0.40). Indirect effect of stress on depression through anxiety = 0.55 × 0.40 = 0.22.',
+    bloodline:'Born from multiplying path coefficients. Together with the direct effect, gives total effect. Testing whether this product is significant = testing mediation.',
+    teach:'Imagine dominoes. A pushes B pushes C. The indirect effect is how hard C falls because of A, through B. Multiply the pushes along the chain.' },
+
+  { id:'total', label:'Total Effect', cat:'sem',
+    plain:'Direct effect + all indirect effects. The complete influence of one variable on another through ALL pathways combined.',
+    formula:'Total = Direct + Σ(Indirect effects)',
+    example:'Stress → Depression direct = 0.30. Stress → Anxiety → Depression indirect = 0.22. Total = 0.30 + 0.22 = 0.52.',
+    bloodline:'Sum of direct and indirect. Gives you the full picture of how much one variable matters for another.',
+    teach:'Direct is the shortcut path. Indirect is the scenic route. Total is both together — the complete influence.' },
+
+  { id:'error-var', label:'Error / Residual Variance', cat:'sem',
+    plain:'The variance in an observed variable that ISN\'T explained by its latent factor (measurement error), or the variance in an endogenous variable not explained by its predictors (disturbance). Nothing is measured perfectly; nothing is predicted perfectly.',
+    formula:'Error variance = total variance − explained variance\nε (epsilon) for measurement error\nζ (zeta) for structural disturbance',
+    example:'If a loading is 0.80, the item shares 64% variance with its factor (0.80²). The other 36% is error variance.',
+    bloodline:'Born from the recognition that variance has two parts: explained and unexplained. Connects back to the spread family. Loading² = explained proportion; 1 − loading² = error proportion.',
+    teach:'Error variance = "all the stuff I can\'t account for." Measurement error = my ruler is imperfect. Disturbance = other causes I didn\'t include in my model.' },
+
+  { id:'chisq', label:'Chi-Square (χ²)', cat:'testing',
+    plain:'Compares your model\'s predicted covariance matrix to the actual observed covariance matrix. If they\'re close, χ² is small and your model fits well. If they differ a lot, χ² is large and your model doesn\'t fit. The catch: it\'s sensitive to sample size — big samples almost always get a significant χ².',
+    formula:'χ² = (N−1) × F(S, Σ̂)\nWant: non-significant χ² (p > .05)\nBut with large N, almost always significant',
+    example:'χ² = 45.2, df = 30, p = .04. Technically significant, but with N = 500, that\'s barely anything. This is why you never rely on χ² alone.',
+    bloodline:'Born from comparing predicted vs. observed covariance matrices. The foundation of SEM model testing. Parent of other fit indices that try to correct its weaknesses.',
+    teach:'χ² asks "does my model\'s story match the data\'s story?" Small χ² = good match. But it\'s an oversensitive detector — it goes off even when the mismatch is trivial if your sample is big enough.' },
+
+  { id:'df-sem', label:'Degrees of Freedom (SEM)', cat:'testing',
+    plain:'The number of pieces of information in your data (unique variances and covariances) minus the number of parameters your model estimates. More df = simpler model. Zero df = just-identified (fits perfectly but proves nothing). Negative df = can\'t be estimated.',
+    formula:'df = [p(p+1)/2] − q\np = number of observed variables\nq = number of estimated parameters',
+    example:'6 observed variables → 6(7)/2 = 21 pieces of info. Model estimates 18 parameters. df = 21 − 18 = 3.',
+    bloodline:'Born from the gap between available information and model complexity. Determines whether your model is identified (can it even be estimated?) and feeds into χ² and fit indices.',
+    teach:'Think of it as: "how much room does the data have to disagree with my model?" Zero room = the model is forced to fit. More room = a real test.' },
+
+  { id:'cfi', label:'CFI', cat:'testing',
+    plain:'Comparative Fit Index. Compares your model to the worst possible model (the "null" model where nothing correlates with anything). Ranges from 0 to 1. Tells you: "how much better is my model than assuming everything is unrelated?"',
+    formula:'CFI = 1 − [max(χ²model − dfmodel, 0) / max(χ²null − dfnull, 0)]\nBounded [0, 1] by the max() truncation\nWant: CFI ≥ .95 (good), ≥ .90 (acceptable)',
+    example:'Your model χ² = 45, df = 30. Null model χ² = 400, df = 45. CFI = 1 − (15/355) = 0.958. Good fit.',
+    bloodline:'Born from χ² but fixes the sample size problem by comparing to a baseline. One of the most reported fit indices.',
+    teach:'CFI is like a grade where 0% = "everything is random" and 100% = "my model nails it perfectly." You want 95%+.' },
+
+  { id:'rmsea', label:'RMSEA', cat:'testing',
+    plain:'Root Mean Square Error of Approximation. Estimates how much error there is PER DEGREE OF FREEDOM. Unlike χ², it rewards parsimony — simpler models that fit reasonably well get better scores than complex models that fit slightly better.',
+    formula:'RMSEA = √[(χ²−df) / (df × (N−1))]\nWant: < .06 (good), < .08 (acceptable), > .10 (poor)',
+    example:'χ² = 45, df = 30, N = 200. RMSEA = √[(45−30)/(30×199)] = √(15/5970) = 0.050. Good.',
+    bloodline:'Born from χ² and df. Penalizes model complexity. Lower is better (opposite of CFI). Always report with its 90% confidence interval.',
+    teach:'RMSEA asks: "how wrong is my model, on average, adjusted for complexity?" It rewards simplicity — a decent simple model beats a slightly-better complex one.' },
+
+  { id:'srmr', label:'SRMR', cat:'testing',
+    plain:'Standardized Root Mean Square Residual. The average discrepancy between the observed correlations and the correlations your model predicts. Dead simple to interpret: it\'s literally "how far off are my predicted correlations, on average?"',
+    formula:'SRMR = √[mean of squared standardized residual covariances]\nWant: < .08',
+    example:'Your model predicts the correlation between X1 and X2 is 0.45, but the observed is 0.50. That residual is 0.05. SRMR averages all such residuals.',
+    bloodline:'Born directly from the comparison of observed vs. predicted covariance/correlation matrices. The most interpretable fit index.',
+    teach:'SRMR = "on average, how far off are my predicted correlations from reality?" Under 0.08 = you\'re close enough.' },
+
+  { id:'modindex', label:'Modification Index', cat:'sem',
+    plain:'A number for each possible path/covariance you DIDN\'T include in your model. It estimates how much χ² would drop if you freed that parameter. High MI = your model is missing something important.',
+    formula:'MI ≈ expected drop in χ² if this parameter is freed\nRule of thumb: MI > 3.84 is worth examining',
+    example:'MI for an error covariance between items 3 and 7 is 15.2. Adding that covariance would improve fit by about 15 χ² points. But — should you add it? Only if it makes theoretical sense.',
+    bloodline:'Born from χ² residuals. A diagnostic tool, not an automatic model-building tool. Data-driven modification without theory = capitalizing on chance.',
+    teach:'MIs are like the model whispering "you missed something here." But listen critically — sometimes it\'s pointing at noise, not signal. Only add paths you can justify theoretically.' },
+
+  { id:'identification', label:'Model Identification', cat:'sem',
+    plain:'Can the model actually be solved? You need at least as many pieces of known information (observed variances/covariances) as unknown parameters. Under-identified = unsolvable. Just-identified = one unique solution but no test of fit. Over-identified = solvable AND testable.',
+    formula:'Known info: p(p+1)/2\nUnknown: number of free parameters\nOver-identified if known > unknown\nJust-identified if known = unknown\nUnder-identified if known < unknown',
+    example:'With 4 indicators on 1 factor: 4(5)/2 = 10 known. Parameters: 3 free loadings (1 fixed for scale) + 4 error variances + 1 factor variance = 8. df = 10 − 8 = 2. Over-identified. Testable.',
+    bloodline:'A constraint from the math itself. Must be satisfied before estimation can even begin. Directly determines degrees of freedom.',
+    teach:'It\'s like solving equations: 3 equations and 3 unknowns → solvable. 2 equations and 3 unknowns → infinite solutions (under-identified). SEM works the same way but with covariances as your equations.' },
+
+  { id:'cov-matrix', label:'Covariance Matrix', cat:'relation',
+    plain:'A table where every cell is the covariance between two variables (and the diagonal is each variable\'s variance). THIS IS WHAT SEM ACTUALLY ANALYZES. Your raw data gets collapsed into this matrix, and SEM tries to reproduce it.',
+    formula:'Σ (sigma) = the population covariance matrix\nS = the sample covariance matrix\nDiagonal: variances. Off-diagonal: covariances.',
+    example:'3 variables: the matrix is 3×3. Diagonal has Var(X1), Var(X2), Var(X3). Off-diagonal has Cov(X1,X2), Cov(X1,X3), Cov(X2,X3).',
+    bloodline:'Built from all pairwise covariances. The central object of SEM. Model fit = how well the model-implied covariance matrix (Σ̂) matches the observed one (S).',
+    teach:'SEM doesn\'t look at your raw data rows. It looks at this summary: "how does every variable relate to every other variable?" That table of relationships is what the model tries to explain.' },
+
+  { id:'ml', label:'Maximum Likelihood (ML)', cat:'testing',
+    plain:'The default estimation method in SEM. It finds the parameter values that make the observed data most likely (most probable). It assumes multivariate normality, which is why skewness and kurtosis matter.',
+    formula:'Minimize: F_ML = log|Σ̂| + tr(SΣ̂⁻¹) − log|S| − p\nWhere Σ̂ = model-implied, S = observed',
+    example:'ML tries different values for every loading, path coefficient, and variance until it finds the combo that best reproduces the observed covariance matrix.',
+    bloodline:'Born from probability theory. Feeds into χ² (the χ² statistic is (N−1) × F_ML). Assumes normality, which connects back to the shape family.',
+    teach:'ML is the engine that "solves" the SEM. It tries tons of combinations and finds the one where your model\'s predictions are closest to reality. It needs normality to work properly.' },
+
+  // ── NEW: VARIANCE PARTITIONING ──
+  { id:'r-squared', label:'R² (Explained Variance)', cat:'spread',
+    plain:'The proportion of variance in an outcome that your predictors account for. R² = 0.40 means your model explains 40% of why people differ on the outcome. The rest (60%) is unexplained. In SEM, every endogenous variable has an R² telling you how well the model explains it.',
+    formula:'R² = 1 − (residual variance / total variance)\nOr: R² = explained SS / total SS\nRange: 0 to 1',
+    example:'Your SEM predicts depression from stress and anxiety. R² for depression = 0.52. The model accounts for 52% of variation in depression. The other 48% comes from stuff not in your model.',
+    bloodline:'Born from the idea that total variance = explained + unexplained. Connects variance (spread family) to regression (relationship family). Every endogenous variable in SEM gets one.',
+    teach:'R² answers: "how much of the story does my model capture?" It\'s the report card for each variable being predicted. Low R² = your predictors aren\'t enough. High R² = they cover most of it.' },
+
+  { id:'var-partition', label:'Variance Partitioning', cat:'spread',
+    plain:'The fundamental insight: total variance in any variable can be sliced into pieces — the part explained by your model and the part left over (error). In SEM, this goes deeper: variance in an indicator = variance from the factor + variance from error. Variance in a latent outcome = variance from predictors + disturbance.',
+    formula:'Total variance = Explained variance + Unexplained variance\nFor indicators: Var(x) = λ² × Var(factor) + Var(error)\nFor endogenous latents: Var(η) = predicted part + Var(ζ)',
+    example:'A survey item has total variance of 1.0. Factor loading = 0.7. Explained by factor: 0.49. Error: 0.51. About half the item\'s variation is "real" signal and half is noise.',
+    bloodline:'Born from variance itself. THE reason SEM works — it can separate signal from noise by modeling what explains what. R² is the summary; this is the machinery.',
+    teach:'Think of variance as a pie. Variance partitioning is slicing the pie into "stuff my model explains" and "stuff I can\'t account for." SEM slices at multiple levels: item-level and construct-level.' },
+
+  // ── NEW: RELATIONSHIP FAMILY ADDITIONS ──
+  { id:'partial-corr', label:'Partial Correlation', cat:'relation',
+    plain:'The correlation between X and Y AFTER removing the influence of a third variable (Z) from both. It answers: "if everyone had the same level of Z, would X and Y still be related?" This is what SEM does constantly — every path coefficient is essentially a partial effect.',
+    formula:'r_XY.Z = (r_XY − r_XZ × r_YZ) / √[(1−r²_XZ)(1−r²_YZ)]',
+    example:'Correlation between ice cream sales and drowning = 0.85. Partial correlation controlling for temperature = 0.02. The relationship was almost entirely due to the shared cause.',
+    bloodline:'Born from correlation by removing third-variable contamination. Every path coefficient in SEM is a partial effect — it\'s the relationship AFTER accounting for all other paths in the model.',
+    teach:'Regular correlation: "do X and Y move together?" Partial correlation: "do X and Y STILL move together once we account for Z?" SEM paths are all partials — that\'s why they\'re different from zero-order correlations.' },
+
+  { id:'corr-matrix', label:'Correlation Matrix', cat:'relation',
+    plain:'Same idea as the covariance matrix but every value is standardized to −1 to +1. The diagonal is all 1s (everything correlates perfectly with itself). Sometimes SEM is run on the correlation matrix instead of covariance matrix, but this has implications — you lose scale information.',
+    formula:'R = matrix of all pairwise correlations\nDiagonal: all 1.00\nRelation to Σ: R = D⁻¹ΣD⁻¹ where D = diagonal of SDs',
+    example:'With 4 variables, R is 4×4 with 1s on the diagonal and 6 unique correlations filling the rest. It\'s the covariance matrix with the "units" stripped out.',
+    bloodline:'Born from the covariance matrix by standardizing. Sometimes used as SEM input, but this constrains all variances to 1, which can cause issues with standard errors and χ² testing.',
+    teach:'Covariance matrix = relationships in raw units. Correlation matrix = relationships in standardized units. SEM usually wants covariance because it has more information, but you\'ll see both.' },
+
+  { id:'multi-reg', label:'Multiple Regression', cat:'relation',
+    plain:'Regression with more than one predictor. Each coefficient tells you the effect of that predictor WHILE HOLDING ALL OTHERS CONSTANT. This is the direct bridge to SEM — a structural model is basically a system of multiple regressions estimated simultaneously.',
+    formula:'Y = b₀ + b₁X₁ + b₂X₂ + ... + bₖXₖ + e\nEach bᵢ is a PARTIAL regression weight',
+    example:'Depression = 0.35(stress) + 0.28(loneliness) + 0.15(sleep problems) + error. Each weight is the unique contribution of that predictor after the others are accounted for.',
+    bloodline:'Born from simple regression by adding predictors. Each coefficient is now a PARTIAL effect (same idea as partial correlation). SEM structural models = systems of simultaneous multiple regressions.',
+    teach:'Simple regression: one predictor. Multiple regression: several predictors, each getting credit only for what it UNIQUELY contributes. SEM: multiple regressions linked together in a network.' },
+
+  { id:'multicollinearity', label:'Multicollinearity', cat:'relation',
+    plain:'When predictors are too highly correlated with each other. This makes regression weights unstable (small sample changes = wildly different coefficients) and standard errors huge. In SEM, this shows up as identification problems, improper solutions (negative variances), or unstable estimates.',
+    formula:'Detected by: VIF > 10, tolerance < 0.1\nOr correlations among predictors > 0.85',
+    example:'Stress and anxiety correlate at r = 0.90. You put both in as predictors of depression. Their regression weights bounce around wildly because the model can\'t tell their effects apart.',
+    bloodline:'Born from the relationship between predictors. In SEM, high correlations between latent variables can cause similar problems — especially discriminant validity failures where two "different" constructs are basically the same thing.',
+    teach:'If two predictors are almost interchangeable, the model doesn\'t know how to divide credit between them. It\'s like asking "how much of the goal was the left foot vs the right foot?" when both kicked simultaneously.' },
+
+  // ── NEW: SEM ADDITIONS ──
+  { id:'endogenous', label:'Endogenous Variable', cat:'sem',
+    plain:'A variable that has at least one arrow pointing TO it in the path diagram — it\'s being predicted by something else in the model. It has a disturbance term (ζ) representing all the causes NOT in your model. In SEM, endogenous variables get R² values.',
+    formula:'η (eta) = common symbol for endogenous latent variables\nAlways has a disturbance (ζ) attached',
+    example:'In "stress → anxiety → depression," both anxiety and depression are endogenous because something in the model predicts them. Stress is exogenous (nothing in the model predicts it).',
+    bloodline:'Born from the structural model specification. Partnered with exogenous. Every endogenous variable has unexplained variance (disturbance) and can be evaluated by R².',
+    teach:'Endogenous = "being caused by stuff inside my model." If there\'s an arrow pointing at it, it\'s endogenous. It\'s on the receiving end.' },
+
+  { id:'exogenous', label:'Exogenous Variable', cat:'sem',
+    plain:'A variable with NO arrows pointing to it — nothing in the model predicts it. Its variance is simply estimated, not explained. These are your starting points, your "given" variables. They can covary with each other but aren\'t predicted by anything in the model.',
+    formula:'ξ (xi) = common symbol for exogenous latent variables\nNo disturbance — just has its own variance and covariances with other exogenous variables',
+    example:'In "stress → anxiety → depression," stress is exogenous. The model doesn\'t try to explain WHY people differ in stress — it takes that as a given and models what stress predicts.',
+    bloodline:'Partnered with endogenous. Exogenous variables are the "inputs" to the structural model. Their variances and covariances are parameters to estimate, not outcomes to explain.',
+    teach:'Exogenous = "caused by stuff OUTSIDE my model." I\'m not explaining it, I\'m just using it as a starting point. If nothing points to it, it\'s exogenous.' },
+
+  { id:'reflective', label:'Reflective Indicators', cat:'sem',
+    plain:'The standard CFA setup: the latent variable CAUSES the indicators. If your depression goes up, all your depression items should go up because depression is driving the responses. Arrows go FROM latent TO observed. Indicators should be correlated and interchangeable.',
+    formula:'x = λξ + δ\n(observed = loading × latent + error)\nArrow direction: latent → observed',
+    example:'Depression → "I felt sad," "I felt hopeless," "I couldn\'t enjoy things." Depression is the CAUSE of responding high on these items. Remove depression, the responses drop.',
+    bloodline:'The standard CFA model. Most SEM uses reflective indicators. Contrasted with formative indicators where the arrow direction reverses.',
+    teach:'Reflective = "the hidden thing causes the visible things." A thermometer reflects temperature — temperature causes the mercury to move, not the other way around.' },
+
+  { id:'formative', label:'Formative Indicators', cat:'sem',
+    plain:'The opposite of reflective: the observed variables CAUSE the latent composite. Socioeconomic status is formed BY income, education, and occupation — they don\'t all have to correlate, and they\'re not interchangeable. Arrows go FROM observed TO latent.',
+    formula:'η = γ₁x₁ + γ₂x₂ + ... + γₖxₖ + ζ\nArrow direction: observed → latent',
+    example:'SES is formed by income, education level, and neighborhood quality. These don\'t have to correlate (a professor has high education but maybe low income). They DEFINE SES rather than reflecting it.',
+    bloodline:'The alternative to reflective. Changes everything about model specification, identification (harder), and interpretation. Much less common but important to recognize.',
+    teach:'Formative = "the visible things create the hidden thing." A recipe is formative — the ingredients MAKE the dish. Change one ingredient, the dish changes. Reflective is the reverse.' },
+
+  { id:'mimic', label:'MIMIC Model', cat:'sem',
+    plain:'Multiple Indicators, Multiple Causes. A hybrid model where a latent variable has reflective indicators (arrows out, standard CFA) AND observed covariates that predict it directly (arrows in, like formative). Instead of splitting your sample into groups for multi-group CFA, you model the grouping variable as a direct predictor of the latent factor. More parsimonious and preserves statistical power with small samples.',
+    formula:'Measurement: x = λη + δ  (indicators reflect the latent)\nStructural: η = γ₁z₁ + γ₂z₂ + ... + ζ  (covariates predict the latent)\nγ = effect of covariate on latent mean',
+    example:'Gender and age (observed covariates) → "math anxiety" (latent) → survey items about worry, avoidance, physiological stress during math. Instead of running separate CFA models for males vs. females, gender enters as a predictor. γ tells you how much the latent mean shifts across groups.',
+    bloodline:'Combines reflective indicators (from CFA/measurement model) with formative-style causes. Alternative to multi-group CFA for testing covariate effects on latent means. Tradeoff: assumes measurement invariance without explicitly testing it.',
+    teach:'MIMIC is the shortcut when you want to ask "does this variable shift the latent factor?" without splitting your sample into groups. The covariate predicts the latent directly, and the latent still has its normal reflective indicators. You get power savings but you lose the ability to explicitly test whether the measurement works the same across groups.' },
+
+  { id:'equiv-models', label:'Equivalent Models', cat:'sem',
+    plain:'Different path diagrams that produce IDENTICAL fit statistics. If A → B fits the same as B → A, your data can\'t tell you which is correct — only theory can. This is one of the biggest traps in SEM: good fit doesn\'t mean right model.',
+    formula:'Models are equivalent when they imply the same covariance matrix\nΣ̂₁ = Σ̂₂ → identical χ², CFI, RMSEA, etc.',
+    example:'Model 1: anxiety → depression. Model 2: depression → anxiety. Both fit identically. The data literally cannot distinguish them. You need theory (or longitudinal data) to choose.',
+    bloodline:'Born from the mathematical reality that many different causal stories produce the same pattern of correlations. This limits what SEM can prove — it can reject models but can\'t confirm the "right" one.',
+    teach:'SEM cannot prove causation because for any model that fits, there are usually equivalent alternatives. Good fit = "this story is consistent with the data." Not "this story is true."' },
+
+  { id:'fit-philosophy', label:'Model Fit Philosophy', cat:'testing',
+    plain:'You\'re never asking "is my model TRUE?" because all models are simplifications. You\'re asking "is it close ENOUGH to be useful?" George Box: "All models are wrong, but some are useful." Fit indices tell you how much your simplification distorts reality.',
+    formula:'Perfect fit: Σ̂ = S (model reproduces data exactly)\nAcceptable fit: Σ̂ ≈ S (close enough to be useful)\nPoor fit: Σ̂ ≠ S (model misses important patterns)',
+    example:'Your model has CFI = .96, RMSEA = .04. Is the model "true"? No. Is it close enough to the data that the simplification is useful? Yes.',
+    bloodline:'The philosophy underneath all fit indices. Connected to equivalent models (good fit ≠ right model) and modification indices (the temptation to over-fit).',
+    teach:'No model is a perfect description of reality. The question is always: "is this simplification USEFUL?" If the fit is adequate, the model is a helpful approximation. If not, something important is missing.' },
+
+  // ── NEW: ESTIMATION ADDITIONS ──
+  { id:'robust-ml', label:'Robust ML (MLR)', cat:'testing',
+    plain:'A version of ML that corrects the standard errors and χ² test when your data isn\'t perfectly normal. It doesn\'t change the parameter estimates (loadings, paths) — those stay the same. It just fixes the stuff that breaks when normality is violated: standard errors and the χ² test.',
+    formula:'Same parameter estimates as ML\nSatorra-Bentler scaled χ² for corrected fit testing\nRobust SEs = sandwich estimator',
+    example:'Your data has kurtosis of 8 (way above normal). Regular ML gives artificially small SEs (making everything look significant). MLR corrects the SEs to be appropriate.',
+    bloodline:'Born from ML when normality is violated. Connected to kurtosis and skewness in the shape family. The "first-line fix" before going to completely different estimators.',
+    teach:'ML needs normality. When you don\'t have it, MLR keeps the same estimates but fixes the confidence intervals and significance tests so they\'re honest about the non-normality.' },
+
+  { id:'bootstrap', label:'Bootstrapping', cat:'testing',
+    plain:'Instead of assuming a distribution, resample your actual data thousands of times (with replacement), run the analysis each time, and use that distribution of results to build confidence intervals. Especially important in SEM for testing indirect effects, which have notoriously non-normal distributions.',
+    formula:'1. Resample N cases (with replacement)\n2. Estimate model on resample\n3. Save parameter estimates\n4. Repeat 1000-5000 times\n5. Use the distribution of saved estimates for CIs',
+    example:'To test if the indirect effect (stress → anxiety → depression = 0.22) is significant: bootstrap 5000 times, get 5000 indirect effects, check if the 95% CI excludes zero.',
+    bloodline:'Born from resampling logic. Bypasses normality assumptions entirely. The gold standard for testing indirect effects in SEM because the product of paths is not normally distributed.',
+    teach:'Bootstrapping is "let the data speak for itself." Instead of assuming a formula for uncertainty, you literally see how much your results would change with different samples. It\'s brute-force honesty.' },
+
+  // ── NEW: GENERAL STATS ADDITIONS ──
+  { id:'df-general', label:'Degrees of Freedom (General)', cat:'testing',
+    plain:'How many values are "free to vary" after you\'ve imposed constraints. If you have 5 numbers that must add to 100, only 4 are free — the 5th is locked. Every time you estimate a parameter, you use up a degree of freedom. More df = more power to detect effects.',
+    formula:'General: df = n − number of estimated parameters\nIn SEM: df = known information − free parameters\nAlways: df ≥ 0 for the model to be estimable',
+    example:'You have 10 data points and estimate a mean and SD. df = 10 − 2 = 8. Those 8 remaining degrees of freedom represent the information available to test your model.',
+    bloodline:'The general concept underneath SEM-specific df. Anytime you estimate something, you "spend" a degree of freedom. The leftover df is what powers your statistical tests.',
+    teach:'Imagine you have 10 people and I tell you the average is 50. Now only 9 of those people\'s scores are free to be anything — the 10th is determined by the constraint. That "9" is your df.' },
+
+  { id:'power', label:'Power & Sample Size', cat:'testing',
+    plain:'Statistical power = the probability of detecting an effect that actually exists. In SEM, you need LARGE samples — rules of thumb range from 200 to 500+, depending on model complexity. Low power means real effects look non-significant, leading you to wrongly conclude "no relationship."',
+    formula:'Power = 1 − P(Type II error)\nWant power ≥ .80\nRough SEM minimums:\n  Simple model: N ≥ 200\n  Complex model: N ≥ 400-500\n  Per-parameter rule: 10-20 cases per parameter',
+    example:'You test a model with 30 parameters but only have N = 100. Power is abysmal. A real path of β = 0.20 might not reach significance, and you\'d mistakenly conclude it doesn\'t exist.',
+    bloodline:'Connected to standard error (bigger N → smaller SE → more power), sample size, and the inference family broadly. Underpowered SEM studies produce untrustworthy results.',
+    teach:'Power is "can my study actually find what\'s there?" Low power = even real effects are invisible. In SEM, this is brutal because you need lots of parameters estimated, so you need lots of people.' },
+
+  // ── MATRIX ALGEBRA CLUSTER ──
+  { id:'determinant', label:'Determinant', cat:'relation',
+    plain:'A single number computed from a square matrix that tells you whether the matrix can be inverted (solved). If the determinant is zero, the matrix is "singular" — it can\'t be inverted and your SEM can\'t be estimated. A determinant near zero means near-singularity, usually caused by multicollinearity. In ML estimation, the log of the determinant appears directly in the fit function.',
+    formula:'det(A) or |A|\nFor 2×2: |A| = ad − bc\ndet = 0 → singular (non-invertible)\ndet ≈ 0 → near-singular (unstable)',
+    example:'Your covariance matrix has a determinant of 0.0001. That\'s dangerously close to zero — probably two variables are almost perfectly correlated, making the matrix nearly singular and estimation unstable.',
+    bloodline:'A property of the covariance matrix. Appears in the ML fit function as log|Σ̂|. Connected to multicollinearity (which drives det toward zero) and identification (singular matrices = unsolvable models). Requires matrix inverse to exist.',
+    teach:'The determinant is the matrix\'s "health check." Healthy (det well above zero) = the matrix contains real, independent information. Sick (det near zero) = your variables are so redundant the math breaks down.' },
+
+  { id:'matrix-inverse', label:'Matrix Inverse', cat:'relation',
+    plain:'The matrix equivalent of dividing. If you multiply a matrix by its inverse, you get the identity matrix (the matrix version of 1). SEM estimation REQUIRES inverting the covariance matrix. If the matrix is singular (determinant = 0), no inverse exists and estimation fails.',
+    formula:'A × A⁻¹ = I (identity matrix)\nOnly exists when det(A) ≠ 0\nAppears in ML: tr(SΣ̂⁻¹)',
+    example:'The ML fit function contains Σ̂⁻¹ — the inverse of the model-implied covariance matrix. If Σ̂ is singular, this inverse doesn\'t exist and the whole estimation crashes.',
+    bloodline:'Required by ML estimation. The inverse only exists when the determinant is non-zero. Multicollinearity and under-identification both threaten invertibility.',
+    teach:'Regular math: to solve 3x = 6, you divide by 3 (multiply by 1/3). Matrix math: to "divide" by a matrix, you multiply by its inverse. No inverse = no solution.' },
+
+  { id:'transpose', label:'Transpose', cat:'relation',
+    plain:'Flip a matrix across its diagonal — rows become columns, columns become rows. A covariance matrix is SYMMETRIC, meaning it equals its own transpose (because Cov(X,Y) = Cov(Y,X)). This symmetry is why a p×p covariance matrix only has p(p+1)/2 unique elements, which determines degrees of freedom in SEM.',
+    formula:'(Aᵀ)ᵢⱼ = Aⱼᵢ\nSymmetric matrix: A = Aᵀ\nCovariance matrices are always symmetric',
+    example:'A 4×4 covariance matrix has 16 cells but only 10 unique values (4 variances on the diagonal + 6 covariances above the diagonal). The below-diagonal values are just the transpose — mirrors of what\'s above.',
+    bloodline:'Fundamental matrix operation. The symmetry of covariance matrices (Σ = Σᵀ) is why SEM\'s degrees of freedom formula uses p(p+1)/2 — that\'s the count of unique elements.',
+    teach:'Covariance of X with Y is the same as covariance of Y with X. So the matrix is a mirror image across the diagonal. That mirror symmetry cuts the unique information roughly in half.' },
+
+  { id:'eigenvalue', label:'Eigenvalues', cat:'relation',
+    plain:'Special numbers associated with a matrix that tell you about its "dimensions of variation." In a covariance matrix, eigenvalues represent the variance along each principal axis. In factor analysis, large eigenvalues correspond to strong factors. An eigenvalue of zero means a dimension with no variation — another sign of singularity.',
+    formula:'Av = λv\nWhere λ = eigenvalue, v = eigenvector\nΣ eigenvalues = Σ variances (trace)\nEigenvalue = 0 → singular',
+    example:'A covariance matrix for 5 variables has eigenvalues: 3.2, 1.1, 0.8, 0.5, 0.02. The last one (0.02) is nearly zero — those 5 variables are almost reducible to 4 dimensions. In factor analysis, you might extract 3 or 4 factors.',
+    bloodline:'Born from matrix algebra. Connected to factor analysis (how many factors?), to determinant (product of all eigenvalues = determinant), and to variance (eigenvalues ARE variances along rotated axes).',
+    teach:'Eigenvalues answer: "how many real dimensions of variation are in this matrix?" Big eigenvalue = a strong dimension. Tiny eigenvalue = that dimension barely exists. Product of all eigenvalues = the determinant.' },
+
+  { id:'eigenvector', label:'Eigenvectors', cat:'relation',
+    plain:'The direction that goes with each eigenvalue. An eigenvector tells you WHICH weighted combination of your original variables defines a dimension of variation. The eigenvalue tells you HOW MUCH variance is along that direction. Together they decompose a matrix into independent axes of variation — the foundation of PCA and factor analysis.',
+    formula:'Av = λv\nv = eigenvector (direction), λ = eigenvalue (magnitude)\nLoadings = Eigenvectors × √(Eigenvalues)\nEigenvectors of a symmetric matrix are orthogonal (perpendicular)',
+    example:'In a 3-variable covariance matrix, the first eigenvector might be [0.58, 0.57, 0.58] — meaning all three variables contribute roughly equally to the biggest dimension of variation. The second eigenvector [0.71, 0, −0.71] captures contrast between variables 1 and 3.',
+    bloodline:'Paired with eigenvalues — direction + magnitude. Connected to factor loadings (loadings = eigenvectors scaled by √eigenvalue), to PCA (principal components ARE the eigenvectors), and to rotation (rotating eigenvectors for interpretability gives you rotated factor solutions).',
+    teach:'Eigenvalue = how important a dimension is. Eigenvector = what that dimension IS. In factor analysis, the eigenvector tells you the recipe — which variables combine to form each factor — and the eigenvalue tells you how much that factor matters.' },
+
+  { id:'trace', label:'Trace', cat:'relation',
+    plain:'The trace of a square matrix is the sum of its diagonal elements. For a covariance matrix, the diagonal holds variances, so the trace equals the total variance across all variables. The trace also equals the sum of all eigenvalues. In ML estimation the trace appears in the fit function as tr(SΣ̂⁻¹), connecting observed data to the model. If trace = 0, there is no variability at all.',
+    formula:'tr(A) = Σ aᵢᵢ (sum of diagonal)\nFor covariance matrix: tr(Σ) = Σ variances = total variance\nΣ eigenvalues = tr(Σ)\nML fit function contains tr(SΣ̂⁻¹)',
+    example:'A covariance matrix for 3 variables has diagonal entries 4.0, 2.5, 1.5. The trace = 8.0, meaning the total variance across all three variables is 8. The eigenvalues (say 4.2, 2.3, 1.5) also sum to 8.',
+    bloodline:'The trace links the covariance matrix diagonal to total variance, to eigenvalues (sum of eigenvalues = trace), and to ML estimation (trace appears in the fit function). The determinant is the PRODUCT of eigenvalues; the trace is their SUM — two complementary summaries of the same matrix.',
+    teach:'Determinant and trace are the two headline numbers for any square matrix. Determinant = product of eigenvalues (tells you if the matrix is invertible). Trace = sum of eigenvalues = total variance (tells you how much information the matrix carries). Together they give you the matrix\'s vital signs.' },
+
+  // ── RODGERS & NICEWANDER: 13 WAYS TO SEE r ──
+  { id:'r-stdcov', label:'r as Standardized Covariance', cat:'relation',
+    plain:'Rodgers & Nicewander Way #2: correlation is just covariance rescaled by dividing by both standard deviations. The covariance is unbounded and depends on the scales of X and Y. Dividing by SD_x × SD_y squeezes it into the −1 to +1 range. This is the definition you already know — but seeing it as ONE of 13 perspectives is the point.',
+    formula:'r = Cov(X,Y) / (Sₓ × Sᵧ)\n= Sₓᵧ / (Sₓ × Sᵧ)',
+    example:'Cov = 23, SDₓ = 6, SDᵧ = 8. r = 23/48 = 0.48. You just rescaled the covariance from "23 somethings" to "0.48 on a universal scale."',
+    bloodline:'The most common definition. From Rodgers & Nicewander (1988). This is the formula you see in textbooks, but it\'s just one way to see what r is doing.',
+    teach:'This is the "official" definition. But the paper\'s whole point is that if this is the ONLY way you see r, you\'re missing 12 other insights. Each formula reveals something different about what correlation means.' },
+
+  { id:'r-slope', label:'r as Standardized Slope', cat:'relation',
+    plain:'Rodgers & Nicewander Way #3: when you standardize both variables to z-scores, the slope of the regression line IS the correlation. No rescaling needed. This directly connects correlation to regression — they\'re the same operation when variables are standardized.',
+    formula:'ẑᵧ = r × zₓ\nSlope of standardized regression = r\nThis is why β = r in simple regression',
+    example:'Standardize stress and anxiety to z-scores. Regress z-anxiety on z-stress. The slope IS r. In simple regression, β and r are identical because standardization makes them the same thing.',
+    bloodline:'Directly explains why β = r in simple regression. Born from the connection between correlation and regression. Key bridge concept for understanding standardized path coefficients in SEM.',
+    teach:'This is the "aha" for why β = r in simple regression. When both variables are on the z-score scale, the slope of the best-fit line IS the correlation. Same number, two names, because they\'re the same thing in that context.' },
+
+  { id:'r-propvar', label:'r² as Proportion of Variance', cat:'relation',
+    plain:'Rodgers & Nicewander Way #5: r² (correlation squared) tells you what proportion of variance in Y is "explained" by X. This is the coefficient of determination. r = 0.50 means r² = 0.25, so X accounts for 25% of the variability in Y. This directly connects correlation to R² and variance partitioning.',
+    formula:'r² = SS_regression / SS_total\n= explained variance / total variance\nr = √(explained var / total var)',
+    example:'r = 0.60 between study hours and test scores. r² = 0.36. Study hours account for 36% of the variation in test scores. The other 64% is other stuff.',
+    bloodline:'Directly connects correlation to R² and variance partitioning. In SEM, this extends to R² for endogenous variables. The squared loading in CFA is the same idea — proportion of indicator variance explained by the factor.',
+    teach:'Squaring r gives you a percentage. That percentage answers "how much of the variability in Y does X account for?" This is the same logic as R² in regression and λ² for factor loadings.' },
+
+  { id:'r-meanzprod', label:'r as Mean z-score Product', cat:'relation',
+    plain:'Rodgers & Nicewander Way #6: convert both variables to z-scores, multiply each person\'s z_x by their z_y, and take the average. That average IS r. This reveals the "product-moment" in "Pearson product-moment correlation" — it\'s literally the mean of the products of standardized moments.',
+    formula:'r = Σ(zₓᵢ × zᵧᵢ) / (n−1)\n= mean of (z-score on X × z-score on Y)\n(using sample z-scores with n−1 denominator)',
+    example:'Person 1: zₓ = 1.2, zᵧ = 0.8, product = 0.96. Person 2: zₓ = −0.5, zᵧ = −0.7, product = 0.35. Average all these products across everyone → that\'s r.',
+    bloodline:'This is the z-score version of the cross-product → covariance pipeline. Cross-product of RAW deviations averaged = covariance. Cross-product of STANDARDIZED deviations averaged = correlation. Same bloodline, standardized.',
+    teach:'This connects everything: z-scores are from the shape family. Cross-products are from the relationship family. The mean of their product IS the correlation. It literally ties the families together.' },
+
+  { id:'r-cosine', label:'r as Cosine of Angle', cat:'relation',
+    plain:'Rodgers & Nicewander Way #8: in a geometric space where each person is a dimension, the two variables are vectors, and r equals the cosine of the angle between them. Perpendicular vectors (90°) → r = 0. Same direction (0°) → r = 1. Opposite (180°) → r = −1. This is how factor analysis diagrams work — the angle between factor vectors represents their correlation.',
+    formula:'r = cos(α)\nα = 0° → r = 1 (identical)\nα = 90° → r = 0 (uncorrelated)\nα = 180° → r = −1 (opposite)',
+    example:'Two variables plotted as vectors. The angle between them is 60°. cos(60°) = 0.50. The correlation is 0.50. In factor analysis plots, factor axes at 90° are uncorrelated (orthogonal rotation).',
+    bloodline:'Geometric interpretation. Directly explains orthogonal vs. oblique rotation in factor analysis. When factors are allowed to correlate (oblique), the angle between them is less than 90° and cos(angle) = their correlation.',
+    teach:'This is the most visual interpretation. Picture two arrows. The angle between them IS the correlation (via cosine). Small angle = high correlation. Right angle = zero. This is literally how factor analysis rotation works.' },
+
+  { id:'r-geomean', label:'r as Geometric Mean of Slopes', cat:'relation',
+    plain:'Rodgers & Nicewander Way #4: there are TWO regression lines — Y predicted from X, and X predicted from Y. They have different slopes (b_yx and b_xy). The correlation is the geometric mean of these two slopes. This reveals that r is symmetric — it doesn\'t care which variable is "predicting" which.',
+    formula:'r = ±√(b_yx × b_xy)\nWhere b_yx = slope of Y on X\nand b_xy = slope of X on Y',
+    example:'Regression of Y on X: slope = 0.72. Regression of X on Y: slope = 0.32. r = √(0.72 × 0.32) = √0.2304 = 0.48.',
+    bloodline:'Connects the two possible regression directions. Shows why correlation is symmetric (r_xy = r_yx) but regression is directional (b_yx ≠ b_xy). In SEM, path direction matters — which is regression logic, not correlation logic.',
+    teach:'Correlation doesn\'t care about direction — r(X,Y) = r(Y,X). But regression does — predicting Y from X gives a different slope than predicting X from Y. r is the geometric average of both directions. SEM picks a direction, so it uses regression, not correlation.' },
+
+  // ── VALIDITY ──
+  { id:'convergent', label:'Convergent Validity', cat:'sem',
+    plain:'Evidence that indicators that SHOULD be related to each other actually ARE related. In CFA, this means your factor loadings are strong and significant — your items are actually measuring the same underlying construct. If loadings are weak, your indicators aren\'t converging on anything.',
+    formula:'Assessed by:\n• Factor loadings > .50 (ideally > .70)\n• AVE (Average Variance Extracted) > .50\n• Composite reliability > .70',
+    example:'Four depression items all load above .65 on the depression factor. AVE = .52. They\'re converging — they\'re measuring the same thing. Good convergent validity.',
+    bloodline:'Born from factor loadings. If loadings are strong, indicators share substantial variance with their factor → convergent validity. AVE is the average of squared loadings — directly from variance partitioning.',
+    teach:'Convergent validity = "do my items agree with each other?" If they\'re all measuring depression, they should all load strongly on the depression factor. Weak loadings = the items aren\'t converging on the same construct.' },
+
+  { id:'discriminant', label:'Discriminant Validity', cat:'sem',
+    plain:'Evidence that constructs that SHOULD be different actually ARE different. If your anxiety factor and depression factor correlate at .95, are they really two separate things? Discriminant validity says the correlation between factors should be substantially less than 1.0, and each factor should share more variance with its own indicators than with other factors.',
+    formula:'Assessed by:\n• Factor correlations < ~.85\n• AVE for each factor > squared correlation between factors\n  (Fornell-Larcker criterion)\n• HTMT < .85 or .90',
+    example:'Anxiety and depression factors correlate at .72. AVE for anxiety = .55, AVE for depression = .52. Squared correlation = .52. AVE_anxiety (.55) > .52 ✓ but AVE_depression (.52) = .52 — borderline. These constructs are barely distinguishable.',
+    bloodline:'Born from the correlation between latent variables. Connected to multicollinearity (if factors aren\'t discriminant, you have latent-level multicollinearity). Failure = your "two" constructs might really be one.',
+    teach:'Convergent = "do my items agree?" Discriminant = "are my constructs actually different things?" If two factors correlate too highly, they\'re not discriminant — you might be measuring the same thing twice with different labels.' },
+
+  // ── PARCELING ──
+  { id:'parceling', label:'Parceling', cat:'sem',
+    plain:'Combining multiple items into a smaller number of aggregates (parcels) before running CFA/SEM. Instead of 20 individual items, you might create 4 parcels of 5 items each. This reduces parameters, improves normality, and can improve fit — but it hides measurement problems and is controversial.',
+    formula:'Parcel = average (or sum) of a subset of items\nReduces indicators from k items to p parcels (p < k)\nFewer parameters → more df → easier estimation',
+    example:'You have 16 items measuring self-esteem. Instead of 16 loadings, you create 4 parcels of 4 items each. Now you only estimate 4 loadings. Fit improves, but if one item was terrible, it\'s hidden inside a parcel.',
+    bloodline:'Connected to measurement model (parcels replace individual items as indicators), identification (fewer parameters = easier to identify), and convergent/discriminant validity (parceling can mask problems).',
+    teach:'Parceling is a shortcut that trades transparency for convenience. Fewer items → simpler model → better fit. But it sweeps measurement problems under the rug. Many methodologists argue you should only parcel items that are already known to be unidimensional.' },
+
+  // ── NESTED MODELS & CHI-SQUARE DIFFERENCE ──
+  { id:'nested', label:'Nested Models', cat:'testing',
+    plain:'Model A is nested within Model B if A is a special case of B with some parameters fixed (usually to zero). The simpler model is nested inside the more complex one. You can compare them directly using the chi-square difference test — something you CAN\'T do with non-nested models.',
+    formula:'Model A (simpler) nested in Model B (complex) if:\nA = B with some parameters constrained\nΔdf = df_A − df_B > 0\nΔχ² = χ²_A − χ²_B',
+    example:'Model B: stress → anxiety → depression (plus stress → depression). Model A: same but stress → depression fixed to 0. A is nested in B — it\'s B with one path removed.',
+    bloodline:'Born from the relationship between model complexity and degrees of freedom. Parent of the chi-square difference test. Connected to identification (removing paths increases df) and model comparison.',
+    teach:'Nesting means one model is a "restricted version" of another. The restricted model says "this path equals zero." The unrestricted model says "let the data decide." You can test whether the restriction hurts fit.' },
+
+  { id:'chisq-diff', label:'χ² Difference Test', cat:'testing',
+    plain:'Subtract the chi-square of the complex model from the chi-square of the simpler (nested) model. If this difference is significant (using the difference in df), the constraint significantly worsened fit → the more complex model is better. If not significant, keep the simpler model.',
+    formula:'Δχ² = χ²_restricted − χ²_unrestricted\nΔdf = df_restricted − df_unrestricted\nCompare Δχ² to χ² distribution with Δdf\nNote: with MLR, use Satorra-Bentler scaled difference test',
+    example:'Full model: χ² = 42, df = 30. Restricted (removed one path): χ² = 49, df = 31. Δχ² = 7, Δdf = 1. p < .01. The path matters — keep it in.',
+    bloodline:'Born from comparing nested models via their chi-square values. Connected to robust ML (need Satorra-Bentler correction with MLR). The primary tool for testing whether specific paths are necessary.',
+    teach:'This is how you test "does this specific path matter?" Remove it, see if fit gets significantly worse. If yes → the path matters. If no → you don\'t need it. Simple but powerful.' },
+
+  // ── FIT INDEX ADDITIONS (from Kenny) ──
+  { id:'tli', label:'TLI / NNFI', cat:'testing',
+    plain:'Tucker-Lewis Index (also called Non-Normed Fit Index). Like CFI, it compares your model to a null/baseline model, but it penalizes complexity more aggressively using the χ²/df ratio. Kenny actually prefers TLI over CFI because CFI\'s penalty of just 1 per parameter is too lenient. TLI can theoretically exceed 1.0 or go below 0 (it\'s "non-normed"), though it\'s typically capped at 1.',
+    formula:'TLI = [χ²/df(null) − χ²/df(model)] / [χ²/df(null) − 1]\nWant: TLI ≥ .95 (good), ≥ .90 (acceptable)\nPenalty per parameter: χ²/df (heavier than CFI\'s penalty of 1)',
+    example:'Null model: χ² = 400, df = 45 → ratio = 8.89. Your model: χ² = 45, df = 30 → ratio = 1.50. TLI = (8.89 − 1.50)/(8.89 − 1) = 7.39/7.89 = 0.937. Acceptable but below .95.',
+    bloodline:'Born from χ² like CFI, but with a heavier complexity penalty. Always ≤ CFI when both are below 1.0. Both depend on the null model — if the null model RMSEA is below .158, both TLI and CFI can be misleadingly low. Report TLI or CFI, not both.',
+    teach:'TLI and CFI are siblings, but TLI is the stricter one. CFI barely punishes you for adding parameters (penalty = 1). TLI punishes harder (penalty = χ²/df). If your model is overfit with unnecessary paths, TLI will catch it before CFI does.' },
+
+  { id:'baseline-model', label:'Baseline (Null) Model', cat:'testing',
+    plain:'The "worst-case" reference model that incremental fit indices (CFI, TLI) compare your model against. In CFA, it\'s the model where all variables have variances but zero correlations — "nothing is related to anything." Your model\'s CFI and TLI measure how much better you are than this floor. Different software can define it differently, which affects your fit indices.',
+    formula:'CFA null: free means & variances, all covariances = 0\ndf(null) = k(k−1)/2 where k = observed variables\nAll incremental indices = (null − model) / null',
+    example:'With 6 variables, the null model fixes all 15 covariances to zero. Its χ² is huge (say 800). Your model χ² is 45. CFI and TLI measure how much of that 800-point gap your model closes.',
+    bloodline:'The denominator in every incremental fit index. If the null model doesn\'t fit terribly (RMSEA < .158), CFI and TLI lose their reference point and become unreliable. Connected to CFI, TLI, and the fit philosophy concept.',
+    teach:'CFI and TLI are always asking: "how much better are you than assuming nothing relates to anything?" The null model IS that "nothing relates" assumption. If your variables genuinely don\'t correlate much, the null model isn\'t that bad, and your CFI/TLI will look artificially low.' },
+
+  { id:'aic', label:'AIC (Akaike Information Criterion)', cat:'testing',
+    plain:'A model comparison tool that balances fit against complexity. Lower AIC = better balance. Unlike CFI/RMSEA, AIC has no fixed cutoff — it\'s only meaningful when comparing two or more models. The key advantage: it works for NON-NESTED models, so you can compare structurally different models that χ² difference tests can\'t touch.',
+    formula:'AIC = −2L + 2p\nL = log-likelihood, p = number of parameters\nPenalty per parameter: 2\nLower is better (no fixed cutoff)',
+    example:'Model A (3 factors): AIC = 5420. Model B (4 factors): AIC = 5395. Model B fits better even after penalizing the extra parameters. But you can\'t say either is "good" in absolute terms — AIC is purely comparative.',
+    bloodline:'Born from information theory. Connected to ML estimation (uses the log-likelihood). Sibling of BIC, which penalizes complexity more harshly. Can compare non-nested models, unlike the χ² difference test.',
+    teach:'AIC answers: "which model loses the least information about the data while staying simple?" It\'s a relative scorecard, not an absolute grade. Comparing two AIC values tells you which model wins; a single AIC value tells you nothing.' },
+
+  { id:'bic', label:'BIC (Bayesian Information Criterion)', cat:'testing',
+    plain:'Like AIC but with a harsher complexity penalty that grows with sample size. BIC punishes extra parameters more, so it favors simpler models than AIC does. When AIC and BIC disagree, AIC picked the more complex model and BIC picked the simpler one — and the truth depends on whether parsimony or fit matters more for your question.',
+    formula:'BIC = −2L + ln(N) × p\nL = log-likelihood, N = sample size, p = parameters\nPenalty per parameter: ln(N)\nCrossover at N = e² ≈ 7.4; above that, BIC penalizes harder than AIC.',
+    example:'With N = 200, ln(200) = 5.3, so BIC charges 5.3 per parameter vs. AIC\'s 2. Model A (simpler): BIC = 5480. Model B (complex): BIC = 5510. BIC prefers A even though AIC preferred B.',
+    bloodline:'Sibling of AIC with a heavier parsimony penalty. The penalty scales with N, so BIC gets increasingly strict with larger samples. Connected to ML estimation and the fit philosophy of balancing fit vs. simplicity.',
+    teach:'AIC and BIC are the "good cop / bad cop" of model comparison. AIC is lenient on complexity. BIC is strict. When they agree, you can be confident. When they disagree, it tells you the answer depends on how much you value simplicity.' },
+
+  { id:'pclose', label:'PCLOSE (Test of Close Fit)', cat:'testing',
+    plain:'A p-value that tests whether your RMSEA is ≤ .05 in the population. If PCLOSE > .05, you can\'t reject that your model has "close fit." If PCLOSE < .05, your model fits worse than "close." It\'s essentially a significance test of RMSEA itself — not just "what\'s my RMSEA?" but "could my RMSEA plausibly be this small?"',
+    formula:'H₀: RMSEA ≤ .05 (close fit)\nH₁: RMSEA > .05\nWant: PCLOSE > .05 (can\'t reject close fit)\nBased on non-central χ² distribution',
+    example:'RMSEA = .062 but PCLOSE = .21. Even though point estimate exceeds .05, the test says you can\'t rule out close fit — the .062 could be sampling error from a population RMSEA of .05 or less.',
+    bloodline:'Born from RMSEA and its confidence interval. Formalizes the "is my RMSEA meaningfully above .05?" question. Connected to power — low df and small N reduce the power of this test, making it less informative.',
+    teach:'RMSEA gives you a point estimate. PCLOSE tells you whether that estimate is significantly worse than "close fit." It\'s the confidence interval logic applied to RMSEA: your observed RMSEA might just be noise around a truly close-fitting model.' },
+
+  // ── FIT INDEX DEBATES ──
+  { id:'hu-bentler', label:'Fit Cutoff Debates (Hu & Bentler)', cat:'testing',
+    plain:'Hu & Bentler (1999) proposed the specific cutoffs everyone uses: CFI ≥ .95, RMSEA ≤ .06, SRMR ≤ .08. These became gospel, but they were derived from specific conditions (simple models, large samples, normal data). The debate: are these cutoffs universal or do they need to be adjusted for model complexity, sample size, and the number of variables?',
+    formula:'The "golden rules":\n  CFI ≥ .95 (good), ≥ .90 (acceptable)\n  RMSEA ≤ .06 (good), ≤ .08 (acceptable)\n  SRMR ≤ .08\nBUT: these are guidelines, not laws',
+    example:'Your complex model with 40 variables gets CFI = .92, RMSEA = .05. By Hu & Bentler, CFI is below .95 so it\'s "bad." But some argue that with 40 variables, .92 is actually reasonable because CFI is penalized by model complexity.',
+    bloodline:'Born from the fit indices themselves (CFI, RMSEA, SRMR). Connected to model fit philosophy — the cutoffs are tools for the "close enough" question, not truth detectors. The debate matters because blindly applying cutoffs leads to bad decisions.',
+    teach:'Everyone memorizes .95/.06/.08. But the original paper tested specific conditions. Your professor probably wants you to understand that these are guidelines that depend on context — not magical thresholds that separate good from bad.' },
+
+  { id:'tracing-rules', label:'Wright\'s Tracing Rules', cat:'sem',
+    plain:'The algorithm for decomposing a correlation (or covariance) between any two variables in a path diagram into the sum of all legitimate compound paths. A legitimate path: (1) can pass through at most one double-headed arrow (curved covariance arc), (2) never passes through the same variable twice, and (3) never goes "forward" then "backward" through a single-headed arrow — once you reverse direction you can\'t go forward again UNLESS you cross a double-headed arc. The value of each compound path = the product of all coefficients along it. The predicted correlation = the sum of all compound paths. This is HOW SEM builds the model-implied covariance matrix Σ(θ) — every cell in that matrix is the sum of all valid traced paths between those two variables.',
+    formula:'r(X,Y) = Σ (product of coefficients along each valid compound path)\n\nRules for a valid compound path:\n1. No loops — never pass through the same variable twice\n2. At most one double-headed arrow (↔) per path\n3. Direction: can go backward along arrows, then optionally cross one ↔, then go forward\n   — NOT forward-then-backward through single-headed arrows\n4. Each compound path\'s value = product of all path coefficients along it\n5. The total = sum of all valid compound paths',
+    example:'Model: X → M → Y, with X → Y also (partial mediation).\nTracing r(X,Y):\n  Path 1: X → Y (direct) = c\'\n  Path 2: X → M → Y (indirect) = a × b\n  Total: r(X,Y) = c\' + ab\nThat\'s it — two valid paths, multiply along each, sum them. The model-implied covariance matrix entry for (X,Y) is exactly c\' + ab.',
+    bloodline:'Born from Sewall Wright\'s path analysis (1920s). This is the mechanical procedure that turns a path diagram into the model-implied covariance matrix. Without tracing rules, SEM is just a picture — with them, every arrow becomes an equation. Connects path coefficients, direct/indirect/total effects, and the covariance matrix into one system.',
+    teach:'Tracing rules are the Rosetta Stone of SEM. You draw a diagram (theory). Tracing rules translate it into math (model-implied covariances). ML estimation then finds the coefficients that make that math match the observed covariance matrix as closely as possible. Diagram → tracing rules → Σ(θ) → compare to S → fit indices.' },
+];
+
+const EDGES = [
+  // Spread lineage
+  {from:'deviation',to:'ss',label:'square & sum'},
+  {from:'ss',to:'variance',label:'divide by N (or n−1)'},
+  {from:'variance',to:'sd',label:'square root'},
+
+  // Relationship lineage
+  {from:'deviation',to:'crossproduct',label:'multiply two deviations'},
+  {from:'crossproduct',to:'scp',label:'sum all'},
+  {from:'scp',to:'covariance',label:'divide by n−1'},
+  {from:'covariance',to:'correlation',label:'divide by both SDs'},
+  {from:'correlation',to:'beta',label:'is equivalent in simple regression'},
+  {from:'covariance',to:'regression',label:'divide by Var(X)'},
+  {from:'regression',to:'beta',label:'standardize'},
+
+  // The critical bridge: variance IS covariance
+  {from:'variance',to:'covariance',label:'same thing, two variables'},
+
+  // Sampling lineage
+  {from:'sd',to:'se',label:'divide by √n'},
+  {from:'sampling-dist',to:'se',label:'spread measured by'},
+  {from:'clt',to:'sampling-dist',label:'explains shape of'},
+  {from:'normal',to:'clt',label:'the shape CLT produces'},
+
+  // Shape connections
+  {from:'deviation',to:'zscore',label:'divide by SD'},
+  {from:'sd',to:'zscore',label:'used in denominator'},
+  {from:'zscore',to:'normal',label:'standardizes to'},
+  {from:'zscore',to:'beta',label:'same logic (standardizing)'},
+  {from:'skewness',to:'normal',label:'departure from'},
+  {from:'kurtosis',to:'normal',label:'departure from'},
+
+  // SEM measurement
+  {from:'observed',to:'latent',label:'indicators of'},
+  {from:'latent',to:'loading',label:'connected by'},
+  {from:'loading',to:'measurement',label:'combined into'},
+  {from:'regression',to:'loading',label:'same math, latent predictor'},
+  {from:'loading',to:'error-var',label:'leftover = '},
+
+  // SEM structural
+  {from:'measurement',to:'structural',label:'must work before'},
+  {from:'path-coeff',to:'structural',label:'make up the'},
+  {from:'regression',to:'path-coeff',label:'same thing in SEM'},
+  {from:'beta',to:'path-coeff',label:'standardized version'},
+  {from:'path-coeff',to:'direct',label:'single arrow = '},
+  {from:'direct',to:'total',label:'adds into'},
+  {from:'indirect',to:'total',label:'adds into'},
+  {from:'path-coeff',to:'indirect',label:'multiplied along chain'},
+
+  // Covariance matrix is central
+  {from:'covariance',to:'cov-matrix',label:'collected into'},
+  {from:'variance',to:'cov-matrix',label:'diagonal of'},
+  {from:'cov-matrix',to:'chisq',label:'compared: observed vs predicted'},
+
+  // Testing / fit
+  {from:'chisq',to:'cfi',label:'adjusted into'},
+  {from:'chisq',to:'rmsea',label:'adjusted into'},
+  {from:'cov-matrix',to:'srmr',label:'residuals from'},
+  {from:'chisq',to:'df-sem',label:'evaluated relative to'},
+  {from:'df-sem',to:'identification',label:'determined by'},
+  {from:'modindex',to:'chisq',label:'estimates drop in'},
+
+  // Estimation
+  {from:'ml',to:'chisq',label:'produces'},
+  {from:'normal',to:'ml',label:'assumed by'},
+  {from:'skewness',to:'ml',label:'violation matters for'},
+  {from:'kurtosis',to:'ml',label:'violation matters for'},
+  {from:'cov-matrix',to:'ml',label:'input to'},
+  {from:'se',to:'ml',label:'computed by'},
+
+  // Variance partitioning
+  {from:'variance',to:'var-partition',label:'can be sliced into'},
+  {from:'var-partition',to:'r-squared',label:'summarized by'},
+  {from:'r-squared',to:'error-var',label:'leftover = 1 − R²'},
+  {from:'var-partition',to:'error-var',label:'unexplained portion'},
+  {from:'loading',to:'var-partition',label:'loading² = explained share'},
+
+  // Relationship family additions
+  {from:'correlation',to:'partial-corr',label:'remove third variable'},
+  {from:'partial-corr',to:'multi-reg',label:'each coefficient is a partial'},
+  {from:'multi-reg',to:'path-coeff',label:'same math in SEM context'},
+  {from:'regression',to:'multi-reg',label:'add more predictors'},
+  {from:'multi-reg',to:'multicollinearity',label:'breaks when predictors overlap too much'},
+  {from:'multicollinearity',to:'identification',label:'causes problems for'},
+  {from:'cov-matrix',to:'corr-matrix',label:'standardized version'},
+  {from:'correlation',to:'corr-matrix',label:'collected into'},
+  {from:'partial-corr',to:'path-coeff',label:'every path IS a partial effect'},
+
+  // SEM additions
+  {from:'structural',to:'endogenous',label:'predicts'},
+  {from:'structural',to:'exogenous',label:'starts from'},
+  {from:'endogenous',to:'r-squared',label:'gets an R²'},
+  {from:'endogenous',to:'error-var',label:'has disturbance (ζ)'},
+  {from:'exogenous',to:'endogenous',label:'predicts'},
+  {from:'latent',to:'reflective',label:'causes indicators (standard)'},
+  {from:'latent',to:'formative',label:'caused BY indicators (alternative)'},
+  {from:'reflective',to:'measurement',label:'the standard CFA setup'},
+  {from:'formative',to:'identification',label:'harder to identify'},
+  {from:'reflective',to:'mimic',label:'indicator side of'},
+  {from:'formative',to:'mimic',label:'cause side resembles'},
+  {from:'mimic',to:'measurement',label:'alternative to multi-group CFA'},
+  {from:'equiv-models',to:'fit-philosophy',label:'proves you need'},
+  {from:'chisq',to:'equiv-models',label:'identical fit, different models'},
+
+  // Testing additions
+  {from:'ml',to:'robust-ml',label:'corrected version'},
+  {from:'robust-ml',to:'se',label:'corrects'},
+  {from:'robust-ml',to:'chisq',label:'corrects (Satorra-Bentler)'},
+  {from:'kurtosis',to:'robust-ml',label:'triggers need for'},
+  {from:'skewness',to:'robust-ml',label:'triggers need for'},
+  {from:'bootstrap',to:'indirect',label:'gold standard for testing'},
+  {from:'bootstrap',to:'se',label:'alternative way to compute'},
+  {from:'sampling-dist',to:'bootstrap',label:'simulated by'},
+  {from:'df-general',to:'df-sem',label:'same concept, SEM context'},
+  {from:'se',to:'power',label:'smaller SE → more power'},
+  {from:'power',to:'chisq',label:'affects sensitivity of'},
+  {from:'fit-philosophy',to:'rmsea',label:'"close enough" quantified by'},
+  {from:'fit-philosophy',to:'cfi',label:'"close enough" quantified by'},
+  {from:'fit-philosophy',to:'srmr',label:'"close enough" quantified by'},
+  {from:'modindex',to:'fit-philosophy',label:'temptation to overfit'},
+
+  // Matrix algebra
+  {from:'cov-matrix',to:'determinant',label:'has a'},
+  {from:'determinant',to:'matrix-inverse',label:'must be non-zero for'},
+  {from:'matrix-inverse',to:'ml',label:'required by'},
+  {from:'multicollinearity',to:'determinant',label:'drives toward zero'},
+  {from:'determinant',to:'identification',label:'zero = non-identifiable'},
+  {from:'cov-matrix',to:'transpose',label:'equals its own (symmetric)'},
+  {from:'transpose',to:'df-sem',label:'symmetry gives p(p+1)/2 unique elements'},
+  {from:'cov-matrix',to:'eigenvalue',label:'decomposed into'},
+  {from:'eigenvalue',to:'eigenvector',label:'magnitude + direction pair'},
+  {from:'eigenvector',to:'loading',label:'scaled by √eigenvalue ='},
+  {from:'eigenvalue',to:'determinant',label:'product of all = '},
+  {from:'eigenvalue',to:'loading',label:'√eigenvalue scales eigenvectors into'},
+  {from:'eigenvalue',to:'var-partition',label:'each one = variance along an axis'},
+  {from:'cov-matrix',to:'trace',label:'diagonal sums to'},
+  {from:'trace',to:'eigenvalue',label:'= sum of all'},
+  {from:'trace',to:'ml',label:'appears in fit function as tr(SΣ̂⁻¹)'},
+
+  // Rodgers & Nicewander perspectives
+  {from:'covariance',to:'r-stdcov',label:'standardize →'},
+  {from:'r-stdcov',to:'correlation',label:'IS the standard definition'},
+  {from:'correlation',to:'r-slope',label:'= slope when both z-scored'},
+  {from:'r-slope',to:'beta',label:'explains why β = r in simple regression'},
+  {from:'correlation',to:'r-propvar',label:'square it →'},
+  {from:'r-propvar',to:'r-squared',label:'same concept, SEM context'},
+  {from:'r-propvar',to:'var-partition',label:'directly connected to'},
+  {from:'zscore',to:'r-meanzprod',label:'multiply z-scores, average'},
+  {from:'crossproduct',to:'r-meanzprod',label:'standardized version of'},
+  {from:'r-meanzprod',to:'correlation',label:'= r'},
+  {from:'correlation',to:'r-cosine',label:'geometric view'},
+  {from:'r-cosine',to:'loading',label:'explains factor analysis geometry'},
+  {from:'correlation',to:'r-geomean',label:'= √(b_yx × b_xy)'},
+  {from:'r-geomean',to:'regression',label:'reveals why r is symmetric but regression is directional'},
+  {from:'r-geomean',to:'path-coeff',label:'SEM picks a direction →'},
+
+  // Validity
+  {from:'loading',to:'convergent',label:'strong loadings = '},
+  {from:'var-partition',to:'convergent',label:'AVE = average λ²'},
+  {from:'convergent',to:'measurement',label:'required for'},
+  {from:'correlation',to:'discriminant',label:'factor correlations test'},
+  {from:'discriminant',to:'measurement',label:'required for'},
+  {from:'discriminant',to:'multicollinearity',label:'failure = latent-level'},
+  {from:'convergent',to:'discriminant',label:'both needed for valid measurement'},
+
+  // Parceling
+  {from:'observed',to:'parceling',label:'items combined into'},
+  {from:'parceling',to:'measurement',label:'replaces individual items in'},
+  {from:'parceling',to:'identification',label:'fewer parameters → easier'},
+  {from:'parceling',to:'convergent',label:'can mask weak items'},
+
+  // Nested models & chi-sq diff
+  {from:'chisq',to:'nested',label:'compared between'},
+  {from:'nested',to:'chisq-diff',label:'tested via'},
+  {from:'chisq-diff',to:'path-coeff',label:'tests if a path matters'},
+  {from:'df-sem',to:'nested',label:'simpler model has more'},
+  {from:'robust-ml',to:'chisq-diff',label:'requires Satorra-Bentler correction'},
+
+  // Fit cutoff debates
+  {from:'cfi',to:'hu-bentler',label:'cutoff debated by'},
+  {from:'rmsea',to:'hu-bentler',label:'cutoff debated by'},
+  {from:'srmr',to:'hu-bentler',label:'cutoff debated by'},
+  {from:'hu-bentler',to:'fit-philosophy',label:'part of the larger'},
+  {from:'power',to:'hu-bentler',label:'sample size affects applicability'},
+
+  // TLI & baseline model
+  {from:'chisq',to:'tli',label:'forms the ratio in'},
+  {from:'baseline-model',to:'tli',label:'reference point for'},
+  {from:'baseline-model',to:'cfi',label:'reference point for'},
+  {from:'tli',to:'hu-bentler',label:'cutoff debated by'},
+  {from:'fit-philosophy',to:'tli',label:'"close enough" quantified by'},
+  {from:'cfi',to:'tli',label:'sibling (TLI penalizes harder)'},
+
+  // AIC & BIC
+  {from:'ml',to:'aic',label:'log-likelihood feeds into'},
+  {from:'ml',to:'bic',label:'log-likelihood feeds into'},
+  {from:'aic',to:'bic',label:'sibling (BIC penalizes harder)'},
+  {from:'aic',to:'fit-philosophy',label:'compares non-nested models'},
+  {from:'bic',to:'fit-philosophy',label:'compares non-nested models'},
+  {from:'nested',to:'aic',label:'not required for'},
+
+  // PCLOSE
+  {from:'rmsea',to:'pclose',label:'tested by'},
+  {from:'pclose',to:'fit-philosophy',label:'formalizes "close enough?"'},
+  {from:'power',to:'pclose',label:'low df/N weakens'},
+
+  // Tracing rules
+  {from:'path-coeff',to:'tracing-rules',label:'multiply along paths'},
+  {from:'tracing-rules',to:'cov-matrix',label:'produces model-implied Σ(θ)'},
+  {from:'tracing-rules',to:'direct',label:'one-arrow path ='},
+  {from:'tracing-rules',to:'indirect',label:'multi-arrow path ='},
+  {from:'tracing-rules',to:'total',label:'sum of all paths ='},
+  {from:'cov-matrix',to:'tracing-rules',label:'each cell derived by'},
+  {from:'tracing-rules',to:'chisq',label:'Σ(θ) vs S tested by'},
+  {from:'structural',to:'tracing-rules',label:'translated into math by'},
+];
+
+// ================================================================
+//  ENGINE
+// ================================================================
+const canvas = document.getElementById('c');
+const ctx = canvas.getContext('2d');
+let W,H,dpr;
+let panX=0,panY=0,zoom=1;
+let drag=null,dragOX=0,dragOY=0;
+let pan=false,panSX=0,panSY=0,panSPX=0,panSPY=0;
+let hovered=null, selected=null;
+let activeFilters=new Set(Object.keys(CATS));
+let searchTerm='';
+
+const nmap={};
+NODES.forEach(n=>nmap[n.id]=n);
+
+function resize(){
+  dpr=window.devicePixelRatio||1;
+  W=canvas.parentElement.clientWidth;
+  H=canvas.parentElement.clientHeight;
+  canvas.width=W*dpr; canvas.height=H*dpr;
+  canvas.style.width=W+'px'; canvas.style.height=H+'px';
+}
+
+function initPositions(){
+  const catKeys=Object.keys(CATS);
+  const catPos={};
+  const r=800;
+  catKeys.forEach((c,i)=>{
+    const a=(i/catKeys.length)*Math.PI*2 - Math.PI/2;
+    catPos[c]={x:Math.cos(a)*r, y:Math.sin(a)*r};
+  });
+  const catNodes={};
+  NODES.forEach(n=>{ if(!catNodes[n.cat]) catNodes[n.cat]=[]; catNodes[n.cat].push(n); });
+  Object.entries(catNodes).forEach(([cat,nodes])=>{
+    const cp=catPos[cat];
+    nodes.forEach((n,i)=>{
+      const angle=i*0.9;
+      const dist=25+i*14;
+      n.x=cp.x+Math.cos(angle)*dist;
+      n.y=cp.y+Math.sin(angle)*dist;
+      n.vx=0; n.vy=0;
+    });
+  });
+}
+
+function vis(){
+  return NODES.filter(n=>{
+    if(!activeFilters.has(n.cat)) return false;
+    if(searchTerm && !n.label.toLowerCase().includes(searchTerm) && !n.plain.toLowerCase().includes(searchTerm)) return false;
+    return true;
+  });
+}
+function visE(){
+  const s=new Set(vis().map(n=>n.id));
+  return EDGES.filter(e=>s.has(e.from)&&s.has(e.to));
+}
+
+function sim(){
+  const nodes=vis(), edges=visE(), alpha=0.28;
+  for(let i=0;i<nodes.length;i++){
+    for(let j=i+1;j<nodes.length;j++){
+      const a=nodes[i],b=nodes[j];
+      let dx=b.x-a.x, dy=b.y-a.y;
+      let d=Math.sqrt(dx*dx+dy*dy)||1;
+      let f=16000/(d*d);
+      let fx=(dx/d)*f, fy=(dy/d)*f;
+      a.vx-=fx*alpha; a.vy-=fy*alpha;
+      b.vx+=fx*alpha; b.vy+=fy*alpha;
+    }
+  }
+  edges.forEach(e=>{
+    const a=nmap[e.from],b=nmap[e.to];
+    let dx=b.x-a.x,dy=b.y-a.y;
+    let d=Math.sqrt(dx*dx+dy*dy)||1;
+    let f=(d-130)*0.018;
+    let fx=(dx/d)*f, fy=(dy/d)*f;
+    a.vx+=fx*alpha; a.vy+=fy*alpha;
+    b.vx-=fx*alpha; b.vy-=fy*alpha;
+  });
+  nodes.forEach(n=>{
+    n.vx-=n.x*0.002*alpha;
+    n.vy-=n.y*0.002*alpha;
+  });
+  energy=0;
+  nodes.forEach(n=>{
+    if(n===drag) return;
+    n.vx*=0.55; n.vy*=0.55;
+    n.x+=n.vx; n.y+=n.vy;
+    energy+=n.vx*n.vx+n.vy*n.vy;
+  });
+}
+
+function w2s(x,y){ return {x:(x*zoom+panX)*dpr+W*dpr/2, y:(y*zoom+panY)*dpr+H*dpr/2}; }
+function s2w(sx,sy){ return {x:(sx-W/2-panX)/zoom, y:(sy-H/2-panY)/zoom}; }
+
+// ---- Semantic zoom ----
+const CLUSTER_ZOOM=0.4;
+let energy=1, animating=false;
+
+function getClusters(){
+  const map={};
+  vis().forEach(n=>{
+    if(!map[n.cat]) map[n.cat]={cat:n.cat,nodes:[]};
+    map[n.cat].nodes.push(n);
+  });
+  return Object.values(map).map(c=>{
+    const cx=c.nodes.reduce((s,n)=>s+n.x,0)/c.nodes.length;
+    const cy=c.nodes.reduce((s,n)=>s+n.y,0)/c.nodes.length;
+    return {...c, x:cx, y:cy, label:CATS[c.cat].label, count:c.nodes.length};
+  });
+}
+
+function clusterEdgeCounts(clusters){
+  const cSet=new Set(clusters.map(c=>c.cat));
+  const counts={};
+  visE().forEach(e=>{
+    const ca=nmap[e.from]?.cat, cb=nmap[e.to]?.cat;
+    if(ca&&cb&&ca!==cb&&cSet.has(ca)&&cSet.has(cb)){
+      const key=ca<cb?ca+'|'+cb:cb+'|'+ca;
+      counts[key]=(counts[key]||0)+1;
+    }
+  });
+  const cmap={}; clusters.forEach(c=>cmap[c.cat]=c);
+  return Object.entries(counts).map(([key,count])=>{
+    const [a,b]=key.split('|');
+    return {from:cmap[a],to:cmap[b],count};
+  });
+}
+
+function animateTo(tz,tpx,tpy,dur){
+  dur=dur||400;
+  const sz=zoom,spx=panX,spy=panY,t0=performance.now();
+  animating=true;
+  function step(now){
+    let t=Math.min(1,(now-t0)/dur);
+    const e=t<0.5?2*t*t:-1+(4-2*t)*t;
+    zoom=sz+(tz-sz)*e; panX=spx+(tpx-spx)*e; panY=spy+(tpy-spy)*e;
+    if(t<1) requestAnimationFrame(step); else animating=false;
+  }
+  requestAnimationFrame(step);
+}
+
+function zoomToFit(nodeList,pad){
+  pad=pad||80;
+  const ns=nodeList||vis();
+  if(!ns.length) return;
+  let x0=Infinity,x1=-Infinity,y0=Infinity,y1=-Infinity;
+  ns.forEach(n=>{ if(n.x<x0)x0=n.x; if(n.x>x1)x1=n.x; if(n.y<y0)y0=n.y; if(n.y>y1)y1=n.y; });
+  const sx=(x1-x0)||1, sy=(y1-y0)||1;
+  const tz=Math.max(0.15,Math.min(3,Math.min(W/(sx+pad*2),H/(sy+pad*2))));
+  const tpx=-(x0+x1)/2*tz, tpy=-(y0+y1)/2*tz;
+  animateTo(tz,tpx,tpy);
+}
+
+function focusOnNode(node){
+  const nIds=new Set([node.id]);
+  EDGES.forEach(e=>{ if(e.from===node.id)nIds.add(e.to); if(e.to===node.id)nIds.add(e.from); });
+  const ns=NODES.filter(n=>nIds.has(n.id));
+  selectNode(node);
+  zoomToFit(ns,120);
+}
+
+function zoomToCluster(cat){
+  const ns=vis().filter(n=>n.cat===cat);
+  if(ns.length) zoomToFit(ns,100);
+}
+
+function draw(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+
+  // ---- Cluster mode at low zoom ----
+  if(zoom<CLUSTER_ZOOM){
+    const clusters=getClusters();
+    const cedges=clusterEdgeCounts(clusters);
+    cedges.forEach(ce=>{
+      const pa=w2s(ce.from.x,ce.from.y),pb=w2s(ce.to.x,ce.to.y);
+      ctx.beginPath(); ctx.moveTo(pa.x,pa.y); ctx.lineTo(pb.x,pb.y);
+      ctx.strokeStyle='rgba(100,100,130,0.25)';
+      ctx.lineWidth=Math.min(1+ce.count*0.6,5)*dpr;
+      ctx.stroke();
+      const mx=(pa.x+pb.x)/2,my=(pa.y+pb.y)/2;
+      ctx.font=`500 ${8*dpr}px 'IBM Plex Sans'`;
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle='rgba(160,160,180,0.45)';
+      ctx.fillText(ce.count,mx,my);
+    });
+    clusters.forEach(c=>{
+      const p=w2s(c.x,c.y);
+      const cat=CATS[c.cat];
+      const r=(45+c.count*2.5)*zoom*dpr;
+      const g=ctx.createRadialGradient(p.x,p.y,r*0.3,p.x,p.y,r*2.5);
+      g.addColorStop(0,cat.color+'25'); g.addColorStop(1,cat.color+'00');
+      ctx.beginPath(); ctx.arc(p.x,p.y,r*2.5,0,Math.PI*2);
+      ctx.fillStyle=g; ctx.fill();
+      ctx.beginPath(); ctx.arc(p.x,p.y,r,0,Math.PI*2);
+      ctx.fillStyle=cat.color+'14'; ctx.strokeStyle=cat.color+'55';
+      ctx.lineWidth=2*dpr; ctx.fill(); ctx.stroke();
+      const fs=Math.max(11,15*zoom)*dpr;
+      ctx.font=`600 ${fs}px 'IBM Plex Sans'`;
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillStyle=cat.color;
+      ctx.fillText(cat.label.replace(/ Family$/,'').replace(/ Concepts$/,''),p.x,p.y-4*dpr);
+      ctx.font=`300 ${fs*0.7}px 'IBM Plex Sans'`;
+      ctx.fillStyle=cat.color+'99';
+      ctx.fillText(c.count+' concepts',p.x,p.y+fs*0.7);
+    });
+    requestAnimationFrame(()=>{ if(energy>0.01||drag||animating) sim(); draw(); });
+    return;
+  }
+
+  const edges=visE(), nodes=vis();
+  const conn=new Set();
+  if(selected){
+    edges.forEach(e=>{
+      if(e.from===selected.id) conn.add(e.to);
+      if(e.to===selected.id) conn.add(e.from);
+    });
+  }
+
+  // edges
+  edges.forEach(e=>{
+    const a=nmap[e.from],b=nmap[e.to];
+    const pa=w2s(a.x,a.y),pb=w2s(b.x,b.y);
+    const hi=selected&&(e.from===selected.id||e.to===selected.id);
+    const dim=selected&&!hi;
+    ctx.beginPath(); ctx.moveTo(pa.x,pa.y); ctx.lineTo(pb.x,pb.y);
+    if(hi){ ctx.strokeStyle=CATS[selected.cat].color+'88'; ctx.lineWidth=2.5*dpr; }
+    else if(dim){ ctx.strokeStyle='rgba(30,30,50,0.25)'; ctx.lineWidth=0.8*dpr; }
+    else { ctx.strokeStyle='rgba(50,50,70,0.3)'; ctx.lineWidth=1*dpr; }
+    ctx.stroke();
+
+    // arrow
+    if(hi || (!selected && zoom > 0.7)){
+      const angle=Math.atan2(pb.y-pa.y, pb.x-pa.x);
+      const mx=(pa.x+pb.x)/2, my=(pa.y+pb.y)/2;
+      const sz=6*dpr;
+      ctx.beginPath();
+      ctx.moveTo(mx+Math.cos(angle)*sz, my+Math.sin(angle)*sz);
+      ctx.lineTo(mx+Math.cos(angle+2.5)*sz*0.6, my+Math.sin(angle+2.5)*sz*0.6);
+      ctx.lineTo(mx+Math.cos(angle-2.5)*sz*0.6, my+Math.sin(angle-2.5)*sz*0.6);
+      ctx.closePath();
+      ctx.fillStyle=hi?CATS[selected.cat].color+'88':'rgba(50,50,70,0.3)';
+      ctx.fill();
+    }
+
+    // edge label
+    if(hi && zoom>0.5){
+      const mx=(pa.x+pb.x)/2, my=(pa.y+pb.y)/2;
+      ctx.font=`500 ${9*dpr}px 'IBM Plex Sans'`;
+      const met=ctx.measureText(e.label);
+      const pad=3*dpr;
+      ctx.fillStyle='#08080cdd';
+      ctx.fillRect(mx-met.width/2-pad, my-6*dpr-pad, met.width+pad*2, 12*dpr+pad*2);
+      ctx.fillStyle=CATS[selected.cat].color+'cc';
+      ctx.textAlign='center'; ctx.textBaseline='middle';
+      ctx.fillText(e.label, mx, my);
+    }
+  });
+
+  // nodes
+  nodes.forEach(n=>{
+    const p=w2s(n.x,n.y);
+    const cat=CATS[n.cat];
+    const isSel=selected&&selected.id===n.id;
+    const isConn=conn.has(n.id);
+    const isDim=selected&&!isSel&&!isConn;
+    const isHov=hovered&&hovered.id===n.id;
+    const r=(isSel?28:isHov?26:22)*zoom*dpr;
+
+    if(isSel||isHov){
+      const g=ctx.createRadialGradient(p.x,p.y,r*0.4,p.x,p.y,r*3);
+      g.addColorStop(0,cat.color+'28');
+      g.addColorStop(1,cat.color+'00');
+      ctx.beginPath(); ctx.arc(p.x,p.y,r*3,0,Math.PI*2);
+      ctx.fillStyle=g; ctx.fill();
+    }
+
+    ctx.beginPath(); ctx.arc(p.x,p.y,r,0,Math.PI*2);
+    if(isDim){ ctx.fillStyle='#0e0e16'; ctx.strokeStyle='#1e1e2e'; }
+    else { ctx.fillStyle=isSel?cat.color+'20':'#101018'; ctx.strokeStyle=isSel?cat.color:isConn?cat.color+'88':cat.color+'44'; }
+    ctx.lineWidth=(isSel?2.5:1.5)*dpr;
+    ctx.fill(); ctx.stroke();
+
+    if(!isDim){
+      ctx.beginPath(); ctx.arc(p.x,p.y,3*dpr*zoom,0,Math.PI*2);
+      ctx.fillStyle=isSel?cat.color:cat.color+'77';
+      ctx.fill();
+    }
+
+    if(zoom>0.35||isSel||isHov){
+      const fs=Math.max(9,11*zoom)*dpr;
+      ctx.font=`500 ${fs}px 'IBM Plex Sans'`;
+      ctx.textAlign='center'; ctx.textBaseline='top';
+      ctx.fillStyle=isDim?'#252535':isSel?'#fff':'#b0b0c0';
+      ctx.fillText(n.label, p.x, p.y+r+5*dpr);
+    }
+  });
+
+  requestAnimationFrame(()=>{ if(energy>0.01||drag||animating) sim(); draw(); });
+}
+
+// ================================================================
+//  INTERACTION
+// ================================================================
+function clusterAt(sx,sy){
+  if(zoom>=CLUSTER_ZOOM) return null;
+  const w=s2w(sx,sy);
+  const clusters=getClusters();
+  for(const c of clusters){
+    const dx=c.x-w.x, dy=c.y-w.y;
+    const r=45+c.count*2.5;
+    if(Math.sqrt(dx*dx+dy*dy)<r) return c;
+  }
+  return null;
+}
+
+function nodeAt(sx,sy){
+  const w=s2w(sx,sy);
+  const nodes=vis();
+  let best=null,bd=Infinity;
+  nodes.forEach(n=>{
+    const dx=n.x-w.x, dy=n.y-w.y;
+    const d=Math.sqrt(dx*dx+dy*dy);
+    if(d<35&&d<bd){best=n;bd=d;}
+  });
+  return best;
+}
+
+canvas.addEventListener('mousedown',e=>{
+  const cl=clusterAt(e.offsetX,e.offsetY);
+  if(cl){ zoomToCluster(cl.cat); return; }
+  const n=nodeAt(e.offsetX,e.offsetY);
+  if(n){ drag=n; const w=s2w(e.offsetX,e.offsetY); dragOX=n.x-w.x; dragOY=n.y-w.y; selectNode(n); }
+  else { pan=true; panSX=e.offsetX; panSY=e.offsetY; panSPX=panX; panSPY=panY; }
+});
+canvas.addEventListener('mousemove',e=>{
+  if(drag){ const w=s2w(e.offsetX,e.offsetY); drag.x=w.x+dragOX; drag.y=w.y+dragOY; drag.vx=0;drag.vy=0; energy=1; }
+  else if(pan){ panX=panSPX+(e.offsetX-panSX); panY=panSPY+(e.offsetY-panSY); }
+  else { const cl=clusterAt(e.offsetX,e.offsetY); const n=cl?null:nodeAt(e.offsetX,e.offsetY); hovered=n; canvas.style.cursor=(n||cl)?'pointer':'grab'; }
+});
+canvas.addEventListener('mouseup',()=>{drag=null;pan=false;});
+canvas.addEventListener('mouseleave',()=>{drag=null;pan=false;hovered=null;});
+canvas.addEventListener('dblclick',e=>{
+  const n=nodeAt(e.offsetX,e.offsetY);
+  if(n) focusOnNode(n);
+});
+canvas.addEventListener('wheel',e=>{
+  e.preventDefault();
+  const factor=e.deltaY>0?0.9:1.1;
+  const nz=Math.max(0.15,Math.min(3,zoom*factor));
+  const cx=e.offsetX-W/2, cy=e.offsetY-H/2;
+  panX=cx-(cx-panX)*(nz/zoom);
+  panY=cy-(cy-panY)*(nz/zoom);
+  zoom=nz;
+},{passive:false});
+
+// Touch
+let lastTD=0;
+canvas.addEventListener('touchstart',e=>{
+  if(e.touches.length===1){
+    const t=e.touches[0],r=canvas.getBoundingClientRect();
+    const ox=t.clientX-r.left,oy=t.clientY-r.top;
+    const cl=clusterAt(ox,oy);
+    if(cl){zoomToCluster(cl.cat);return;}
+    const n=nodeAt(ox,oy);
+    if(n){drag=n;const w=s2w(ox,oy);dragOX=n.x-w.x;dragOY=n.y-w.y;selectNode(n);}
+    else{pan=true;panSX=ox;panSY=oy;panSPX=panX;panSPY=panY;}
+  } else if(e.touches.length===2){
+    const dx=e.touches[0].clientX-e.touches[1].clientX;
+    const dy=e.touches[0].clientY-e.touches[1].clientY;
+    lastTD=Math.sqrt(dx*dx+dy*dy);
+  }
+},{passive:true});
+canvas.addEventListener('touchmove',e=>{
+  e.preventDefault();
+  if(e.touches.length===1){
+    const t=e.touches[0],r=canvas.getBoundingClientRect();
+    const ox=t.clientX-r.left,oy=t.clientY-r.top;
+    if(drag){const w=s2w(ox,oy);drag.x=w.x+dragOX;drag.y=w.y+dragOY;drag.vx=0;drag.vy=0;energy=1;}
+    else if(pan){panX=panSPX+(ox-panSX);panY=panSPY+(oy-panSY);}
+  } else if(e.touches.length===2){
+    const dx=e.touches[0].clientX-e.touches[1].clientX;
+    const dy=e.touches[0].clientY-e.touches[1].clientY;
+    const d=Math.sqrt(dx*dx+dy*dy);
+    if(lastTD){
+      const nz=Math.max(0.15,Math.min(3,zoom*(d/lastTD)));
+      const r=canvas.getBoundingClientRect();
+      const cx=(e.touches[0].clientX+e.touches[1].clientX)/2-r.left-W/2;
+      const cy=(e.touches[0].clientY+e.touches[1].clientY)/2-r.top-H/2;
+      panX=cx-(cx-panX)*(nz/zoom);
+      panY=cy-(cy-panY)*(nz/zoom);
+      zoom=nz;
+    }
+    lastTD=d;
+  }
+},{passive:false});
+canvas.addEventListener('touchend',()=>{drag=null;pan=false;lastTD=0;});
+
+document.getElementById('zi').addEventListener('click',()=>{zoom=Math.min(3,zoom*1.3);});
+document.getElementById('zo').addEventListener('click',()=>{zoom=Math.max(0.15,zoom*0.7);});
+document.getElementById('zf').addEventListener('click',()=>zoomToFit());
+
+// ================================================================
+//  DETAIL PANEL
+// ================================================================
+function selectNode(node){
+  selected=node;
+  const panel=document.getElementById('detail');
+  if(!node){
+    panel.innerHTML='<div class="detail-empty"><div class="big">◉</div><p>Click any concept to see what it means, where it came from, and how to explain it to someone else.</p></div>';
+    return;
+  }
+  const cat=CATS[node.cat];
+  const conns=EDGES.filter(e=>e.from===node.id||e.to===node.id).map(e=>{
+    const oid=e.from===node.id?e.to:e.from;
+    const o=nmap[oid];
+    if(!o)return null;
+    const dir=e.from===node.id?'→':'←';
+    return {label:o.label,id:oid,edge:e.label,dir};
+  }).filter(Boolean);
+
+  panel.innerHTML=`<div class="dc">
+    <div class="dc-cat" style="color:${cat.color}">${cat.label}</div>
+    <div class="dc-title">${node.label}</div>
+    <div class="dc-bloodline">${node.bloodline}</div>
+    <div class="dc-plain">${node.plain}</div>
+
+    <div class="dc-label">Formula</div>
+    <div class="dc-formula">${node.formula.replace(/\n/g,'<br>')}</div>
+
+    <div class="dc-label">Example</div>
+    <div class="dc-example">${node.example}</div>
+
+    <div class="dc-label">Connections</div>
+    <div class="conn-list">
+      ${conns.map(c=>`<span class="conn-chip" data-id="${c.id}" title="${c.dir} ${c.edge}">${c.dir} ${c.label}<span style="opacity:0.5;margin-left:4px;font-weight:300">${c.edge}</span></span>`).join('')}
+    </div>
+    <button class="focus-btn" id="focusBtn">Focus neighborhood</button>
+
+    <div class="teach-box">
+      <h4>How to teach this</h4>
+      <p>${node.teach}</p>
+    </div>
+  </div>`;
+
+  panel.querySelectorAll('.conn-chip').forEach(ch=>{
+    ch.addEventListener('click',()=>{
+      const t=nmap[ch.dataset.id];
+      if(t){selectNode(t); animateTo(zoom,-t.x*zoom,-t.y*zoom,300);}
+    });
+  });
+  document.getElementById('focusBtn').addEventListener('click',()=>focusOnNode(node));
+
+  panel.scrollTop=0;
+}
+
+// ================================================================
+//  FILTERS, SEARCH, LEGEND
+// ================================================================
+const filtersEl=document.getElementById('filters');
+Object.entries(CATS).forEach(([k,cat])=>{
+  const b=document.createElement('button');
+  b.className='fbtn on'; b.dataset.c=k; b.textContent=cat.label;
+  b.addEventListener('click',()=>{
+    if(activeFilters.has(k)){activeFilters.delete(k);b.classList.remove('on');}
+    else{activeFilters.add(k);b.classList.add('on');}
+    if(selected&&!activeFilters.has(selected.cat)) selectNode(null);
+    energy=1;
+  });
+  filtersEl.appendChild(b);
+});
+
+document.getElementById('search').addEventListener('input',e=>{
+  searchTerm=e.target.value.toLowerCase().trim();
+  if(selected&&!vis().find(n=>n.id===selected.id)) selectNode(null);
+  energy=1;
+});
+
+const legEl=document.getElementById('legend');
+legEl.innerHTML=Object.entries(CATS).map(([k,c])=>`<div class="legend-row"><div class="legend-dot" style="background:${c.color}"></div>${c.label}</div>`).join('');
+
+// ================================================================
+//  INIT
+// ================================================================
+resize();
+window.addEventListener('resize',resize);
+initPositions();
+for(let i=0;i<500;i++) sim();
+// Initial zoom to fit all nodes
+(function(){
+  const ns=vis(); if(!ns.length) return;
+  let x0=Infinity,x1=-Infinity,y0=Infinity,y1=-Infinity;
+  ns.forEach(n=>{ if(n.x<x0)x0=n.x; if(n.x>x1)x1=n.x; if(n.y<y0)y0=n.y; if(n.y>y1)y1=n.y; });
+  const sx=(x1-x0)||1, sy=(y1-y0)||1;
+  zoom=Math.max(0.15,Math.min(3,Math.min(W/(sx+160),H/(sy+160))));
+  panX=-(x0+x1)/2*zoom; panY=-(y0+y1)/2*zoom;
+})();
+draw();
+</script>
+</body>
+</html>

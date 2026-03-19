@@ -13,6 +13,7 @@ import { FitnessPage } from './pages/FitnessPage';
 import { ChessPage } from './pages/ChessPage';
 import { CognitiveEffortPage } from './experiment-pages/CognitiveEffortPage';
 import { BuiltWithPage } from './pages/BuiltWithPage';
+import { SEMPage } from './pages/SEMPage';
 import { useKonamiCode } from './hooks/useKonamiCode';
 
 const App: React.FC = () => {
@@ -43,6 +44,7 @@ const App: React.FC = () => {
             <Route path="/cv" element={<CVPage />} />
             <Route path="/fitness" element={<FitnessPage />} />
             <Route path="/chess" element={<ChessPage />} />
+            <Route path="/sem" element={<SEMPage />} />
             <Route path="/experiments/cognitive-effort" element={<CognitiveEffortPage />} />
             <Route path="/built-with" element={<BuiltWithPage />} />
             <Route path="*" element={<Navigate to="/" replace />} />

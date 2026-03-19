@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
-import { ArrowLeft, Hexagon, Code, ExternalLink } from 'lucide-react';
+import { ArrowLeft, Hexagon, Code, ExternalLink, Network } from 'lucide-react';
 import { FarcasterAvatar } from '../components/FarcasterAvatar';
 
 export const Web3Page: React.FC = () => {
@@ -112,6 +112,26 @@ export const Web3Page: React.FC = () => {
             Technologies
           </h2>
           <div className="space-y-6">
+            <Link to="/sem" className="block bg-warm-bg rounded-lg p-6 hover:shadow-md transition-all no-underline">
+              <div className="flex items-center gap-3 mb-2">
+                <Network className="w-8 h-8 text-warm-accent" />
+                <h3 className="text-warm-accent font-semibold text-lg">SEM Tutor</h3>
+              </div>
+              <p className="text-warm-text-secondary mb-3">
+                Interactive concept map and LLM-powered study system for Structural Equation Modeling.
+                77 concepts across 6 families, connected by 167 edges. Quiz mode, guided practice, and a visual graph explorer.
+              </p>
+              <div className="flex flex-wrap gap-2 mb-3">
+                <span className="px-2.5 py-0.5 bg-warm-accent/10 text-warm-accent rounded-full text-xs">React</span>
+                <span className="px-2.5 py-0.5 bg-warm-accent/10 text-warm-accent rounded-full text-xs">Canvas</span>
+                <span className="px-2.5 py-0.5 bg-warm-accent/10 text-warm-accent rounded-full text-xs">LLM Integration</span>
+                <span className="px-2.5 py-0.5 bg-warm-accent/10 text-warm-accent rounded-full text-xs">EIP-6963</span>
+              </div>
+              <span className="inline-flex items-center gap-2 text-warm-accent font-medium text-sm">
+                Open SEM Tutor <ExternalLink className="w-3.5 h-3.5" />
+              </span>
+            </Link>
+
             <div className="bg-warm-bg rounded-lg p-6">
               <div className="flex items-center gap-3 mb-2">
                 <FarcasterAvatar username="arbme" size="md" />

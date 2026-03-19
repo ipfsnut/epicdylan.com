@@ -1,5 +1,6 @@
 import React from 'react';
-import { Code } from 'lucide-react';
+import { Link } from 'react-router-dom';
+import { Code, Network } from 'lucide-react';
 import { GitHubRepos } from './GitHubRepos';
 
 export const SoftwareSection: React.FC = () => {
@@ -12,6 +13,28 @@ export const SoftwareSection: React.FC = () => {
           Software Development
         </h2>
       </div>
+      <Link
+        to="/sem"
+        className="block bg-white rounded-xl p-8 border border-warm-border mb-6 cursor-pointer hover:border-warm-accent/50 hover:shadow-md transition-all duration-300"
+      >
+        <div className="mb-4">
+          <h3 className="text-2xl font-bold font-display text-warm-text mb-2 flex items-center gap-3">
+            <Network className="w-6 h-6 text-warm-accent" />
+            SEM Tutor
+          </h3>
+          <p className="text-warm-text-secondary mb-4">
+            Interactive concept map and LLM-powered study system for Structural Equation Modeling.
+            77 concepts, 6 families, 167 connections. Built by a student to help students learn SEM.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 mb-4">
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">React</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">Canvas</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">LLM Integration</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">EIP-6963</span>
+        </div>
+      </Link>
+
       <a
         href="https://github.com/ipfsnut/evermark-beta"
         target="_blank"
