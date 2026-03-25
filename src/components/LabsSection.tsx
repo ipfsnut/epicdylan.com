@@ -74,6 +74,14 @@ export const LabsSection: React.FC = () => {
           icon={<FarcasterAvatar username="arbme" size="sm" showLink={false} />}
           gradient=""
         />
+        <ProjectCard
+          title="ChaosLP"
+          tagline="Self-Trading Cryptocurrency"
+          description="A self-trading cryptocurrency on Base. Autonomous swap loops, LP fee capture, and staking gauges that let the token trade itself."
+          url="https://chaos-theory.epicdylan.com"
+          icon={<img src="/chaos-icon.png" alt="ChaosTheory" className="w-8 h-8 rounded-full" />}
+          gradient=""
+        />
       </div>
     </div>
   );

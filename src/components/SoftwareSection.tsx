@@ -13,6 +13,48 @@ export const SoftwareSection: React.FC = () => {
           Software Development
         </h2>
       </div>
+      <a
+        href="https://github.com/ipfsnut/emotion_detection_app"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block bg-white rounded-xl p-8 border border-warm-border mb-6 cursor-pointer hover:border-warm-accent/50 hover:shadow-md transition-all duration-300"
+      >
+        <div className="mb-4">
+          <h3 className="text-2xl font-bold font-display text-warm-text mb-2">Emotion Detection App</h3>
+          <p className="text-warm-text-secondary mb-4">
+            Facial emotion detection and FACS Action Unit analysis pipeline. Multi-backend classification with FER, DeepFace, and py-feat, plus batch processing of experiment datasets with effort-level tagging.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 mb-4">
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">Python</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">Flask</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">TensorFlow</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">OpenCV</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">FACS</span>
+        </div>
+      </a>
+
+      <a
+        href="https://github.com/ipfsnut/EffortSuite"
+        target="_blank"
+        rel="noopener noreferrer"
+        className="block bg-white rounded-xl p-8 border border-warm-border mb-6 cursor-pointer hover:border-warm-accent/50 hover:shadow-md transition-all duration-300"
+      >
+        <div className="mb-4">
+          <h3 className="text-2xl font-bold font-display text-warm-text mb-2">EffortSuite</h3>
+          <p className="text-warm-text-secondary mb-4">
+            Research platform studying facial expressions during cognitive vs physical effort. Synchronized webcam capture with Bluetooth dynamometer force data and Number Switching Task performance at calibrated intensity levels.
+          </p>
+        </div>
+        <div className="flex flex-wrap gap-2 mb-4">
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">React</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">Express</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">MongoDB</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">Web Bluetooth</span>
+          <span className="px-3 py-1 bg-warm-accent/10 text-warm-accent rounded-full text-sm">Redux</span>
+        </div>
+      </a>
+
       <Link
         to="/sem"
         className="block bg-white rounded-xl p-8 border border-warm-border mb-6 cursor-pointer hover:border-warm-accent/50 hover:shadow-md transition-all duration-300"
