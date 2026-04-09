@@ -49,9 +49,9 @@ export const LabsSection: React.FC = () => {
     <div className="mb-16">
       <div className="flex items-center gap-4 mb-2">
         <span className="section-number">04 //</span>
-        <h2 className="text-3xl font-bold font-display text-warm-text flex items-center gap-3 glitch-hover" data-text="Labs">
+        <h2 className="text-3xl font-bold font-display text-warm-text flex items-center gap-3 glitch-hover" data-text="Code Labs">
           <Beaker className="w-8 h-8 text-warm-accent" />
-          Labs
+          Code Labs
         </h2>
       </div>
       <p className="text-warm-text-secondary mb-6 font-mono text-sm">{'// active experiments & live projects'}</p>

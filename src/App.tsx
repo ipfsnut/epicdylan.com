@@ -14,6 +14,7 @@ import { ChessPage } from './pages/ChessPage';
 import { CognitiveEffortPage } from './experiment-pages/CognitiveEffortPage';
 import { BuiltWithPage } from './pages/BuiltWithPage';
 import { SEMPage } from './pages/SEMPage';
+import { BookReaderPage } from './pages/BookReaderPage';
 import { useKonamiCode } from './hooks/useKonamiCode';
 
 const App: React.FC = () => {
@@ -36,6 +37,7 @@ const App: React.FC = () => {
           <Routes>
             <Route path="/" element={<HomePage />} />
             <Route path="/books" element={<BooksPage />} />
+            <Route path="/books/:slug" element={<BookReaderPage />} />
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:slug" element={<BlogPage />} />
             <Route path="/research" element={<ConsciousnessPage />} />
@@ -59,15 +61,13 @@ const App: React.FC = () => {
               >
                 built with ❤
               </Link>
-              <a
-                href="https://basescan.org/token/0x31711525456d3fdf8eccd99fefb02b65d7575cde"
-                target="_blank"
-                rel="noopener noreferrer"
+              <Link
+                to="/blog/epic-launch"
                 className="text-warm-accent hover:text-warm-accent-hover font-mono text-xs tracking-wider transition-colors"
-                title="$EPICDYLAN.COM on Base"
+                title="$EPIC on Base"
               >
-                $EPICDYLAN.COM • 0x3171...5cde
-              </a>
+                $EPIC • 0x003b...2369
+              </Link>
             </div>
             <div className="text-center mt-4">
               <LiveClock />

@@ -72,36 +72,6 @@ export const Hero: React.FC = () => {
         </a>
       </div>
 
-      {/* App Pills with Farcaster Avatars */}
-      <div className="flex flex-wrap gap-3 justify-center mt-4">
-        <a
-          href="https://abc.epicdylan.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 px-4 py-1.5 bg-white hover:bg-warm-bg border border-warm-accent/50 hover:border-warm-accent text-warm-accent rounded-full text-sm font-mono transition-all"
-        >
-          <FarcasterAvatar username="abc-dao-dev" size="sm" showLink={false} />
-          ABC
-        </a>
-        <a
-          href="https://arbme.epicdylan.com"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 px-4 py-1.5 bg-white hover:bg-warm-bg border border-warm-accent/50 hover:border-warm-accent text-warm-accent rounded-full text-sm font-mono transition-all"
-        >
-          <FarcasterAvatar username="arbme" size="sm" showLink={false} />
-          ArbMe
-        </a>
-        <a
-          href="https://warpcast.com/the-ratchet"
-          target="_blank"
-          rel="noopener noreferrer"
-          className="flex items-center gap-2 px-4 py-1.5 bg-white hover:bg-warm-bg border border-warm-accent/50 hover:border-warm-accent text-warm-accent rounded-full text-sm font-mono transition-all"
-        >
-          <FarcasterAvatar username="the-ratchet" size="sm" showLink={false} />
-          Ratchet
-        </a>
-      </div>
     </div>
   );
 };
