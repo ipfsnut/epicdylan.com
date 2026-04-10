@@ -34,8 +34,13 @@ function buildOgTags(post: { slug: string; title: string; description: string })
     <meta property="og:title" content="${title}" />
     <meta property="og:description" content="${description}" />
     <meta property="og:image" content="${image}" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:type" content="image/png" />
+    <meta property="og:image:alt" content="${title}" />
     <meta property="og:type" content="article" />
     <meta property="og:url" content="${url}" />
+    <meta property="og:site_name" content="epicdylan.com" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="${title}" />
     <meta name="twitter:description" content="${description}" />
@@ -47,7 +52,7 @@ function injectMetaTags(html: string, ogTags: string): string {
   // Remove the default <title>
   html = html.replace(/<title>[^<]*<\/title>/gi, '');
 
-  // Remove existing og: and twitter: meta tags
+  // Remove existing og:*, twitter:*, and description meta tags (including og:image:width etc)
   html = html.replace(/<meta\s+property=["']og:[^"']*["'][^>]*\/?>/gi, '');
   html = html.replace(/<meta\s+name=["']twitter:[^"']*["'][^>]*\/?>/gi, '');
   html = html.replace(/<meta\s+name=["']description["'][^>]*\/?>/gi, '');
