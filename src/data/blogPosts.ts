@@ -34,7 +34,7 @@ The pools are split into two tiers:
 Every pool charges a fee on buys and on sells. Buy fees collect the quote asset. Sell fees burn $EPIC to 0xdead. Where the buy fees go depends on the pool:
 
 - **USDC pool buy fees** go to the creator (me) to fund development, infrastructure, and whatever else I decide. This is the revenue model. It's transparent and on-chain.
-- **WETH, cbBTC, and Clanker pool buy fees** accumulate in the multisig treasury. These funds support the ecosystem — future development, new pools, community initiatives.
+- **WETH, cbBTC, and Clanker pool buy fees** accumulate in the multisig. These are my working capital — used to fund new experiments, deeper pools, or whatever I decide is worth building next.
 
 The asymmetric pools (2%/8% and 4%/16%) charge more on sells than buys. This creates a ratchet effect:
 
@@ -58,23 +58,27 @@ ArbMe stays. It represents a real app with real users. I think creator coins can
 
 ## Contracts
 
-All contracts are live on Base mainnet. Fee tiers shown as buy%/sell%.
+All contracts are live on Base mainnet.
 
-**$EPIC Token**
-\`0x003b9aC55a8575295e4BE4901AA1645CC2132369\`
+**$EPIC Token:** \`0x003b9aC55a8575295e4BE4901AA1645CC2132369\`
 
-| Pool | Buy/Sell | Address |
-|------|----------|---------|
-| USDC | 1% / 1% | \`0x4da6...C8c8\` |
-| WETH | 5% / 5% | \`0xE00B...08c8\` |
-| WETH | 2% / 8% | \`0x2c44...88C8\` |
-| WETH | 4% / 16% | \`0x600a...88c8\` |
-| cbBTC | 5% / 5% | \`0x88d5...08C8\` |
-| cbBTC | 2% / 8% | \`0x4b63...48c8\` |
-| cbBTC | 4% / 16% | \`0x19bc...c8c8\` |
-| Clanker | 5% / 5% | \`0xbb4a...c8c8\` |
-| Clanker | 2% / 8% | \`0x2efe...48c8\` |
-| Clanker | 4% / 16% | \`0xc2b5...88c8\` |
+**USDC** — 1% buy / 1% sell
+- \`0x4da6Bd0941A985785E9dAe483797701eF97BC8c8\`
+
+**WETH** — three fee tiers
+- 5% / 5%: \`0xE00B2501e7A57637be155d575C7C2fD9B97B08c8\`
+- 2% / 8%: \`0x2c448f4C017205479dcD2135C69d65e5D32a88C8\`
+- 4% / 16%: \`0x600aA2e1f8788c0467cfDF3eacC554eC872188c8\`
+
+**cbBTC** — three fee tiers
+- 5% / 5%: \`0x88d584e1b114B30D6edD644dC5D0776B497f08C8\`
+- 2% / 8%: \`0x4b63Ca55C402e7C8f8180958eF492Bb8766748C8\`
+- 4% / 16%: \`0x19bC118e465C7aCE1C5D5d891d63810D746BC8C8\`
+
+**Clanker** — three fee tiers
+- 5% / 5%: \`0xbB4aB23322407Bb331c4c6e505c79871dd74C8C8\`
+- 2% / 8%: \`0x2EFE6E64A1c41C767eEEFC16B02C6Ef1E55648c8\`
+- 4% / 16%: \`0xc2B58fFcd9C0bBd709CFC1b6427639a9420488c8\`
 
 **Multisig:** \`0xb7DD467A573809218aAE30EB2c60e8AE3a9198a0\`
 

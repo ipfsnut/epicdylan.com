@@ -99,6 +99,41 @@ const PostBody: React.FC<{ body: string }> = ({ body }) => {
 const PostView: React.FC<{ post: BlogPost; slug: string }> = ({ post, slug }) => {
   const [paper, setPaper] = useState(false);
 
+  // Set meta tags for sharing
+  React.useEffect(() => {
+    const ogImage = `https://epicdylan.com/og/${slug}.png`;
+    document.title = `${post.title} — epicdylan.com`;
+
+    const setMeta = (property: string, content: string) => {
+      let el = document.querySelector(`meta[property="${property}"]`) as HTMLMetaElement | null;
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute('property', property);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+    };
+    const setName = (name: string, content: string) => {
+      let el = document.querySelector(`meta[name="${name}"]`) as HTMLMetaElement | null;
+      if (!el) {
+        el = document.createElement('meta');
+        el.setAttribute('name', name);
+        document.head.appendChild(el);
+      }
+      el.setAttribute('content', content);
+    };
+
+    setMeta('og:title', post.title);
+    setMeta('og:description', post.description);
+    setMeta('og:image', ogImage);
+    setMeta('og:type', 'article');
+    setMeta('og:url', `https://epicdylan.com/blog/${slug}`);
+    setName('twitter:card', 'summary_large_image');
+    setName('twitter:title', post.title);
+    setName('twitter:description', post.description);
+    setName('twitter:image', ogImage);
+  }, [post, slug]);
+
   return (
     <div className={`min-h-screen transition-colors duration-300 ${paper ? 'bg-[#f4f1ea]' : 'bg-black'}`}>
       <main
