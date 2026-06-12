@@ -1,54 +1,16 @@
 import React from 'react';
 import { Hero } from '../components/Hero';
-import { TerminalBanner } from '../components/TerminalBanner';
+import { FeaturedPublication } from '../components/FeaturedPublication';
 import { ResearchSection } from '../components/ResearchSection';
-import { BlogSection } from '../components/BlogSection';
-import { SoftwareSection } from '../components/SoftwareSection';
-import { LabsSection } from '../components/LabsSection';
-import { HealthResearchSection } from '../components/HealthResearchSection';
 import { QuickLinks } from '../components/QuickLinks';
-import { ScrollReveal } from '../components/ScrollReveal';
-import { AsciiDivider } from '../components/AsciiDivider';
 
 export const HomePage: React.FC = () => {
   return (
-    <div className="max-w-6xl mx-auto px-6 py-16 relative z-10">
+    <div className="max-w-4xl mx-auto px-6 py-16 relative z-10">
       <Hero />
-      <TerminalBanner />
-
-      <ScrollReveal>
-        <ResearchSection />
-      </ScrollReveal>
-
-      <AsciiDivider variant="dots" />
-
-      <ScrollReveal delay={100}>
-        <BlogSection />
-      </ScrollReveal>
-
-      <AsciiDivider variant="arrows" />
-
-      <ScrollReveal delay={100}>
-        <SoftwareSection />
-      </ScrollReveal>
-
-      <AsciiDivider variant="binary" />
-
-      <ScrollReveal delay={100}>
-        <LabsSection />
-      </ScrollReveal>
-
-      <AsciiDivider variant="default" />
-
-      <ScrollReveal delay={100}>
-        <HealthResearchSection />
-      </ScrollReveal>
-
-      <AsciiDivider variant="arrows" />
-
-      <ScrollReveal delay={100}>
-        <QuickLinks />
-      </ScrollReveal>
+      <FeaturedPublication />
+      <ResearchSection />
+      <QuickLinks />
     </div>
   );
 };

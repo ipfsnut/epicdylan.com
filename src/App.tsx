@@ -1,89 +1,41 @@
-import React, { useState, useCallback } from 'react';
-import { BrowserRouter as Router, Routes, Route, Navigate, Link } from 'react-router-dom';
-import { AppProvider } from './context/AppContext';
+import React from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import { Navigation } from './components/Navigation';
-import { LiveClock } from './components/LiveClock';
 import { HomePage } from './pages/HomePage';
+import { PublicationsPage } from './pages/PublicationsPage';
 import { BooksPage } from './pages/BooksPage';
-import { BlogPage } from './pages/BlogPage';
 import { ConsciousnessPage } from './pages/ConsciousnessPage';
-import { Web3Page } from './pages/Web3Page';
 import { CVPage } from './pages/CVPage';
-import { FitnessPage } from './pages/FitnessPage';
-import { ChessPage } from './pages/ChessPage';
-import { CognitiveEffortPage } from './experiment-pages/CognitiveEffortPage';
-import { BuiltWithPage } from './pages/BuiltWithPage';
-import { SEMPage } from './pages/SEMPage';
-import { BookReaderPage } from './pages/BookReaderPage';
-import { useKonamiCode } from './hooks/useKonamiCode';
 
 const App: React.FC = () => {
-  const [easterEggActive, setEasterEggActive] = useState(false);
-
-  const handleKonami = useCallback(() => {
-    setEasterEggActive(true);
-    console.log('🎮 Konami Code Activated! You found the secret!');
-    setTimeout(() => setEasterEggActive(false), 2000);
-  }, []);
-
-  useKonamiCode(handleKonami);
-
   return (
-    <AppProvider>
-      <Router>
-        <div className={`min-h-screen bg-warm-bg relative ${easterEggActive ? 'easter-egg-active' : ''}`}>
-          <Navigation />
+    <Router>
+      <div className="min-h-screen bg-warm-bg relative">
+        <Navigation />
 
-          <Routes>
-            <Route path="/" element={<HomePage />} />
-            <Route path="/books" element={<BooksPage />} />
-            <Route path="/books/:slug" element={<BookReaderPage />} />
-            <Route path="/blog" element={<BlogPage />} />
-            <Route path="/blog/:slug" element={<BlogPage />} />
-            <Route path="/research" element={<ConsciousnessPage />} />
-            <Route path="/projects" element={<Web3Page />} />
-            {/* Legacy redirects */}
-            <Route path="/web3" element={<Web3Page />} />
-            <Route path="/cv" element={<CVPage />} />
-            <Route path="/fitness" element={<FitnessPage />} />
-            <Route path="/chess" element={<ChessPage />} />
-            <Route path="/sem" element={<SEMPage />} />
-            <Route path="/experiments/cognitive-effort" element={<CognitiveEffortPage />} />
-            <Route path="/built-with" element={<BuiltWithPage />} />
-            <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+        <Routes>
+          <Route path="/" element={<HomePage />} />
+          <Route path="/publications" element={<PublicationsPage />} />
+          <Route path="/books" element={<BooksPage />} />
+          <Route path="/research" element={<ConsciousnessPage />} />
+          <Route path="/cv" element={<CVPage />} />
+          <Route path="*" element={<Navigate to="/" replace />} />
+        </Routes>
 
-          <footer className="max-w-6xl mx-auto px-6 py-8 border-t border-warm-border">
-            <div className="flex flex-col md:flex-row items-center justify-between gap-4">
-              <Link
-                to="/built-with"
-                className="text-warm-text-secondary hover:text-warm-accent text-sm underline underline-offset-2 transition-colors"
-              >
-                built with ❤
-              </Link>
-              <Link
-                to="/blog/epic-launch"
-                className="text-warm-accent hover:text-warm-accent-hover font-mono text-xs tracking-wider transition-colors"
-                title="$EPIC on Base"
-              >
-                $EPIC • 0x003b...2369
-              </Link>
-            </div>
-            <div className="text-center mt-4">
-              <LiveClock />
-            </div>
-          </footer>
-
-          {/* Easter egg notification */}
-          {easterEggActive && (
-            <div className="fixed top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50 bg-white border border-warm-accent rounded-lg p-8 text-center shadow-lg">
-              <p className="text-warm-accent font-mono text-2xl mb-2">🎮 KONAMI CODE!</p>
-              <p className="text-warm-text-secondary font-mono text-sm">You found the secret!</p>
-            </div>
-          )}
-        </div>
-      </Router>
-    </AppProvider>
+        <footer className="max-w-4xl mx-auto px-6 py-10 mt-8 border-t border-warm-border">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-warm-text-secondary">
+            <span>T. Dylan Daniel</span>
+            <a
+              href="mailto:thomas.d.daniel@ttu.edu"
+              className="hover:text-warm-text transition-colors"
+            >
+              thomas.d.daniel@ttu.edu
+            </a>
+            <span>&copy; {new Date().getFullYear()}</span>
+          </div>
+        </footer>
+      </div>
+    </Router>
   );
 };
 

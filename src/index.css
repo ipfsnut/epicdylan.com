@@ -8,8 +8,8 @@ body {
   font-family: 'Outfit', system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  background: #F8F6F1;
-  color: #1C1917;
+  background: #F7F8FA;
+  color: #0A0A0A;
   line-height: 1.65;
 }
 
@@ -32,8 +32,8 @@ code {
 /* Display heading text */
 .gradient-text {
   font-family: 'Newsreader', 'Georgia', serif;
-  color: #1C1917;
-  -webkit-text-fill-color: #1C1917;
+  color: #0A0A0A;
+  -webkit-text-fill-color: #0A0A0A;
 }
 
 /* Scroll reveal animations */
@@ -54,27 +54,22 @@ code {
 }
 
 @keyframes pulse-ring {
-  0% { box-shadow: 0 0 0 0 rgba(14, 107, 94, 0.7); }
-  70% { box-shadow: 0 0 0 8px rgba(14, 107, 94, 0); }
-  100% { box-shadow: 0 0 0 0 rgba(14, 107, 94, 0); }
+  0% { box-shadow: 0 0 0 0 rgba(30, 41, 59, 0.6); }
+  70% { box-shadow: 0 0 0 8px rgba(30, 41, 59, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(30, 41, 59, 0); }
 }
 
 /* Section number styling */
 .section-number {
   font-family: 'Fira Code', monospace;
   font-size: 0.75rem;
-  color: rgba(14, 107, 94, 0.5);
+  color: rgba(71, 85, 105, 0.6);
   letter-spacing: 0.1em;
 }
 
-/* Glitch hover — toned down to subtle shift */
+/* Section heading hover */
 .glitch-hover {
   position: relative;
-}
-
-.glitch-hover:hover {
-  color: #0E6B5E;
-  transition: color 0.2s ease;
 }
 
 /* Easter egg activation effect */
@@ -96,14 +91,14 @@ code {
 }
 
 ::-webkit-scrollbar-track {
-  background: #F8F6F1;
+  background: #F7F8FA;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #D6D3CC;
+  background: #E2E8F0;
   border-radius: 4px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #0E6B5E;
+  background: #1E293B;
 }

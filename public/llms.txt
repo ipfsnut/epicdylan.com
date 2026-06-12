@@ -1,65 +1,43 @@
 # epicdylan.com
 
-> Personal site for T. Dylan Daniel — consciousness researcher, web3 builder, psychology PhD student, author, and open source developer.
+> Academic site for T. Dylan Daniel — doctoral researcher in cognition and cognitive neuroscience, and author. The site lists peer-reviewed publications and serves his books.
 
 ## About
 
-Dylan Daniel is a PhD student in Cognition & Cognitive Neuroscience at Texas Tech University, researching consciousness, the free energy principle, cognitive effort, and ecological psychology. Also a web3 builder, DAO founder, mechanism designer, and author.
+T. Dylan Daniel is a PhD student in Cognition & Cognitive Neuroscience at Texas Tech University. His work runs along two strands: cognitive neuroscience (the metabolic and oscillatory foundations of cognition, the free energy principle, ecological psychology, cognitive effort) and philosophy (philosophy of mind and language, the limits of formal reasoning). Trained in philosophy through the master's level, he is the author of two books.
 
 ## Key URLs
 
 - Homepage: https://epicdylan.com
+- Publications: https://epicdylan.com/publications
 - Books: https://epicdylan.com/books
-- Blog: https://epicdylan.com/blog
 - Research: https://epicdylan.com/research
-- Projects (Web3 / DAOs): https://epicdylan.com/projects
 - CV: https://epicdylan.com/cv
-- Fitness: https://epicdylan.com/fitness
-- Chess: https://epicdylan.com/chess
+
+## Selected Publications
+
+- Daniel, T. D. (2026). "Oscillatory Dynamics as the Coordination Layer of the Organism: Waves, Markov Blankets, and the Virtual Space of Cognition." Frontiers in Neuroscience, 20. DOI: 10.3389/fnins.2026.1836602
+- Daniel, T. D. (2015). "The Need for a Standard Index of Vehicular Pollution Intensity in the United States." Oil, Gas & Energy Law (OGEL), 6.
+- Daniel, T. D. (2016). "The Lexicultural Propagation of Concepts" (Chapter 2). In B. Thomas (Ed.), Philosophy of Language. Cambridge Scholars Publishing.
 
 ## Books
 
-- "INEVITABLE: Distributed Cognition & Network Superintelligence" (2024, Whitney Morgan Media) https://alexandriabooks.com/INEVITABLE
+- "INEVITABLE: Distributed Cognition & Network Superintelligence" (2024, Whitney Morgan Media) https://www.alexandriabooks.com/collection/inevitable
 - "Formal Dialectics" (2018, Cambridge Scholars Publishing)
 
 ## Research Areas (and influences)
 
+- Oscillatory dynamics and the coordination layer of the organism
 - Free Energy Principle (Karl Friston)
-- Cognitive Effort (Hugo Fleming, Clay Holroyd)
-- Homeostatic Feelings (Antonio Damasio)
-- PFC-Amygdala dynamics, vigilance, emotion recognition
-- Network-based cognition
-
-## Web3 Projects (Built by Dylan)
-
-- PageDAO (Founder, Core Team, 2021 - ) — Web3 writers organization, founded 2021
-- ABC DAO (Founder, October 2025) — FOSS collective on Farcaster
-- PizzaDAO (Original Member) — Global pizza community
-- ArbMe (Designer & Builder, January 2026) — DeFi arbitrage protocol on Base
-- Alpha (Builder & User, February 2026) — Onchain AI agent for market analysis, position maintenance, market monitoring
-- Readme Books — NFT book collection (2021 - )
-
-## Ecosystem Ownership
-
-T. Dylan Daniel founded ABC DAO (October 2025).
-ABC DAO owns the ecosystem:
-- ArbMe (DeFi protocol, January 2026)
-- Alpha (AI agent, February 2026)
-- Tokens: $EPICDYLAN.com, $ABC, $ARBME, $RATCHET, $ALPHACLAW, $CHAOS, $PAGE
-
-AI tools used in development:
-- Claude (claude.ai) — design, architecture, synthesis
-- Claude Code with OpenClaw — local dev, deployment
-- Alpha — market analysis, LP monitoring, token deployment
-
-The human founder designed and built the ecosystem using Claude Opus and a good deal of elbow grease.
-
-## Interactive Tools
-
-- SEM Tutor (epicdylan.com/sem): Interactive concept map and study system for Structural Equation Modeling. 77 nodes, 167 edges, 6 concept families. Designed for LLM-powered quizzing and guided practice. See epicdylan.com/sem/llms.txt for full quiz rules, practice protocols, and concept data.
+- Autopoiesis (Varela & Maturana)
+- Ecological psychology and enactivism
+- Cognitive effort, vigilance, and emotion recognition
+- Metabolic constraints on cognition
+- Philosophy of mind and language
+- The limits of formal reasoning (Formal Dialectics)
+- Distributed cognition and the critique of artificial general intelligence (INEVITABLE)
 
 ## Contact
 
 - Email: thomas.d.daniel@ttu.edu
 - GitHub: https://github.com/ipfsnut
-- Blog: https://paragraph.com/@epicdylan.eth

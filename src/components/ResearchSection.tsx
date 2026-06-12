@@ -7,10 +7,10 @@ export const ResearchSection: React.FC = () => {
   return (
     <div className="mb-16">
       <div className="flex items-center gap-4 mb-6">
-        <span className="section-number">01 //</span>
-        <h2 className="text-3xl font-bold font-display text-warm-text flex items-center gap-3 glitch-hover" data-text="Consciousness Research">
+        <span className="section-number">02 //</span>
+        <h2 className="text-3xl font-bold font-display text-warm-text flex items-center gap-3">
           <Brain className="w-8 h-8 text-warm-accent" />
-          Consciousness Research
+          Research
         </h2>
       </div>
       <div
@@ -18,8 +18,10 @@ export const ResearchSection: React.FC = () => {
         onClick={() => navigate('/research')}
       >
         <p className="text-warm-text-secondary mb-4 leading-relaxed">
-          Advanced psychology degree student investigating the mathematical foundations of consciousness through nested Markov blankets
-          and autopoietic systems. Integrating theoretical neuroscience with empirical research.
+          Two strands — cognitive neuroscience and philosophy — converging on one question: is the
+          mind reducible to computation? The neuroscience grounds cognition in the metabolic and
+          oscillatory activity of living systems; the philosophy maps where computational accounts of
+          mind and reason reach their limits.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <div className="bg-warm-bg rounded-lg p-4">

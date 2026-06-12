@@ -9,6 +9,11 @@
 # Production
 /build
 
+# Build caches / stray tooling artifacts
+/.next
+next-env.d.ts
+tsconfig.tsbuildinfo
+
 # Misc
 .DS_Store
 .env.local

@@ -19,7 +19,7 @@ export const CVPage: React.FC = () => {
           Curriculum Vitae
         </h1>
         <p className="text-xl text-warm-text-secondary leading-relaxed">
-          T. Dylan Daniel • Consciousness Researcher • Web3 Builder
+          T. Dylan Daniel • Cognitive Neuroscience • Philosophy • Author
         </p>
       </div>
 
@@ -104,6 +104,10 @@ export const CVPage: React.FC = () => {
               <h3 className="text-warm-accent font-semibold text-lg mb-2">Academic Publications</h3>
               <div className="space-y-4">
                 <div>
+                  <p className="text-warm-text-secondary font-medium">"Oscillatory Dynamics as the Coordination Layer of the Organism: Waves, Markov Blankets, and the Virtual Space of Cognition"</p>
+                  <p className="text-warm-text-secondary text-sm">Frontiers in Neuroscience, 20 (2026) • In press • Hypothesis and Theory • DOI: 10.3389/fnins.2026.1836602 • <a href="https://www.frontiersin.org/journals/neuroscience/articles/10.3389/fnins.2026.1836602/abstract" target="_blank" rel="noopener noreferrer" className="text-warm-accent hover:text-warm-accent-hover transition-colors">Abstract</a></p>
+                </div>
+                <div>
                   <p className="text-warm-text-secondary font-medium">"The Lexicultural Propagation of Concepts" (Chapter 2)</p>
                   <p className="text-warm-text-secondary text-sm">In: Philosophy of Language by Brian Thomas • Newcastle upon Tyne: Cambridge Scholars Publishing • <a href="https://www.amazon.com/Philosophy-Language-Brian-Thomas/dp/1443880426" target="_blank" rel="noopener noreferrer" className="text-warm-accent hover:text-warm-accent-hover ml-1 transition-colors">View Book</a></p>
                 </div>
@@ -116,7 +120,6 @@ export const CVPage: React.FC = () => {
                   <div className="text-warm-text-secondary text-sm mt-2 space-y-2">
                     <div>• Biography of Pierre Hadot • <a href="https://philosophynow.org/issues/113/Pierre_Hadot_1922-2010" target="_blank" rel="noopener noreferrer" className="text-warm-accent hover:text-warm-accent-hover ml-1 transition-colors">View Article</a></div>
                     <div>• Biography of Hermann von Helmholtz • <a href="https://philosophynow.org/issues/129/Hermann_von_Helmholtz_1821-1894" target="_blank" rel="noopener noreferrer" className="text-warm-accent hover:text-warm-accent-hover ml-1 transition-colors">View Article</a></div>
-                    <div>• "The Plague and the Plague" • <a href="https://philosophynow.org/issues/138/The_Plague_and_The_Plague" target="_blank" rel="noopener noreferrer" className="text-warm-accent hover:text-warm-accent-hover ml-1 transition-colors">View Article</a></div>
                   </div>
                 </div>
               </div>
@@ -144,7 +147,6 @@ export const CVPage: React.FC = () => {
               <ul className="text-warm-text-secondary space-y-1 text-sm">
                 <li>• React, TypeScript, Node.js</li>
                 <li>• Statistical data analysis in R</li>
-                <li>• Web3 and blockchain technologies</li>
                 <li>• Open source development</li>
               </ul>
             </div>

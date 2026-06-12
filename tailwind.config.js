@@ -8,13 +8,13 @@ module.exports = {
     extend: {
       colors: {
         warm: {
-          bg: '#F8F6F1',
+          bg: '#F7F8FA',
           surface: '#FFFFFF',
-          text: '#1C1917',
-          'text-secondary': '#57534E',
-          accent: '#0E6B5E',
-          'accent-hover': '#0A5549',
-          border: '#D6D3CC',
+          text: '#0A0A0A',
+          'text-secondary': '#475569',
+          accent: '#1E293B',
+          'accent-hover': '#0F172A',
+          border: '#E2E8F0',
         }
       },
       animation: {
